@@ -1,60 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora News</title>
-<meta name="description" content="Nexora News — London, UK and world news.">
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111}
-.top{height:6px;background:#e31837}.wrap{max-width:1180px;margin:auto;padding:0 18px}
-header{border-bottom:1px solid #ddd;background:#fff}.head{height:78px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-weight:900;font-size:30px;letter-spacing:-1px}.logo span{color:#e31837}
-.menu{display:flex;gap:22px;font-weight:700;font-size:14px}.menu a{color:#111;text-decoration:none}
-.breaking{background:#111;color:#fff;font-weight:800;padding:12px 0}.breaking span{background:#e31837;padding:6px 9px;margin-right:12px}
-.hero{display:grid;grid-template-columns:2fr 1fr;gap:24px;padding:28px 0;border-bottom:1px solid #ddd}
-.hero-main{min-height:360px;background:#222 url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=80') center/cover;position:relative;color:#fff;display:flex;align-items:flex-end}
-.hero-main:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.85))}
-.hero-text{position:relative;z-index:1;padding:28px}.tag{color:#e31837;font-weight:800;text-transform:uppercase;font-size:13px}
-h1{font-size:42px;line-height:1.05;margin:8px 0}.side{display:flex;flex-direction:column;gap:16px}.story{border-bottom:1px solid #ddd;padding-bottom:16px}.story h2{font-size:22px;line-height:1.15;margin:6px 0}
-section{padding:28px 0;border-bottom:1px solid #ddd}.section-title{font-size:25px;border-left:5px solid #e31837;padding-left:10px;margin:0 0 18px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.card img{width:100%;height:150px;object-fit:cover}.card h3{font-size:20px;line-height:1.15;margin:8px 0}.meta{font-size:12px;color:#666}
-footer{background:#111;color:#fff;margin-top:30px;padding:35px 0}.footergrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}.footergrid a{color:#fff;text-decoration:none;display:block;margin:8px 0}
-@media(max-width:800px){.menu{display:none}.hero{grid-template-columns:1fr}.hero-main{min-height:300px}h1{font-size:32px}.grid{grid-template-columns:1fr 1fr}.footergrid{grid-template-columns:1fr}}
-@media(max-width:520px){.grid{grid-template-columns:1fr}.head{height:65px}.logo{font-size:25px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nexora News — London, UK & World News</title>
+  <meta name="description" content="Nexora News brings you the latest London, UK and world news, business, technology, sports and more.">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    .top-line {
+      height: 5px;
+      background: #e30613;
+    }
+
+    header {
+      border-bottom: 1px solid #ddd;
+      padding: 18px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #e30613;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: #e30613;
+    }
+
+    .breaking {
+      background: #111;
+      color: white;
+      padding: 11px 5%;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .breaking span {
+      background: #e30613;
+      padding: 5px 9px;
+      margin-right: 10px;
+    }
+
+    main {
+      width: 90%;
+      max-width: 1250px;
+      margin: 30px auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .hero-main {
+      position: relative;
+      min-height: 430px;
+      overflow: hidden;
+      background: #222;
+    }
+
+    .hero-main img {
+      width: 100%;
+      height: 430px;
+      object-fit: cover;
+      opacity: .8;
+    }
+
+    .hero-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 30px;
+      color: white;
+      background: linear-gradient(transparent, rgba(0,0,0,.9));
+    }
+
+    .category {
+      color: #e30613;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-text h1 {
+      font-size: 36px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-text p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .latest {
+      border-top: 4px solid #111;
+    }
+
+    .latest h2,
+    .section-title {
+      font-size: 25px;
+      margin: 12px 0 18px;
+    }
+
+    .news-item {
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .news-item h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .news-item p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .news-item .meta {
+      font-size: 12px;
+      color: #888;
+      margin-top: 7px;
+    }
+
+    .section {
+      margin-top: 45px;
+    }
+
+    .section-title {
+      border-left: 6px solid #e30613;
+      padding-left: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      background: white;
+    }
+
+    .card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    .card h3 {
+      font-size: 19px;
+      line-height: 1.3;
+      margin: 7px 0;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .empty {
+      padding: 25px;
+      background: #f5f5f5;
+      color: #666;
+    }
+
+    .loading {
+      padding: 25px;
+      text-align: center;
+      color: #666;
+    }
+
+    footer {
+      margin-top: 60px;
+      background: #111;
+      color: white;
+      padding: 35px 5%;
+      text-align: center;
+    }
+
+    footer h2 {
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      color: #bbb;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-text h1 {
+        font-size: 27px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main,
+      .hero-main img {
+        height: 330px;
+        min-height: 330px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="top"></div>
-<header><div class="wrap head"><div class="logo">NEXORA <span>NEWS</span></div>
-<nav class="menu"><a href="#">HOME</a><a href="#">UK</a><a href="#">LONDON</a><a href="#">WORLD</a><a href="#">BUSINESS</a><a href="#">TECH</a><a href="#">SPORTS</a><a href="#">VIDEO</a></nav></div></header>
 
-<div class="breaking"><div class="wrap"><span>BREAKING</span> Nexora News brings you the latest stories from London, the UK and around the world.</div></div>
+  <div class="top-line"></div>
 
-<main class="wrap">
-<div class="hero">
-<div class="hero-main"><div class="hero-text"><div class="tag">London</div><h1>Latest London news, updates and stories</h1><p>Independent news coverage from across London and beyond.</p></div></div>
-<div class="side">
-<div class="story"><div class="tag">UK</div><h2>UK news and major developments</h2><div class="meta">Today · 5 min read</div></div>
-<div class="story"><div class="tag">World</div><h2>World leaders meet as global issues take centre stage</h2><div class="meta">Today · 4 min read</div></div>
-<div class="story"><div class="tag">Technology</div><h2>New technology is changing how people live and work</h2><div class="meta">Today · 3 min read</div></div>
-</div>
-</div>
+  <header>
+    <div class="logo">NEXORA <span>NEWS</span></div>
 
-<section><h2 class="section-title">Latest News</h2><div class="grid">
-<article class="card"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=700&q=80"><div class="tag">Business</div><h3>Business and economic stories to watch</h3><div class="meta">Marian · Today</div></article>
-<article class="card"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80"><div class="tag">Technology</div><h3>Technology and AI: the latest developments</h3><div class="meta">Marian · Today</div></article>
-<article class="card"><img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=700&q=80"><div class="tag">Sports</div><h3>Sports news, results and major events</h3><div class="meta">Marian · Today</div></article>
-</div></section>
+    <nav>
+      <a href="#">HOME</a>
+      <a href="#">UK</a>
+      <a href="#">LONDON</a>
+      <a href="#">WORLD</a>
+      <a href="#">BUSINESS</a>
+      <a href="#">TECH</a>
+      <a href="#">SPORTS</a>
+      <a href="#">VIDEO</a>
+    </nav>
+  </header>
 
-<section><h2 class="section-title">London</h2><div class="grid">
-<article class="card"><img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=700&q=80"><div class="tag">London</div><h3>What's happening across the capital</h3><div class="meta">London desk · Today</div></article>
-<article class="card"><img src="https://images.unsplash.com/photo-1506501139177-8a3b090c9f9b?auto=format&fit=crop&w=700&q=80"><div class="tag">UK</div><h3>Key stories from across Britain</h3><div class="meta">UK desk · Today</div></article>
-<article class="card"><img src="https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=700&q=80"><div class="tag">World</div><h3>International news and analysis</h3><div class="meta">World desk · Today</div></article>
-</div></section>
+  <div class="breaking">
+    <span>BREAKING</span>
+    Latest news from London, the UK and around the world
+  </div>
 
-<section><h2 class="section-title">Video</h2><p>Watch Nexora News reports, explainers and interviews.</p></section>
-</main>
+  <main>
 
-<footer><div class="wrap footergrid"><div><div class="logo">NEXORA <span>NEWS</span></div><p>London, UK and world news.</p></div><div><b>Sections</b><a href="#">London</a><a href="#">UK</a><a href="#">World</a><a href="#">Business</a></div><div><b>More</b><a href="#">Technology</a><a href="#">Sports</a><a href="#">Video</a><a href="#">About</a></div></div></footer>
-</body></html>
+    <div id="loading" class="loading">
+      Loading latest news...
+    </div>
+
+    <section id="heroSection" class="hero" style="display:none;">
+      <div id="heroStory"></div>
+
+      <div class="latest">
+        <h2>Latest News</h2>
+        <div id="latestNews"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">London</h2>
+      <div id="londonNews" class="grid"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">UK</h2>
+      <div id="ukNews" class="grid"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">World</h2>
+      <div id="worldNews" class="grid"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Business & Technology</h2>
+      <div id="businessNews" class="grid"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    <h2>NEXORA NEWS</h2>
+    <p>London, UK and World News</p>
+    <p style="margin-top:10px;">© 2026 Nexora News. All rights reserved.</p>
+  </footer>
+
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://qleoqpmxvmqcythacszw.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+    async function loadNews() {
+
+      const loading = document.getElementById("loading");
+
+      const { data, error } = await db
+        .from("articles")
+        .select("*")
+        .eq("status", "published")
+        .order("published_at", { ascending: false });
+
+      if (error) {
+
+        loading.innerHTML =
+          "Unable to load news from the database.";
+
+        console.error(error);
+
+        return;
+      }
+
+      loading.style.display = "none";
+
+      if (!data || data.length === 0) {
+
+        document.getElementById("heroSection").style.display = "grid";
+
+        document.getElementById("heroStory").innerHTML =
+          '<div class="empty">No published news yet.</div>';
+
+        return;
+      }
+
+
+      /* HERO STORY */
+
+      const hero = data[0];
+
+      document.getElementById("heroSection").style.display = "grid";
+
+      document.getElementById("heroStory").innerHTML = `
+        <article class="hero-main">
+
+          <img
+            src="${hero.image_url || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80'}"
+            alt="${escapeHtml(hero.title)}"
+          >
+
+          <div class="hero-text">
+
+            <div class="category">
+              ${escapeHtml(hero.category)}
+            </div>
+
+            <h1>${escapeHtml(hero.title)}</h1>
+
+            <p>${escapeHtml(hero.excerpt || "")}</p>
+
+          </div>
+
+        </article>
+      `;
+
+
+      /* LATEST NEWS */
+
+      const latest = data.slice(0, 6);
+
+      document.getElementById("latestNews").innerHTML =
+        latest.map(article => `
+          <article class="news-item">
+
+            <div class="category">
+              ${escapeHtml(article.category)}
+            </div>
+
+            <h3>${escapeHtml(article.title)}</h3>
+
+            <p>${escapeHtml(article.excerpt || "")}</p>
+
+            <div class="meta">
+              By ${escapeHtml(article.author || "Marian")}
+            </div>
+
+          </article>
+        `).join("");
+
+
+      /* CATEGORY SECTIONS */
+
+      renderCategory(
+        data,
+        ["London"],
+        "londonNews"
+      );
+
+      renderCategory(
+        data,
+        ["UK", "United Kingdom"],
+        "ukNews"
+      );
+
+      renderCategory(
+        data,
+        ["World", "International"],
+        "worldNews"
+      );
+
+      renderCategory(
+        data,
+        ["Business", "Technology", "Tech", "Technology & AI"],
+        "businessNews"
+      );
+
+    }
+
+
+    function renderCategory(data, categories, elementId) {
+
+      const filtered = data
+        .filter(article =>
+          categories.some(category =>
+            String(article.category || "").toLowerCase()
+            === category.toLowerCase()
+          )
+        )
+        .slice(0, 6);
+
+
+      const element = document.getElementById(elementId);
+
+
+      if (filtered.length === 0) {
+
+        element.innerHTML =
+          '<div class="empty">No stories in this section yet.</div>';
+
+        return;
+      }
+
+
+      element.innerHTML = filtered.map(article => `
+
+        <article class="card">
+
+          <img
+            src="${article.image_url || 'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=900&q=80'}"
+            alt="${escapeHtml(article.title)}"
+          >
+
+          <div class="card-content">
+
+            <div class="category">
+              ${escapeHtml(article.category)}
+            </div>
+
+            <h3>${escapeHtml(article.title)}</h3>
+
+            <p>
+              ${escapeHtml(article.excerpt || "")}
+            </p>
+
+            <div class="meta">
+              By ${escapeHtml(article.author || "Marian")}
+            </div>
+
+          </div>
+
+        </article>
+
+      `).join("");
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    loadNews();
+
+  </script>
+
+</body>
+</html>￼Enter
