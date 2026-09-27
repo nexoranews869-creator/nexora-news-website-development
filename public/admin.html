@@ -8,14 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
+      background: #f3f4f6;
       color: #111827;
     }
 
@@ -30,38 +28,48 @@
 
     header h1 {
       margin: 0;
-      font-size: 22px;
+      font-size: 21px;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .logout {
       background: #dc2626;
       color: white;
       border: 0;
-      padding: 10px 16px;
+      padding: 10px 15px;
       border-radius: 6px;
-      cursor: pointer;
     }
 
     main {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 16px;
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 0 15px;
     }
 
     .card {
       background: white;
-      padding: 25px;
+      padding: 24px;
+      margin-bottom: 25px;
       border-radius: 12px;
-      box-shadow: 0 3px 15px rgba(0,0,0,.08);
+      box-shadow: 0 3px 14px rgba(0,0,0,.08);
+    }
+
+    h2 {
+      margin-top: 0;
     }
 
     label {
       display: block;
       font-weight: bold;
-      margin: 18px 0 7px;
+      margin: 16px 0 7px;
     }
 
-    input, textarea, select {
+    input,
+    textarea,
+    select {
       width: 100%;
       padding: 12px;
       border: 1px solid #d1d5db;
@@ -70,32 +78,79 @@
     }
 
     textarea {
-      min-height: 180px;
+      min-height: 160px;
       resize: vertical;
     }
 
-    .publish {
-      margin-top: 22px;
-      width: 100%;
-      padding: 14px;
+    .publish,
+    .save {
+      margin-top: 20px;
+      padding: 13px 18px;
       border: 0;
       border-radius: 7px;
-      background: #b91c1c;
       color: white;
-      font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
 
-    .publish:disabled {
-      opacity: .6;
+    .publish {
+      background: #b91c1c;
+      width: 100%;
+    }
+
+    .save {
+      background: #2563eb;
+    }
+
+    .cancel {
+      margin-top: 20px;
+      margin-left: 8px;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 7px;
+      background: #6b7280;
+      color: white;
+      font-weight: bold;
+    }
+
+    .article {
+      border: 1px solid #e5e7eb;
+      border-radius: 9px;
+      padding: 15px;
+      margin-top: 14px;
+    }
+
+    .article h3 {
+      margin: 0 0 7px;
+    }
+
+    .meta {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .edit-btn {
+      background: #2563eb;
+      color: white;
+      border: 0;
+      padding: 9px 14px;
+      border-radius: 6px;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+      color: white;
+      border: 0;
+      padding: 9px 14px;
+      border-radius: 6px;
+      margin-left: 6px;
     }
 
     #message {
-      margin-top: 18px;
+      display: none;
+      margin-top: 15px;
       padding: 12px;
       border-radius: 7px;
-      display: none;
     }
 
     .success {
@@ -109,150 +164,497 @@
       background: #fee2e2;
       color: #991b1b;
     }
+
+    #editCard {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 17px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
 <header>
-  <h1>NEXORA NEWS — Admin</h1>
+  <h1>NEXORA NEWS — ADMIN</h1>
   <button class="logout" id="logoutBtn">Logout</button>
 </header>
 
 <main>
-  <div class="card">
 
+  <!-- PUBLISH -->
+  <section class="card">
     <h2>Publish New Article</h2>
 
     <form id="articleForm">
 
       <label>Headline</label>
-      <input
-        type="text"
-        id="title"
-        placeholder="Enter article headline"
-        required
-      >
+      <input id="title" required>
 
       <label>Category</label>
       <select id="category" required>
         <option value="">Select category</option>
-        <option value="London">London</option>
-        <option value="UK">UK</option>
-        <option value="World">World</option>
-        <option value="Business">Business</option>
-        <option value="Technology">Technology</option>
-        <option value="Sports">Sports</option>
-        <option value="Video">Video</option>
+        <option>London</option>
+        <option>UK</option>
+        <option>World</option>
+        <option>Business</option>
+        <option>Technology</option>
+        <option>Sports</option>
+        <option>Video</option>
       </select>
 
       <label>Short Description</label>
-      <textarea
-        id="excerpt"
-        placeholder="Write a short description..."
-        required
-      ></textarea>
+      <textarea id="excerpt" required></textarea>
 
       <label>Article Image URL</label>
-      <input
-        type="url"
-        id="image_url"
-        placeholder="https://example.com/image.jpg"
-      >
+      <input id="image_url" type="url">
 
       <label>Article Body</label>
-      <textarea
-        id="body"
-        placeholder="Write the full article..."
-        required
-      ></textarea>
+      <textarea id="body" required></textarea>
 
       <label>Author</label>
-      <input
-        type="text"
-        id="author"
-        value="Marian"
-        required
-      >
+      <input id="author" value="Marian" required>
 
-      <button class="publish" id="publishBtn" type="submit">
+      <button class="publish" type="submit">
         Publish Article
       </button>
 
-      <div id="message"></div>
-
     </form>
-  </div>
+
+    <div id="message"></div>
+  </section>
+
+
+  <!-- EDIT -->
+  <section class="card" id="editCard">
+
+    <h2>Edit Article</h2>
+
+    <input type="hidden" id="editId">
+
+    <label>Headline</label>
+    <input id="editTitle">
+
+    <label>Category</label>
+    <select id="editCategory">
+      <option>London</option>
+      <option>UK</option>
+      <option>World</option>
+      <option>Business</option>
+      <option>Technology</option>
+      <option>Sports</option>
+      <option>Video</option>
+    </select>
+
+    <label>Short Description</label>
+    <textarea id="editExcerpt"></textarea>
+
+    <label>Article Image URL</label>
+    <input id="editImage">
+
+    <label>Article Body</label>
+    <textarea id="editBody"></textarea>
+
+    <label>Author</label>
+    <input id="editAuthor">
+
+    <button class="save" id="saveEdit">
+      Save Changes
+    </button>
+
+    <button class="cancel" id="cancelEdit">
+      Cancel
+    </button>
+
+  </section>
+
+
+  <!-- ARTICLES -->
+  <section class="card">
+
+    <h2>Published Articles</h2>
+
+    <div id="articlesList">
+      Loading articles...
+    </div>
+
+  </section>
+
 </main>
 
+
 <script>
-  const SUPABASE_URL =
-    "https://qleoqpmxvmqcythacszw.supabase.co";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+const SUPABASE_URL =
+  "https://qleoqpmxvmqcythacszw.supabase.co";
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
-  const message = document.getElementById("message");
-  const form = document.getElementById("articleForm");
-  const publishBtn = document.getElementById("publishBtn");
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-  function showMessage(text, type) {
-    message.textContent = text;
-    message.className = type;
-  }
 
-  async function checkLogin() {
-    const { data, error } = await db.auth.getSession();
+const ADMIN_ID =
+  "280627ab-6dfb-4f45-ae11-b5fc14288eb5";
 
-    if (error || !data.session) {
-      window.location.href = "/login.html";
-      return;
-    }
-  }
 
-  checkLogin();
+const message =
+  document.getElementById("message");
 
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await db.auth.signOut();
+
+function showMessage(text, type) {
+
+  message.textContent = text;
+  message.className = type;
+
+}
+
+
+async function checkLogin() {
+
+  const { data, error } =
+    await db.auth.getSession();
+
+  if (error || !data.session) {
+
     window.location.href = "/login.html";
+
+    return false;
+  }
+
+  if (data.session.user.id !== ADMIN_ID) {
+
+    await db.auth.signOut();
+
+    window.location.href = "/login.html";
+
+    return false;
+  }
+
+  return true;
+}
+
+
+async function loadArticles() {
+
+  const { data, error } = await db
+    .from("articles")
+    .select("*")
+    .order("published_at", {
+      ascending: false
+    });
+
+  const list =
+    document.getElementById("articlesList");
+
+  if (error) {
+
+    list.innerHTML =
+      "<p>ERROR: " +
+      error.message +
+      "</p>";
+
+    return;
+  }
+
+  if (!data || data.length === 0) {
+
+    list.innerHTML =
+      "<p>No articles found.</p>";
+
+    return;
+  }
+
+  list.innerHTML = "";
+
+  data.forEach(article => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "article";
+
+    div.innerHTML = `
+      <h3>${escapeHtml(article.title)}</h3>
+
+      <div class="meta">
+        ${escapeHtml(article.category || "")}
+        ·
+        ${escapeHtml(article.author || "")}
+      </div>
+
+      <button class="edit-btn"
+        onclick="editArticle('${article.id}')">
+        Edit
+      </button>
+
+      <button class="delete-btn"
+        onclick="deleteArticle('${article.id}')">
+        Delete
+      </button>
+    `;
+
+    list.appendChild(div);
+
   });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+}
 
-    publishBtn.disabled = true;
-    publishBtn.textContent = "Publishing...";
 
-    const title = document.getElementById("title").value.trim();
-    const category = document.getElementById("category").value;
-    const excerpt = document.getElementById("excerpt").value.trim();
-    const image_url = document.getElementById("image_url").value.trim();
-    const body = document.getElementById("body").value.trim();
-    const author = document.getElementById("author").value.trim();
+function escapeHtml(value) {
 
-    const slug =
-      title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "") +
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+async function editArticle(id) {
+
+  const { data, error } =
+    await db
+      .from("articles")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+  if (error) {
+
+    showMessage(
+      "ERROR: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  document.getElementById("editId").value =
+    data.id;
+
+  document.getElementById("editTitle").value =
+    data.title || "";
+
+  document.getElementById("editCategory").value =
+    data.category || "UK";
+
+  document.getElementById("editExcerpt").value =
+    data.excerpt || "";
+
+  document.getElementById("editImage").value =
+    data.image_url || "";
+
+  document.getElementById("editBody").value =
+    data.body || "";
+
+  document.getElementById("editAuthor").value =
+    data.author || "Marian";
+
+  document.getElementById("editCard").style.display =
+    "block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+document.getElementById("saveEdit")
+.addEventListener("click", async () => {
+
+  const id =
+    document.getElementById("editId").value;
+
+  const updates = {
+
+    title:
+      document.getElementById("editTitle").value.trim(),
+
+    category:
+      document.getElementById("editCategory").value,
+
+    excerpt:
+      document.getElementById("editExcerpt").value.trim(),
+
+    image_url:
+      document.getElementById("editImage").value.trim(),
+
+    body:
+      document.getElementById("editBody").value.trim(),
+
+    author:
+      document.getElementById("editAuthor").value.trim()
+
+  };
+
+
+  const { error } = await db
+    .from("articles")
+    .update(updates)
+    .eq("id", id);
+
+
+  if (error) {
+
+    showMessage(
+      "ERROR: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "Article updated successfully!",
+    "success"
+  );
+
+
+  document.getElementById("editCard").style.display =
+    "none";
+
+  loadArticles();
+
+});
+
+
+document.getElementById("cancelEdit")
+.addEventListener("click", () => {
+
+  document.getElementById("editCard").style.display =
+    "none";
+
+});
+
+
+async function deleteArticle(id) {
+
+  const confirmed =
+    confirm(
+      "Are you sure you want to delete this article?"
+    );
+
+  if (!confirmed) return;
+
+
+  const { error } = await db
+    .from("articles")
+    .delete()
+    .eq("id", id);
+
+
+  if (error) {
+
+    showMessage(
+      "ERROR: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "Article deleted successfully!",
+    "success"
+  );
+
+
+  loadArticles();
+
+}
+
+
+document.getElementById("logoutBtn")
+.addEventListener("click", async () => {
+
+  await db.auth.signOut();
+
+  window.location.href =
+    "/login.html";
+
+});
+
+
+document.getElementById("articleForm")
+.addEventListener("submit", async (e) => {
+
+  e.preventDefault();
+
+
+  const { data: sessionData } =
+    await db.auth.getSession();
+
+
+  if (
+    !sessionData.session ||
+    sessionData.session.user.id !== ADMIN_ID
+  ) {
+
+    window.location.href =
+      "/login.html";
+
+    return;
+  }
+
+
+  const title =
+    document.getElementById("title")
+      .value.trim();
+
+  const category =
+    document.getElementById("category")
+      .value;
+
+  const excerpt =
+    document.getElementById("excerpt")
+      .value.trim();
+
+  const image_url =
+    document.getElementById("image_url")
+      .value.trim();
+
+  const body =
+    document.getElementById("body")
+      .value.trim();
+
+  const author =
+    document.getElementById("author")
+      .value.trim();
+
+
+  const slug =
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      +
       "-" +
       Date.now();
 
-    const { data: sessionData } = await db.auth.getSession();
 
-    if (!sessionData.session) {
-      window.location.href = "/login.html";
-      return;
-    }
-
-    const { error } = await db
+  const { error } =
+    await db
       .from("articles")
       .insert({
+
         title,
         slug,
         excerpt,
@@ -261,24 +663,54 @@
         author,
         image_url: image_url || null,
         status: "published",
-        published_at: new Date().toISOString()
+        published_at:
+          new Date().toISOString()
+
       });
 
-    if (error) {
-      showMessage("ERROR: " + error.message, "error");
-    } else {
-      showMessage(
-        "Article published successfully!",
-        "success"
-      );
 
-      form.reset();
-      document.getElementById("author").value = "Marian";
-    }
+  if (error) {
 
-    publishBtn.disabled = false;
-    publishBtn.textContent = "Publish Article";
-  });
+    showMessage(
+      "ERROR: " + error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "Article published successfully!",
+    "success"
+  );
+
+
+  document.getElementById("articleForm")
+    .reset();
+
+  document.getElementById("author").value =
+    "Marian";
+
+
+  loadArticles();
+
+});
+
+
+(async () => {
+
+  const loggedIn =
+    await checkLogin();
+
+  if (loggedIn) {
+
+    loadArticles();
+
+  }
+
+})();
+
 </script>
 
 </body>
