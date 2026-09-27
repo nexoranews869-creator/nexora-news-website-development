@@ -339,10 +339,11 @@
 
   <script>
 
-    const SUPABASE_URL = "https://qoatsnixuyzivnmmdiks.supabase.co";
+    const SUPABASE_URL =
+      "https://qoatsnixuyzivnmmdiks.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_pp6ExdLYJ_tGHXJnuOVxUw_kLkOMZya";
+      "sb_publishable_pp6ExdLYJ_tGHXJnuOVxVUw_kLk0MZya";
 
     const db = window.supabase.createClient(
       SUPABASE_URL,
@@ -354,21 +355,28 @@
 
       const loading = document.getElementById("loading");
 
-      const { data, error } = await db
-        .from("articles")
-        .select("*")
-        .eq("status", "published")
-        .order("published_at", { ascending: false });
+      try {
+        const result = await Promise.race([
+          db
+            .from("articles")
+            .select("*")
+            .eq("status", "published")
+            .order("published_at", { ascending: false }),
+          new Promise((_, reject) =>
+            setTimeout(
+              () => reject(new Error("Database connection timed out.")),
+              10000
+            )
+          )
+        ]);
 
-      if (error) {
+        const { data, error } = result;
 
-        loading.innerHTML =
-          "loading.innerHTML = "ERROR: " + error.message;
-
-        console.error(error);
-
-        return;
-      }
+        if (error) {
+          loading.innerHTML = "ERROR: " + error.message;
+          console.error(error);
+          return;
+        }
 
       loading.style.display = "none";
 
@@ -462,6 +470,11 @@
         ["Business", "Technology", "Tech", "Technology & AI"],
         "businessNews"
       );
+
+      } catch (error) {
+        loading.innerHTML = "ERROR: " + error.message;
+        console.error(error);
+      }
 
     }
 
