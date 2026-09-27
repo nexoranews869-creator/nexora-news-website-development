@@ -363,7 +363,10 @@
 
       if (error) {
 
-        loading.innerHTML = "Database error: " + error.message;
+        loading.innerHTML =
+          "Unable to load news from the database.";
+
+        console.error(error);
 
         return;
       }
@@ -538,4 +541,4 @@
   </script>
 
 </body>
-</html>￼Enter
+</html>
