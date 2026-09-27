@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexora News — Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .logout {
+      background: #dc2626;
+      color: white;
+      border: 0;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 18px 0 7px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .publish {
+      margin-top: 22px;
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 7px;
+      background: #b91c1c;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .publish:disabled {
+      opacity: .6;
+    }
+
+    #message {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 7px;
+      display: none;
+    }
+
+    .success {
+      display: block !important;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      display: block !important;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>NEXORA NEWS — Admin</h1>
+  <button class="logout" id="logoutBtn">Logout</button>
+</header>
+
+<main>
+  <div class="card">
+
+    <h2>Publish New Article</h2>
+
+    <form id="articleForm">
+
+      <label>Headline</label>
+      <input
+        type="text"
+        id="title"
+        placeholder="Enter article headline"
+        required
+      >
+
+      <label>Category</label>
+      <select id="category" required>
+        <option value="">Select category</option>
+        <option value="London">London</option>
+        <option value="UK">UK</option>
+        <option value="World">World</option>
+        <option value="Business">Business</option>
+        <option value="Technology">Technology</option>
+        <option value="Sports">Sports</option>
+        <option value="Video">Video</option>
+      </select>
+
+      <label>Short Description</label>
+      <textarea
+        id="excerpt"
+        placeholder="Write a short description..."
+        required
+      ></textarea>
+
+      <label>Article Image URL</label>
+      <input
+        type="url"
+        id="image_url"
+        placeholder="https://example.com/image.jpg"
+      >
+
+      <label>Article Body</label>
+      <textarea
+        id="body"
+        placeholder="Write the full article..."
+        required
+      ></textarea>
+
+      <label>Author</label>
+      <input
+        type="text"
+        id="author"
+        value="Marian"
+        required
+      >
+
+      <button class="publish" id="publishBtn" type="submit">
+        Publish Article
+      </button>
+
+      <div id="message"></div>
+
+    </form>
+  </div>
+</main>
+
+<script>
+  const SUPABASE_URL =
+    "https://qleoqpmxvmqcythacszw.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const message = document.getElementById("message");
+  const form = document.getElementById("articleForm");
+  const publishBtn = document.getElementById("publishBtn");
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = type;
+  }
+
+  async function checkLogin() {
+    const { data, error } = await db.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.href = "/login.html";
+      return;
+    }
+  }
+
+  checkLogin();
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await db.auth.signOut();
+    window.location.href = "/login.html";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    publishBtn.disabled = true;
+    publishBtn.textContent = "Publishing...";
+
+    const title = document.getElementById("title").value.trim();
+    const category = document.getElementById("category").value;
+    const excerpt = document.getElementById("excerpt").value.trim();
+    const image_url = document.getElementById("image_url").value.trim();
+    const body = document.getElementById("body").value.trim();
+    const author = document.getElementById("author").value.trim();
+
+    const slug =
+      title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") +
+      "-" +
+      Date.now();
+
+    const { data: sessionData } = await db.auth.getSession();
+
+    if (!sessionData.session) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    const { error } = await db
+      .from("articles")
+      .insert({
+        title,
+        slug,
+        excerpt,
+        body,
+        category,
+        author,
+        image_url: image_url || null,
+        status: "published",
+        published_at: new Date().toISOString()
+      });
+
+    if (error) {
+      showMessage("ERROR: " + error.message, "error");
+    } else {
+      showMessage(
+        "Article published successfully!",
+        "success"
+      );
+
+      form.reset();
+      document.getElementById("author").value = "Marian";
+    }
+
+    publishBtn.disabled = false;
+    publishBtn.textContent = "Publish Article";
+  });
+</script>
+
+</body>
+</html>
