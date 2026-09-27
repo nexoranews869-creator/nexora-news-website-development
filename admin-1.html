@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexora News Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f4f4;color:#111}
+header{background:#111;color:#fff;padding:20px;border-top:5px solid #e31b23}header h1{margin:0}
+.container{max-width:900px;margin:30px auto;padding:20px}.card{background:#fff;padding:25px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+label{display:block;font-weight:bold;margin-top:18px;margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px;border:1px solid #ccc;border-radius:6px;font-size:16px}textarea{min-height:220px;resize:vertical}
+button{margin-top:20px;padding:14px 25px;border:0;border-radius:6px;background:#e31b23;color:#fff;font-size:17px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6}#message{margin-top:20px;font-weight:bold}.back{display:inline-block;margin-top:20px;color:#e31b23;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body>
+<header><h1>NEXORA NEWS — ADMIN</h1></header>
+<div class="container"><div class="card">
+<h2>Publish New Article</h2>
+<label>Headline</label><input id="title" type="text" placeholder="Enter news headline">
+<label>Category</label>
+<select id="category"><option>London</option><option>UK</option><option>World</option><option>Business</option><option>Technology</option><option>Sports</option><option>Video</option></select>
+<label>Short Description</label><textarea id="excerpt" style="min-height:100px" placeholder="Write a short description"></textarea>
+<label>Article Image URL</label><input id="image_url" type="text" placeholder="Paste image URL">
+<label>Article</label><textarea id="body" placeholder="Write the full news article here..."></textarea>
+<label>Author</label><input id="author" type="text" value="Marian">
+<button id="publishBtn" onclick="publishArticle()">Publish Article</button>
+<div id="message"></div><a class="back" href="index.html">← Back to Nexora News</a>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://qleoqpmxvmqcythacszw.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+async function publishArticle(){
+const button=document.getElementById("publishBtn"),message=document.getElementById("message");
+const title=document.getElementById("title").value.trim(),category=document.getElementById("category").value;
+const excerpt=document.getElementById("excerpt").value.trim(),image_url=document.getElementById("image_url").value.trim();
+const body=document.getElementById("body").value.trim(),author=document.getElementById("author").value.trim();
+if(!title||!body){message.style.color="red";message.textContent="Please enter the headline and article.";return;}
+button.disabled=true;button.textContent="Publishing...";
+const slug=title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+Date.now();
+try{
+const {error}=await db.from("articles").insert([{title,slug,excerpt,body,category,author:author||"Marian",image_url,status:"published",published_at:new Date().toISOString()}]);
+if(error)throw error;
+message.style.color="green";message.textContent="Article published successfully!";
+document.getElementById("title").value="";document.getElementById("excerpt").value="";document.getElementById("image_url").value="";document.getElementById("body").value="";
+}catch(error){message.style.color="red";message.textContent="ERROR: "+error.message;}
+finally{button.disabled=false;button.textContent="Publish Article";}
+}
+</script>
+</body>
+</html>
