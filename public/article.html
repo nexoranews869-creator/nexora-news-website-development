@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nexora News — Article</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#fff;
+color:#111827;
+}
+
+header{
+background:#111827;
+color:white;
+padding:18px 22px;
+}
+
+.header-inner{
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.back{
+color:white;
+text-decoration:none;
+font-size:14px;
+}
+
+main{
+max-width:900px;
+margin:35px auto;
+padding:0 18px;
+}
+
+.category{
+color:#b91c1c;
+font-size:14px;
+font-weight:bold;
+text-transform:uppercase;
+margin-bottom:12px;
+}
+
+h1{
+font-size:44px;
+line-height:1.1;
+margin:0 0 15px;
+}
+
+.meta{
+color:#6b7280;
+font-size:14px;
+margin-bottom:25px;
+}
+
+.hero{
+width:100%;
+max-height:520px;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:30px;
+}
+
+.article-body{
+font-size:19px;
+line-height:1.75;
+white-space:pre-wrap;
+}
+
+.loading,
+.error{
+padding:30px;
+text-align:center;
+}
+
+.error{
+color:#b91c1c;
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:31px;
+}
+
+.article-body{
+font-size:17px;
+}
+
+.logo{
+font-size:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+<div class="logo">
+NEXORA NEWS
+</div>
+
+<a class="back" href="/">
+← Back to Home
+</a>
+
+</div>
+
+</header>
+
+
+<main id="article">
+
+<div class="loading">
+Loading article...
+</div>
+
+</main>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://qleoqpmxvmqcythacszw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+function escapeHtml(value){
+
+return String(value || "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function getSlug(){
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+return params.get("slug");
+
+}
+
+
+async function loadArticle(){
+
+const slug = getSlug();
+
+const container =
+document.getElementById("article");
+
+
+if(!slug){
+
+container.innerHTML = `
+<div class="error">
+Article not found.
+</div>
+`;
+
+return;
+
+}
+
+
+const {data,error} =
+await db
+.from("articles")
+.select("*")
+.eq("slug",slug)
+.eq("status","published")
+.single();
+
+
+if(error || !data){
+
+container.innerHTML = `
+<div class="error">
+Article not found.
+</div>
+`;
+
+return;
+
+}
+
+
+const date =
+data.published_at
+? new Date(data.published_at)
+.toLocaleDateString(
+"en-GB",
+{
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+)
+: "";
+
+
+const image =
+data.image_url
+? `
+<img
+class="hero"
+src="${escapeHtml(data.image_url)}"
+alt="${escapeHtml(data.title)}"
+>
+`
+: "";
+
+
+container.innerHTML = `
+
+<div class="category">
+${escapeHtml(data.category)}
+</div>
+
+<h1>
+${escapeHtml(data.title)}
+</h1>
+
+<div class="meta">
+By ${escapeHtml(data.author || "Marian")}
+${date ? " · " + date : ""}
+</div>
+
+${image}
+
+<div class="article-body">
+${escapeHtml(data.body)}
+</div>
+
+`;
+
+}
+
+
+loadArticle();
+
+</script>
+
+</body>
+</html>
