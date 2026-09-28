@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Nexora News | UK, London & World News</title>
 
-<meta name="description" content="Nexora News brings you the latest UK, London, world, business, technology and sports news, plus educational content.">
-
+<meta name="description" content="Nexora News brings you the latest UK, London, world, business, technology and sports news.">
 <meta name="keywords" content="Nexora News, UK news, London news, world news, business news, technology news, sports news">
-
 <meta name="author" content="Nexora News">
 
 <meta name="google-site-verification" content="OMFTYBR8QStqpnQomIKYdrOvO9WXN-hlruMT73o4NUE">
@@ -32,15 +28,23 @@
 
 <style>
 
+/* =========================
+   RESET
+========================= */
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:#f6f6f6;
+  background:#f3f4f6;
   color:#171717;
 }
 
@@ -49,10 +53,20 @@ a{
   color:inherit;
 }
 
+
+/* =========================
+   TOP BAR
+========================= */
+
 .topbar{
   height:6px;
   background:#b00020;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   background:#fff;
@@ -72,7 +86,7 @@ header{
 .logo{
   font-size:34px;
   font-weight:900;
-  letter-spacing:-1.5px;
+  letter-spacing:-1.8px;
 }
 
 .logo span{
@@ -80,8 +94,22 @@ header{
 }
 
 .search-link{
-  font-weight:700;
+  font-size:14px;
+  font-weight:800;
+  padding:9px 13px;
+  border:1px solid #ddd;
+  background:#fff;
 }
+
+.search-link:hover{
+  background:#111;
+  color:#fff;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 nav{
   background:#111;
@@ -92,13 +120,18 @@ nav{
   max-width:1250px;
   margin:auto;
   display:flex;
-  overflow:auto;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.nav-inner::-webkit-scrollbar{
+  display:none;
 }
 
 nav a{
   padding:14px 15px;
-  font-size:14px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:800;
   white-space:nowrap;
 }
 
@@ -123,18 +156,20 @@ nav a:hover{
   margin:auto;
   display:flex;
   align-items:center;
-  min-height:42px;
+  min-height:44px;
   overflow:hidden;
 }
 
 .breaking-label{
-  font-weight:900;
   background:#111;
-  padding:12px 15px;
+  color:#fff;
+  font-weight:900;
+  padding:13px 16px;
   white-space:nowrap;
   flex-shrink:0;
   position:relative;
   z-index:5;
+  font-size:12px;
 }
 
 .ticker{
@@ -142,7 +177,7 @@ nav a:hover{
   min-width:0;
   overflow:hidden;
   position:relative;
-  padding:12px 0;
+  padding:13px 0;
   white-space:nowrap;
 }
 
@@ -167,40 +202,45 @@ nav a:hover{
 
 
 /* =========================
-   MAIN
+   CONTAINER
 ========================= */
 
 .container{
   max-width:1250px;
   margin:auto;
-  padding:25px 18px;
+  padding:28px 18px;
 }
+
+
+/* =========================
+   TOP STORY
+========================= */
 
 .hero{
   display:grid;
-  grid-template-columns:2fr 1fr;
+  grid-template-columns:minmax(0,2fr) minmax(320px,1fr);
   gap:22px;
-  margin-bottom:30px;
-}
-
-.hero-main,
-.side-card,
-.card,
-.featured-card{
-  background:#fff;
-  border:1px solid #ddd;
+  margin-bottom:34px;
 }
 
 .hero-main{
   position:relative;
   overflow:hidden;
+  background:#111;
+  min-height:450px;
+  border:1px solid #ddd;
 }
 
 .hero-main img{
   width:100%;
-  height:420px;
+  height:450px;
   object-fit:cover;
   display:block;
+  transition:transform .4s ease;
+}
+
+.hero-main:hover img{
+  transform:scale(1.03);
 }
 
 .hero-overlay{
@@ -208,11 +248,11 @@ nav a:hover{
   left:0;
   right:0;
   bottom:0;
-  padding:25px;
+  padding:30px;
   color:#fff;
   background:linear-gradient(
     transparent,
-    rgba(0,0,0,.88)
+    rgba(0,0,0,.94)
   );
 }
 
@@ -220,17 +260,32 @@ nav a:hover{
   display:inline-block;
   background:#b00020;
   color:#fff;
-  padding:6px 9px;
-  font-size:12px;
+  padding:7px 10px;
+  font-size:11px;
   font-weight:900;
-  margin-bottom:10px;
+  margin-bottom:12px;
+  letter-spacing:.5px;
 }
 
 .hero-title{
-  font-size:36px;
+  font-size:39px;
   line-height:1.08;
   font-weight:900;
+  max-width:850px;
 }
+
+.hero-excerpt{
+  margin-top:12px;
+  line-height:1.45;
+  color:#eee;
+  font-size:15px;
+  max-width:850px;
+}
+
+
+/* =========================
+   SIDE STORIES
+========================= */
 
 .side{
   display:grid;
@@ -239,56 +294,137 @@ nav a:hover{
 
 .side-card{
   display:grid;
-  grid-template-columns:130px 1fr;
-  min-height:125px;
+  grid-template-columns:135px 1fr;
+  min-height:140px;
   overflow:hidden;
+  background:#fff;
+  border:1px solid #ddd;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+
+.side-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
 }
 
 .side-card img{
-  width:130px;
-  height:125px;
+  width:135px;
+  height:140px;
   object-fit:cover;
 }
 
 .side-content{
-  padding:12px;
+  padding:14px;
 }
 
 .category{
   color:#b00020;
-  font-size:12px;
+  font-size:11px;
   font-weight:900;
   text-transform:uppercase;
+  letter-spacing:.4px;
   margin-bottom:7px;
 }
 
 .side-title{
   font-size:18px;
   font-weight:800;
-  line-height:1.2;
+  line-height:1.22;
 }
 
+
+/* =========================
+   BREAKING BADGE
+========================= */
+
+.breaking-badge{
+  display:inline-block;
+  background:#b00020;
+  color:#fff;
+  padding:5px 8px;
+  font-size:10px;
+  font-weight:900;
+  margin-bottom:8px;
+  letter-spacing:.3px;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
 .section{
-  margin:35px 0;
+  margin:38px 0;
 }
 
 .section-head{
   display:flex;
   justify-content:space-between;
-  align-items:center;
+  align-items:end;
   border-bottom:4px solid #111;
-  margin-bottom:15px;
+  margin-bottom:17px;
 }
 
 .section-head h2{
   font-size:25px;
   padding-bottom:8px;
+  font-weight:900;
 }
 
 .viewall{
-  font-size:13px;
+  font-size:12px;
+  font-weight:900;
+  padding-bottom:10px;
+}
+
+.viewall:hover{
+  color:#b00020;
+}
+
+
+/* =========================
+   FEATURED NEWS
+========================= */
+
+.featured{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.featured-card{
+  background:#fff;
+  border:1px solid #ddd;
+  overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+
+.featured-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 7px 22px rgba(0,0,0,.1);
+}
+
+.featured-card img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  display:block;
+}
+
+.featured-body{
+  padding:13px;
+}
+
+.featured-card h3{
+  font-size:17px;
+  line-height:1.25;
   font-weight:800;
 }
+
+
+/* =========================
+   NEWS GRID
+========================= */
 
 .grid{
   display:grid;
@@ -297,24 +433,33 @@ nav a:hover{
 }
 
 .card{
+  background:#fff;
+  border:1px solid #ddd;
   overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 7px 22px rgba(0,0,0,.1);
 }
 
 .card img{
   width:100%;
-  height:190px;
+  height:200px;
   object-fit:cover;
   display:block;
 }
 
 .card-body{
-  padding:15px;
+  padding:16px;
 }
 
 .card h3{
   font-size:20px;
   line-height:1.2;
-  margin:7px 0;
+  margin:7px 0 8px;
+  font-weight:900;
 }
 
 .excerpt{
@@ -324,62 +469,44 @@ nav a:hover{
 }
 
 .meta{
-  font-size:12px;
+  font-size:11px;
   color:#777;
-  margin-top:12px;
+  margin-top:13px;
 }
 
-.featured{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-}
 
-.featured-card{
-  padding:12px;
-}
-
-.featured-card img{
-  width:100%;
-  height:130px;
-  object-fit:cover;
-  margin-bottom:9px;
-}
-
-.featured-card h3{
-  font-size:16px;
-  line-height:1.25;
-}
+/* =========================
+   EMPTY
+========================= */
 
 .empty{
   background:#fff;
   border:1px solid #ddd;
-  padding:25px;
+  padding:35px 20px;
   text-align:center;
   color:#666;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
+
 footer{
   background:#111;
   color:#fff;
-  margin-top:50px;
+  margin-top:55px;
 }
 
 .footer-inner{
   max-width:1250px;
   margin:auto;
-  padding:35px 18px;
+  padding:40px 18px;
   text-align:center;
 }
 
-.breaking-badge{
-  display:inline-block;
-  background:#b00020;
-  color:#fff;
-  padding:5px 8px;
-  font-size:11px;
-  font-weight:900;
-  margin-bottom:8px;
+.footer-inner strong{
+  font-size:20px;
 }
 
 
@@ -387,14 +514,14 @@ footer{
    TABLET
 ========================= */
 
-@media(max-width:900px){
+@media(max-width:1000px){
 
   .hero{
     grid-template-columns:1fr;
   }
 
-  .hero-main img{
-    height:330px;
+  .side{
+    grid-template-columns:repeat(2,1fr);
   }
 
   .grid{
@@ -422,25 +549,67 @@ footer{
     font-size:27px;
   }
 
+  .search-link{
+    font-size:12px;
+    padding:8px 10px;
+  }
+
   nav a{
     padding:12px 11px;
-    font-size:12px;
+    font-size:11px;
   }
 
   .container{
     padding:18px 12px;
   }
 
+  .breaking-label{
+    padding:12px 10px;
+    font-size:10px;
+  }
+
+  .ticker{
+    padding:12px 0;
+    font-size:12px;
+  }
+
+  .ticker span{
+    animation-duration:16s;
+  }
+
+  .hero{
+    display:block;
+  }
+
+  .hero-main{
+    min-height:300px;
+  }
+
   .hero-main img{
-    height:260px;
+    height:300px;
+  }
+
+  .hero-overlay{
+    padding:20px;
   }
 
   .hero-title{
     font-size:27px;
   }
 
+  .hero-excerpt{
+    font-size:13px;
+  }
+
+  .side{
+    display:grid;
+    grid-template-columns:1fr;
+    margin-top:15px;
+  }
+
   .side-card{
     grid-template-columns:105px 1fr;
+    min-height:110px;
   }
 
   .side-card img{
@@ -452,13 +621,25 @@ footer{
     font-size:16px;
   }
 
+  .section{
+    margin:30px 0;
+  }
+
+  .section-head h2{
+    font-size:21px;
+  }
+
   .grid,
   .featured{
     grid-template-columns:1fr;
   }
 
-  .card img{
+  .featured-card img{
     height:210px;
+  }
+
+  .card img{
+    height:220px;
   }
 
 }
@@ -468,20 +649,22 @@ footer{
    SMALL PHONE
 ========================= */
 
-@media(max-width:500px){
+@media(max-width:400px){
 
-  .breaking-label{
-    padding:11px 10px;
+  .logo{
+    font-size:23px;
+  }
+
+  .search-link{
     font-size:11px;
   }
 
-  .ticker{
-    padding:11px 0;
-    font-size:12px;
+  .hero-title{
+    font-size:24px;
   }
 
-  .ticker span{
-    animation-duration:16s;
+  .breaking-label{
+    font-size:9px;
   }
 
 }
@@ -585,7 +768,9 @@ footer{
 
   <div class="footer-inner">
 
-    <strong>NEXORA NEWS</strong>
+    <strong>
+      NEXORA NEWS
+    </strong>
 
     <p style="margin-top:8px;color:#bbb">
       UK, London & World News
@@ -664,7 +849,7 @@ function articleUrl(article){
 
 
 /* =========================
-   IMAGE
+   IMAGE FALLBACK
 ========================= */
 
 function imageOrFallback(url){
@@ -676,15 +861,17 @@ function imageOrFallback(url){
 
 
 /* =========================
-   CARD
+   NEWS CARD
 ========================= */
 
 function card(a){
 
   return `
 
-    <a class="card"
-       href="${articleUrl(a)}">
+    <a
+      class="card"
+      href="${articleUrl(a)}"
+    >
 
       <img
         src="${esc(imageOrFallback(a.image_url))}"
@@ -741,8 +928,10 @@ function sideCard(a){
 
   return `
 
-    <a class="side-card"
-       href="${articleUrl(a)}">
+    <a
+      class="side-card"
+      href="${articleUrl(a)}"
+    >
 
       <img
         src="${esc(imageOrFallback(a.image_url))}"
@@ -852,7 +1041,9 @@ async function loadNews(){
 
   if(error){
 
-    document.getElementById("app").innerHTML = `
+    document.getElementById(
+      "app"
+    ).innerHTML = `
 
       <div class="empty">
 
@@ -879,7 +1070,9 @@ async function loadNews(){
 
   if(!articles.length){
 
-    document.getElementById("app").innerHTML = `
+    document.getElementById(
+      "app"
+    ).innerHTML = `
 
       <div class="empty">
         No published news yet.
@@ -954,7 +1147,7 @@ async function loadNews(){
         a =>
           String(a.category || "")
             .toLowerCase()
-            ===
+          ===
           selectedCategory.toLowerCase()
       );
 
@@ -1030,7 +1223,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "london"
@@ -1042,7 +1235,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "uk"
@@ -1054,7 +1247,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "world"
@@ -1066,7 +1259,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "business"
@@ -1078,7 +1271,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "technology"
@@ -1090,7 +1283,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "sports"
@@ -1102,7 +1295,7 @@ async function loadNews(){
     articles
       .filter(
         a =>
-          String(a.category)
+          String(a.category || "")
             .toLowerCase()
           ===
           "video"
@@ -1155,12 +1348,7 @@ async function loadNews(){
             ${esc(hero.title)}
           </div>
 
-          <p
-            style="
-              margin-top:10px;
-              line-height:1.4
-            "
-          >
+          <p class="hero-excerpt">
             ${esc(hero.excerpt || "")}
           </p>
 
@@ -1180,7 +1368,7 @@ async function loadNews(){
     </section>
 
 
-    <!-- FEATURED -->
+    <!-- FEATURED NEWS -->
 
     <section class="section">
 
@@ -1215,13 +1403,17 @@ async function loadNews(){
                     loading="lazy"
                   >
 
-                  <div class="category">
-                    ${esc(a.category)}
-                  </div>
+                  <div class="featured-body">
 
-                  <h3>
-                    ${esc(a.title)}
-                  </h3>
+                    <div class="category">
+                      ${esc(a.category)}
+                    </div>
+
+                    <h3>
+                      ${esc(a.title)}
+                    </h3>
+
+                  </div>
 
                 </a>
 
