@@ -29,7 +29,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
@@ -155,6 +158,13 @@ margin-bottom:35px;
 .hero{
 border-bottom:1px solid #ddd;
 padding-bottom:20px;
+display:block;
+}
+
+.hero-image-wrap{
+position:relative;
+overflow:hidden;
+background:#eee;
 }
 
 .hero-img{
@@ -163,7 +173,24 @@ height:390px;
 object-fit:cover;
 display:block;
 background:#eee;
-margin-bottom:14px;
+margin-bottom:0;
+transition:transform .3s ease;
+}
+
+.hero-label{
+position:absolute;
+left:0;
+bottom:0;
+background:#d71920;
+color:#fff;
+font-size:13px;
+font-weight:900;
+padding:8px 12px;
+letter-spacing:.5px;
+}
+
+.hero:hover .hero-img{
+transform:scale(1.02);
 }
 
 .category{
@@ -362,7 +389,9 @@ padding:12px 13px;
 .category-heading{
 font-size:28px;
 }
+
 }
+
 </style>
 </head>
 
@@ -517,7 +546,6 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
-
 function esc(value){
 
 return String(value ?? "").replace(
@@ -537,14 +565,12 @@ return {
 
 }
 
-
 function articleUrl(article){
 
 return "article.html?slug=" +
 encodeURIComponent(article.slug || "");
 
 }
-
 
 function imageHtml(url,className){
 
@@ -563,7 +589,6 @@ alt=""
 return `<div class="${className}"></div>`;
 
 }
-
 
 /* BREAKING NEWS */
 
@@ -592,7 +617,6 @@ article.title;
 breaking.style.display="block";
 
 }
-
 
 /* CARD */
 
@@ -629,7 +653,6 @@ By ${esc(article.author || "Marian")}
 
 }
 
-
 /* SIDE STORY */
 
 function sideStory(article){
@@ -665,8 +688,7 @@ By ${esc(article.author || "Marian")}
 
 }
 
-
-/* HERO */
+/* HERO / TOP STORY */
 
 function heroStory(article){
 
@@ -677,7 +699,15 @@ class="hero"
 href="${articleUrl(article)}"
 >
 
+<div class="hero-image-wrap">
+
 ${imageHtml(article.image_url,"hero-img")}
+
+<div class="hero-label">
+TOP STORY
+</div>
+
+</div>
 
 <div class="category">
 ${esc(article.category)}
@@ -701,7 +731,6 @@ By ${esc(article.author || "Marian")}
 
 }
 
-
 /* SECTION */
 
 function renderSection(id,articles){
@@ -720,7 +749,6 @@ articles.length
 : '<div class="empty">No stories available.</div>';
 
 }
-
 
 /* CATEGORY PAGE */
 
@@ -758,7 +786,6 @@ return;
 
 }
 
-
 categoryPage.innerHTML = `
 
 <section>
@@ -781,7 +808,6 @@ ${categoryArticles
 
 }
 
-
 /* LOAD NEWS */
 
 async function loadNews(){
@@ -789,12 +815,9 @@ async function loadNews(){
 const status =
 document.getElementById("status");
 
-
 const {data,error} =
 await db
-
 .from("articles")
-
 .select(`
 id,
 title,
@@ -809,14 +832,11 @@ published_at,
 created_at,
 is_breaking
 `)
-
 .eq("status","published")
-
 .order(
 "published_at",
 {ascending:false}
 );
-
 
 if(error){
 
@@ -829,7 +849,6 @@ return;
 
 }
 
-
 if(!data || data.length===0){
 
 status.className="empty";
@@ -841,9 +860,7 @@ return;
 
 }
 
-
 const articles=data;
-
 
 /* BREAKING */
 
@@ -855,7 +872,6 @@ article.is_breaking === true
 
 renderBreaking(breakingArticle);
 
-
 /* CHECK CATEGORY */
 
 const params =
@@ -865,7 +881,6 @@ window.location.search
 
 const selectedCategory =
 params.get("category");
-
 
 if(selectedCategory){
 
@@ -884,15 +899,13 @@ document.getElementById(
 "categoryPage"
 ).innerHTML="";
 
-
-/* HERO */
+/* HERO / TOP STORY */
 
 document.getElementById("hero")
 .innerHTML =
 heroStory(articles[0]);
 
-
-/* SIDE */
+/* SIDE STORIES */
 
 document.getElementById("side")
 .innerHTML =
@@ -901,14 +914,12 @@ articles
 .map(sideStory)
 .join("");
 
-
 /* LATEST */
 
 renderSection(
 "latest",
 articles.slice(0,6)
 );
-
 
 /* LONDON */
 
@@ -922,7 +933,6 @@ a =>
 )
 );
 
-
 /* WORLD */
 
 renderSection(
@@ -934,7 +944,6 @@ a =>
 ==="world"
 )
 );
-
 
 /* TECHNOLOGY */
 
@@ -950,14 +959,12 @@ a =>
 
 }
 
-
 status.style.display="none";
 
 document.getElementById("content")
 .style.display="block";
 
 }
-
 
 loadNews();
 
