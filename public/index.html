@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nexora News</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+color:#111;
+background:#fff;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.top{
+height:6px;
+background:#d71920;
+}
+
+header{
+border-bottom:1px solid #ddd;
+background:#fff;
+}
+
+.head{
+max-width:1200px;
+margin:auto;
+padding:18px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.logo{
+font-size:30px;
+font-weight:900;
+letter-spacing:-1px;
+}
+
+.logo span{
+color:#d71920;
+}
+
+nav{
+border-top:1px solid #eee;
+}
+
+.nav{
+max-width:1200px;
+margin:auto;
+display:flex;
+overflow-x:auto;
+white-space:nowrap;
+}
+
+.nav a{
+padding:13px 16px;
+font-size:14px;
+font-weight:700;
+}
+
+.nav a:hover{
+background:#f2f2f2;
+}
+
+.breaking{
+background:#111;
+color:#fff;
+}
+
+.breaking-inner{
+max-width:1200px;
+margin:auto;
+padding:10px 20px;
+font-size:14px;
+font-weight:700;
+}
+
+.breaking b{
+background:#d71920;
+padding:5px 8px;
+margin-right:10px;
+}
+
+main{
+max-width:1200px;
+margin:auto;
+padding:24px 20px;
+}
+
+.hero-grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:24px;
+margin-bottom:35px;
+}
+
+.hero{
+border-bottom:1px solid #ddd;
+padding-bottom:20px;
+}
+
+.hero-img{
+width:100%;
+height:390px;
+object-fit:cover;
+display:block;
+background:#eee;
+margin-bottom:14px;
+}
+
+.category{
+color:#d71920;
+font-size:13px;
+font-weight:800;
+text-transform:uppercase;
+margin:7px 0;
+}
+
+h1{
+font-size:38px;
+line-height:1.08;
+margin:6px 0 10px;
+}
+
+.excerpt{
+font-size:17px;
+line-height:1.5;
+color:#444;
+}
+
+.side{
+display:grid;
+gap:18px;
+}
+
+.story{
+display:grid;
+grid-template-columns:150px 1fr;
+gap:14px;
+border-bottom:1px solid #ddd;
+padding-bottom:17px;
+}
+
+.story-img{
+width:100%;
+height:100px;
+object-fit:cover;
+background:#eee;
+}
+
+.story h2{
+font-size:20px;
+line-height:1.15;
+margin:5px 0;
+}
+
+.meta{
+font-size:12px;
+color:#666;
+margin-top:8px;
+}
+
+section{
+margin:35px 0;
+}
+
+.section-title{
+font-size:24px;
+border-top:4px solid #111;
+padding-top:10px;
+margin-bottom:18px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:22px;
+}
+
+.card{
+border-bottom:1px solid #ddd;
+padding-bottom:16px;
+}
+
+.card-img{
+width:100%;
+height:180px;
+object-fit:cover;
+background:#eee;
+margin-bottom:10px;
+}
+
+.card h3{
+font-size:20px;
+line-height:1.2;
+margin:5px 0;
+}
+
+.loading,
+.empty,
+.error{
+padding:30px;
+text-align:center;
+color:#666;
+}
+
+footer{
+background:#111;
+color:#fff;
+margin-top:50px;
+}
+
+.footer-inner{
+max-width:1200px;
+margin:auto;
+padding:35px 20px;
+}
+
+.footer-logo{
+font-size:26px;
+font-weight:900;
+margin-bottom:10px;
+}
+
+.footer-logo span{
+color:#d71920;
+}
+
+.footer-inner p{
+color:#bbb;
+}
+
+@media(max-width:800px){
+
+.hero-grid{
+grid-template-columns:1fr;
+}
+
+h1{
+font-size:30px;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.hero-img{
+height:250px;
+}
+
+.head{
+padding:15px;
+}
+
+main{
+padding:18px 15px;
+}
+
+}
+
+@media(max-width:520px){
+
+.story{
+grid-template-columns:110px 1fr;
+}
+
+.story-img{
+height:80px;
+}
+
+.story h2{
+font-size:17px;
+}
+
+.card-img{
+height:210px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="top"></div>
+
+<header>
+
+<div class="head">
+
+<a href="/" class="logo">
+NEXORA <span>NEWS</span>
+</a>
+
+</div>
+
+<nav>
+
+<div class="nav">
+
+<a href="/">HOME</a>
+<a href="?category=UK">UK</a>
+<a href="?category=London">LONDON</a>
+<a href="?category=World">WORLD</a>
+<a href="?category=Business">BUSINESS</a>
+<a href="?category=Technology">TECHNOLOGY</a>
+<a href="?category=Sports">SPORTS</a>
+<a href="?category=Video">VIDEO</a>
+
+</div>
+
+</nav>
+
+</header>
+
+<div class="breaking">
+
+<div class="breaking-inner">
+
+<b>BREAKING</b>
+Latest news and updates from Nexora News
+
+</div>
+
+</div>
+
+<main>
+
+<div id="status" class="loading">
+Loading latest news...
+</div>
+
+<div id="content" style="display:none">
+
+<div class="hero-grid">
+
+<div id="hero"></div>
+
+<div id="side"></div>
+
+</div>
+
+
+<section>
+
+<h2 class="section-title">
+Latest News
+</h2>
+
+<div id="latest" class="cards"></div>
+
+</section>
+
+
+<section>
+
+<h2 class="section-title">
+London
+</h2>
+
+<div id="london" class="cards"></div>
+
+</section>
+
+
+<section>
+
+<h2 class="section-title">
+World
+</h2>
+
+<div id="world" class="cards"></div>
+
+</section>
+
+
+<section>
+
+<h2 class="section-title">
+Technology
+</h2>
+
+<div id="technology" class="cards"></div>
+
+</section>
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div class="footer-inner">
+
+<div class="footer-logo">
+NEXORA <span>NEWS</span>
+</div>
+
+<p>
+Independent news, information and educational content.
+</p>
+
+<p>
+© 2026 Nexora News. All rights reserved.
+</p>
+
+</div>
+
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://qleoqpmxvmqcythacszw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+function esc(value){
+
+return String(value ?? "").replace(
+/[&<>"']/g,
+
+function(c){
+
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[c];
+
+});
+
+}
+
+
+function articleUrl(article){
+
+return "article.html?slug=" +
+encodeURIComponent(article.slug || "");
+
+}
+
+
+function imageHtml(url,className){
+
+if(url){
+
+return `
+<img
+class="${className}"
+src="${esc(url)}"
+alt=""
+>
+`;
+
+}
+
+return `<div class="${className}"></div>`;
+
+}
+
+
+function card(article){
+
+return `
+
+<a
+class="card"
+href="${articleUrl(article)}"
+>
+
+${imageHtml(article.image_url,"card-img")}
+
+<div class="category">
+${esc(article.category)}
+</div>
+
+<h3>
+${esc(article.title)}
+</h3>
+
+<div class="excerpt">
+${esc(article.excerpt || "")}
+</div>
+
+<div class="meta">
+By ${esc(article.author || "Marian")}
+</div>
+
+</a>
+
+`;
+
+}
+
+
+function sideStory(article){
+
+return `
+
+<a
+class="story"
+href="${articleUrl(article)}"
+>
+
+${imageHtml(article.image_url,"story-img")}
+
+<div>
+
+<div class="category">
+${esc(article.category)}
+</div>
+
+<h2>
+${esc(article.title)}
+</h2>
+
+<div class="meta">
+By ${esc(article.author || "Marian")}
+</div>
+
+</div>
+
+</a>
+
+`;
+
+}
+
+
+function heroStory(article){
+
+return `
+
+<a
+class="hero"
+href="${articleUrl(article)}"
+>
+
+${imageHtml(article.image_url,"hero-img")}
+
+<div class="category">
+${esc(article.category)}
+</div>
+
+<h1>
+${esc(article.title)}
+</h1>
+
+<div class="excerpt">
+${esc(article.excerpt || "")}
+</div>
+
+<div class="meta">
+By ${esc(article.author || "Marian")}
+</div>
+
+</a>
+
+`;
+
+}
+
+
+function renderSection(id,articles){
+
+const el =
+document.getElementById(id);
+
+el.innerHTML =
+articles.length
+
+? articles
+.slice(0,6)
+.map(card)
+.join("")
+
+: '<div class="empty">No stories available.</div>';
+
+}
+
+
+async function loadNews(){
+
+const status =
+document.getElementById("status");
+
+
+const {data,error} =
+await db
+
+.from("articles")
+
+.select(`
+id,
+title,
+slug,
+excerpt,
+body,
+category,
+author,
+image_url,
+status,
+published_at,
+created_at
+`)
+
+.eq("status","published")
+
+.order(
+"published_at",
+{ascending:false}
+);
+
+
+if(error){
+
+status.className="error";
+
+status.textContent =
+"ERROR: " + error.message;
+
+return;
+
+}
+
+
+if(!data || data.length===0){
+
+status.className="empty";
+
+status.textContent =
+"No published articles yet.";
+
+return;
+
+}
+
+
+const articles=data;
+
+
+document.getElementById("hero")
+.innerHTML =
+heroStory(articles[0]);
+
+
+document.getElementById("side")
+.innerHTML =
+articles
+.slice(1,4)
+.map(sideStory)
+.join("");
+
+
+renderSection(
+"latest",
+articles.slice(0,6)
+);
+
+
+renderSection(
+"london",
+articles.filter(
+a =>
+(a.category || "")
+.toLowerCase()
+==="london"
+)
+);
+
+
+renderSection(
+"world",
+articles.filter(
+a =>
+(a.category || "")
+.toLowerCase()
+==="world"
+)
+);
+
+
+renderSection(
+"technology",
+articles.filter(
+a =>
+(a.category || "")
+.toLowerCase()
+==="technology"
+)
+);
+
+
+status.style.display="none";
+
+document.getElementById("content")
+.style.display="block";
+
+}
+
+
+loadNews();
+
+</script>
+
+</body>
+</html>
