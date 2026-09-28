@@ -8,7 +8,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
@@ -31,7 +33,9 @@ margin:0;
 font-size:21px
 }
 
-button{cursor:pointer}
+button{
+cursor:pointer
+}
 
 .logout{
 background:#dc2626;
@@ -55,7 +59,9 @@ border-radius:12px;
 box-shadow:0 3px 14px rgba(0,0,0,.08)
 }
 
-h2{margin-top:0}
+h2{
+margin-top:0
+}
 
 label{
 display:block;
@@ -63,7 +69,9 @@ font-weight:bold;
 margin:16px 0 7px
 }
 
-input,textarea,select{
+input,
+textarea,
+select{
 width:100%;
 padding:12px;
 border:1px solid #d1d5db;
@@ -90,7 +98,10 @@ border-radius:8px;
 border:1px solid #e5e7eb
 }
 
-.publish,.save,.cancel,.draft-publish{
+.publish,
+.save,
+.cancel,
+.draft-publish{
 margin-top:20px;
 padding:13px 18px;
 border:0;
@@ -115,6 +126,40 @@ background:#16a34a
 .cancel{
 margin-left:8px;
 background:#6b7280
+}
+
+.breaking-box{
+margin-top:18px;
+padding:14px;
+background:#fef2f2;
+border:1px solid #fecaca;
+border-radius:8px
+}
+
+.breaking-label{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:bold;
+color:#b91c1c;
+margin:0
+}
+
+.breaking-label input{
+width:20px;
+height:20px;
+margin:0
+}
+
+.breaking-badge{
+display:inline-block;
+background:#dc2626;
+color:white;
+padding:5px 9px;
+border-radius:5px;
+font-size:11px;
+font-weight:bold;
+margin-bottom:10px
 }
 
 .article{
@@ -209,8 +254,15 @@ display:none
 }
 
 @media(max-width:600px){
-header h1{font-size:17px}
-.card{padding:18px}
+
+header h1{
+font-size:17px
+}
+
+.card{
+padding:18px
+}
+
 }
 </style>
 </head>
@@ -218,11 +270,24 @@ header h1{font-size:17px}
 <body>
 
 <header>
+
 <h1>NEXORA NEWS — ADMIN</h1>
-<button class="logout" id="logoutBtn">Logout</button>
+
+<button
+class="logout"
+id="logoutBtn">
+
+Logout
+
+</button>
+
 </header>
 
+
 <main>
+
+
+<!-- NEW ARTICLE -->
 
 <section class="card">
 
@@ -230,14 +295,23 @@ header h1{font-size:17px}
 
 <form id="articleForm">
 
+
 <label>Headline</label>
-<input id="title" required>
+
+<input
+id="title"
+required>
+
 
 <label>Category</label>
 
-<select id="category" required>
+<select
+id="category"
+required>
 
-<option value="">Select category</option>
+<option value="">
+Select category
+</option>
 
 <option>London</option>
 <option>UK</option>
@@ -249,27 +323,64 @@ header h1{font-size:17px}
 
 </select>
 
+
+<!-- BREAKING NEWS -->
+
+<div class="breaking-box">
+
+<label
+class="breaking-label">
+
+<input
+type="checkbox"
+id="isBreaking">
+
+<span>
+Breaking News
+</span>
+
+</label>
+
+</div>
+
+
 <label>Short Description</label>
 
-<textarea id="excerpt" required></textarea>
+<textarea
+id="excerpt"
+required>
+</textarea>
+
 
 <label>Article Image</label>
 
-<input id="image_file" type="file" accept="image/*">
+<input
+id="image_file"
+type="file"
+accept="image/*">
 
-<img id="imagePreview"
+
+<img
+id="imagePreview"
 class="preview"
 alt="Image preview">
 
+
 <label>Article Body</label>
 
-<textarea id="body" required></textarea>
+<textarea
+id="body"
+required>
+</textarea>
+
 
 <label>Author</label>
 
-<input id="author"
+<input
+id="author"
 value="Marian"
 required>
+
 
 <button
 class="publish"
@@ -280,6 +391,7 @@ Publish Article
 
 </button>
 
+
 <button
 class="save"
 id="saveDraftBtn"
@@ -289,25 +401,40 @@ Save Draft
 
 </button>
 
+
 </form>
+
 
 <div id="message"></div>
 
 </section>
 
 
-<section class="card" id="editCard">
+
+<!-- EDIT ARTICLE -->
+
+<section
+class="card"
+id="editCard">
 
 <h2>Edit Article</h2>
 
-<input type="hidden" id="editId">
+
+<input
+type="hidden"
+id="editId">
+
 
 <label>Headline</label>
-<input id="editTitle">
+
+<input
+id="editTitle">
+
 
 <label>Category</label>
 
-<select id="editCategory">
+<select
+id="editCategory">
 
 <option>London</option>
 <option>UK</option>
@@ -319,9 +446,33 @@ Save Draft
 
 </select>
 
+
+<!-- EDIT BREAKING NEWS -->
+
+<div class="breaking-box">
+
+<label
+class="breaking-label">
+
+<input
+type="checkbox"
+id="editIsBreaking">
+
+<span>
+Breaking News
+</span>
+
+</label>
+
+</div>
+
+
 <label>Short Description</label>
 
-<textarea id="editExcerpt"></textarea>
+<textarea
+id="editExcerpt">
+</textarea>
+
 
 <label>Article Image</label>
 
@@ -330,20 +481,30 @@ id="editImageFile"
 type="file"
 accept="image/*">
 
+
 <img
 id="editImagePreview"
 class="preview"
 alt="Current image">
 
-<input type="hidden" id="editImage">
+
+<input
+type="hidden"
+id="editImage">
+
 
 <label>Article Body</label>
 
-<textarea id="editBody"></textarea>
+<textarea
+id="editBody">
+</textarea>
+
 
 <label>Author</label>
 
-<input id="editAuthor">
+<input
+id="editAuthor">
+
 
 <button
 class="save"
@@ -352,6 +513,7 @@ id="saveEdit">
 Save Changes
 
 </button>
+
 
 <button
 class="cancel"
@@ -364,6 +526,9 @@ Cancel
 </section>
 
 
+
+<!-- DRAFTS -->
+
 <section class="card">
 
 <h2>Draft Articles</h2>
@@ -375,6 +540,9 @@ Loading drafts...
 </section>
 
 
+
+<!-- PUBLISHED -->
+
 <section class="card">
 
 <h2>Published Articles</h2>
@@ -385,16 +553,21 @@ Loading articles...
 
 </section>
 
+
 </main>
+
 
 
 <script>
 
+
 const SUPABASE_URL =
 "https://qleoqpmxvmqcythacszw.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
 
 const db =
 window.supabase.createClient(
@@ -402,48 +575,92 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
+
 const ADMIN_ID =
 "280627ab-6dfb-4f45-ae11-b5fc14288eb5";
 
+
 const BUCKET_NAME =
 "news-images";
+
 
 const message =
 document.getElementById("message");
 
 
-function showMessage(text,type){
 
-message.textContent=text;
-message.className=type;
+/* MESSAGE */
+
+function showMessage(
+text,
+type
+){
+
+message.textContent = text;
+
+message.className = type;
+
+}
+
+
+
+/* ESCAPE HTML */
+
+function escapeHtml(
+value
+){
+
+return String(
+value || ""
+)
+.replace(
+/&/g,
+"&amp;"
+)
+.replace(
+/</g,
+"&lt;"
+)
+.replace(
+/>/g,
+"&gt;"
+)
+.replace(
+/"/g,
+"&quot;"
+)
+.replace(
+/'/g,
+"&#039;"
+);
 
 }
 
 
-function escapeHtml(value){
 
-return String(value||"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
+/* LOGIN */
 
 async function checkLogin(){
 
-const {data,error} =
+const {
+data,
+error
+} =
 await db.auth.getSession();
 
-if(error || !data.session){
 
-window.location.href="/login.html";
+if(
+error ||
+!data.session
+){
+
+window.location.href =
+"/login.html";
 
 return false;
 
 }
+
 
 if(
 data.session.user.id !== ADMIN_ID
@@ -451,24 +668,35 @@ data.session.user.id !== ADMIN_ID
 
 await db.auth.signOut();
 
-window.location.href="/login.html";
+window.location.href =
+"/login.html";
 
 return false;
 
 }
+
 
 return true;
 
 }
 
 
+
 /* IMAGE UPLOAD */
 
-async function uploadImage(file){
+async function uploadImage(
+file
+){
 
-if(!file) return null;
+if(!file)
+return null;
 
-if(!file.type.startsWith("image/")){
+
+if(
+!file.type.startsWith(
+"image/"
+)
+){
 
 throw new Error(
 "Please select an image file."
@@ -476,7 +704,11 @@ throw new Error(
 
 }
 
-if(file.size > 10*1024*1024){
+
+if(
+file.size >
+10 * 1024 * 1024
+){
 
 throw new Error(
 "Image is too large. Please use an image under 10 MB."
@@ -484,10 +716,15 @@ throw new Error(
 
 }
 
+
 const cleanName =
 file.name
 .toLowerCase()
-.replace(/[^a-z0-9.]+/g,"-");
+.replace(
+/[^a-z0-9.]+/g,
+"-"
+);
+
 
 const filePath =
 ADMIN_ID +
@@ -496,7 +733,10 @@ Date.now() +
 "-" +
 cleanName;
 
-const {error} =
+
+const {
+error
+} =
 await db.storage
 .from(BUCKET_NAME)
 .upload(
@@ -508,22 +748,33 @@ upsert:false
 }
 );
 
-if(error) throw error;
 
-const {data} =
+if(error)
+throw error;
+
+
+const {
+data
+} =
 db.storage
 .from(BUCKET_NAME)
-.getPublicUrl(filePath);
+.getPublicUrl(
+filePath
+);
+
 
 return data.publicUrl;
 
 }
 
 
+
 /* IMAGE PREVIEW */
 
 document
-.getElementById("image_file")
+.getElementById(
+"image_file"
+)
 .addEventListener(
 "change",
 function(){
@@ -536,24 +787,33 @@ document.getElementById(
 "imagePreview"
 );
 
+
 if(!file){
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 return;
 
 }
 
-preview.src =
-URL.createObjectURL(file);
 
-preview.style.display="block";
+preview.src =
+URL.createObjectURL(
+file
+);
+
+preview.style.display =
+"block";
 
 });
 
 
+
 document
-.getElementById("editImageFile")
+.getElementById(
+"editImageFile"
+)
 .addEventListener(
 "change",
 function(){
@@ -566,72 +826,100 @@ document.getElementById(
 "editImagePreview"
 );
 
-if(!file)return;
+
+if(!file)
+return;
+
 
 preview.src =
-URL.createObjectURL(file);
+URL.createObjectURL(
+file
+);
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 });
+
 
 
 /* LOAD ARTICLES */
 
 async function loadArticles(){
 
-const {data,error} =
+const {
+data,
+error
+} =
 await db
 .from("articles")
 .select("*")
 .order(
 "created_at",
-{ascending:false}
+{
+ascending:false
+}
 );
+
 
 const publishedList =
 document.getElementById(
 "articlesList"
 );
 
+
 const draftsList =
 document.getElementById(
 "draftsList"
 );
 
+
 if(error){
 
 publishedList.innerHTML =
-"<p>ERROR: "+
-escapeHtml(error.message)+
+"<p>ERROR: " +
+escapeHtml(
+error.message
+) +
 "</p>";
 
+
 draftsList.innerHTML =
-"<p>ERROR: "+
-escapeHtml(error.message)+
+"<p>ERROR: " +
+escapeHtml(
+error.message
+) +
 "</p>";
 
 return;
 
 }
 
+
 const published =
-(data||[]).filter(
+(data || [])
+.filter(
 article =>
-article.status === "published"
+article.status ===
+"published"
 );
 
+
 const drafts =
-(data||[]).filter(
+(data || [])
+.filter(
 article =>
-article.status === "draft"
+article.status ===
+"draft"
 );
+
 
 renderArticleList(
 published,
 publishedList,
 false
 );
+
 
 renderArticleList(
 drafts,
@@ -641,6 +929,9 @@ true
 
 }
 
+
+
+/* RENDER ARTICLE LIST */
 
 function renderArticleList(
 items,
@@ -661,24 +952,48 @@ return;
 
 }
 
-list.innerHTML="";
 
-items.forEach(article => {
+list.innerHTML = "";
+
+
+items.forEach(
+article => {
 
 const div =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-div.className="article";
+div.className =
+"article";
+
 
 const image =
 article.image_url
 ?
-`<img
+`
+<img
 class="article-thumb"
-src="${escapeHtml(article.image_url)}"
-alt="Article image">`
+src="${escapeHtml(
+article.image_url
+)}"
+alt="Article image">
+`
 :
 "";
+
+
+const breaking =
+article.is_breaking
+?
+`
+<div class="breaking-badge">
+BREAKING NEWS
+</div>
+`
+:
+"";
+
 
 const statusClass =
 isDraft
@@ -687,6 +1002,7 @@ isDraft
 :
 "status-published";
 
+
 const statusText =
 isDraft
 ?
@@ -694,20 +1010,29 @@ isDraft
 :
 "PUBLISHED";
 
+
 div.innerHTML = `
 
 <div class="status ${statusClass}">
 ${statusText}
 </div>
 
+${breaking}
+
 <h3>
-${escapeHtml(article.title)}
+${escapeHtml(
+article.title
+)}
 </h3>
 
 <div class="meta">
-${escapeHtml(article.category||"")}
+${escapeHtml(
+article.category || ""
+)}
 ·
-${escapeHtml(article.author||"")}
+${escapeHtml(
+article.author || ""
+)}
 </div>
 
 ${image}
@@ -746,28 +1071,39 @@ Delete
 
 `;
 
-list.appendChild(div);
+
+list.appendChild(
+div
+);
 
 });
 
 }
 
 
+
 /* EDIT ARTICLE */
 
-async function editArticle(id){
+async function editArticle(
+id
+){
 
-const {data,error} =
+const {
+data,
+error
+} =
 await db
 .from("articles")
 .select("*")
 .eq("id",id)
 .single();
 
+
 if(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
@@ -775,54 +1111,82 @@ return;
 
 }
 
+
 document.getElementById(
 "editId"
-).value=data.id;
+).value =
+data.id;
+
 
 document.getElementById(
 "editTitle"
-).value=data.title||"";
+).value =
+data.title || "";
+
 
 document.getElementById(
 "editCategory"
-).value=data.category||"UK";
+).value =
+data.category || "UK";
+
+
+document.getElementById(
+"editIsBreaking"
+).checked =
+data.is_breaking === true;
+
 
 document.getElementById(
 "editExcerpt"
-).value=data.excerpt||"";
+).value =
+data.excerpt || "";
+
 
 document.getElementById(
 "editImage"
-).value=data.image_url||"";
+).value =
+data.image_url || "";
+
 
 document.getElementById(
 "editBody"
-).value=data.body||"";
+).value =
+data.body || "";
+
 
 document.getElementById(
 "editAuthor"
-).value=data.author||"Marian";
+).value =
+data.author || "Marian";
+
 
 const preview =
 document.getElementById(
 "editImagePreview"
 );
 
+
 if(data.image_url){
 
-preview.src=data.image_url;
+preview.src =
+data.image_url;
 
-preview.style.display="block";
+preview.style.display =
+"block";
 
 }else{
 
-preview.style.display="none";
+preview.style.display =
+"none";
 
 }
 
+
 document.getElementById(
 "editCard"
-).style.display="block";
+).style.display =
+"block";
+
 
 window.scrollTo({
 top:0,
@@ -832,10 +1196,13 @@ behavior:"smooth"
 }
 
 
+
 /* SAVE EDIT */
 
 document
-.getElementById("saveEdit")
+.getElementById(
+"saveEdit"
+)
 .addEventListener(
 "click",
 async function(){
@@ -845,27 +1212,35 @@ document.getElementById(
 "editId"
 ).value;
 
+
 const button =
 document.getElementById(
 "saveEdit"
 );
 
-button.disabled=true;
 
-button.textContent=
+button.disabled =
+true;
+
+
+button.textContent =
 "Saving...";
 
+
 try{
+
 
 let imageUrl =
 document.getElementById(
 "editImage"
 ).value.trim();
 
+
 const newImage =
 document.getElementById(
 "editImageFile"
 ).files[0];
+
 
 if(newImage){
 
@@ -874,10 +1249,14 @@ showMessage(
 "info"
 );
 
+
 imageUrl =
-await uploadImage(newImage);
+await uploadImage(
+newImage
+);
 
 }
+
 
 const updates = {
 
@@ -897,7 +1276,7 @@ document.getElementById(
 ).value.trim(),
 
 image_url:
-imageUrl||null,
+imageUrl || null,
 
 body:
 document.getElementById(
@@ -907,41 +1286,64 @@ document.getElementById(
 author:
 document.getElementById(
 "editAuthor"
-).value.trim()
+).value.trim(),
+
+is_breaking:
+document.getElementById(
+"editIsBreaking"
+).checked
 
 };
 
-const {error} =
+
+const {
+error
+} =
 await db
 .from("articles")
-.update(updates)
-.eq("id",id);
+.update(
+updates
+)
+.eq(
+"id",
+id
+);
 
-if(error)throw error;
+
+if(error)
+throw error;
+
 
 showMessage(
 "Article updated successfully!",
 "success"
 );
 
+
 document.getElementById(
 "editCard"
-).style.display="none";
+).style.display =
+"none";
+
 
 loadArticles();
+
 
 }catch(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
+
 }finally{
 
-button.disabled=false;
+button.disabled =
+false;
 
-button.textContent=
+button.textContent =
 "Save Changes";
 
 }
@@ -949,40 +1351,59 @@ button.textContent=
 });
 
 
+
+/* CANCEL EDIT */
+
 document
-.getElementById("cancelEdit")
+.getElementById(
+"cancelEdit"
+)
 .addEventListener(
 "click",
 function(){
 
 document.getElementById(
 "editCard"
-).style.display="none";
+).style.display =
+"none";
 
 });
 
 
+
 /* DELETE */
 
-async function deleteArticle(id){
+async function deleteArticle(
+id
+){
 
 const confirmed =
 confirm(
 "Are you sure you want to delete this article?"
 );
 
-if(!confirmed)return;
 
-const {error} =
+if(!confirmed)
+return;
+
+
+const {
+error
+} =
 await db
 .from("articles")
 .delete()
-.eq("id",id);
+.eq(
+"id",
+id
+);
+
 
 if(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
@@ -990,83 +1411,114 @@ return;
 
 }
 
+
 showMessage(
 "Article deleted successfully!",
 "success"
 );
+
 
 loadArticles();
 
 }
 
 
+
 /* PUBLISH NEW ARTICLE */
 
 document
-.getElementById("articleForm")
+.getElementById(
+"articleForm"
+)
 .addEventListener(
 "submit",
 async function(e){
 
 e.preventDefault();
 
-const {data:sessionData} =
+
+const {
+data:sessionData
+} =
 await db.auth.getSession();
+
 
 if(
 !sessionData.session ||
-sessionData.session.user.id !== ADMIN_ID
+sessionData.session.user.id !==
+ADMIN_ID
 ){
 
-window.location.href="/login.html";
+window.location.href =
+"/login.html";
 
 return;
 
 }
+
 
 const button =
 document.getElementById(
 "publishBtn"
 );
 
-button.disabled=true;
 
-button.textContent=
+button.disabled =
+true;
+
+
+button.textContent =
 "Publishing...";
 
+
 try{
+
 
 const title =
 document.getElementById(
 "title"
 ).value.trim();
 
+
 const category =
 document.getElementById(
 "category"
 ).value;
+
 
 const excerpt =
 document.getElementById(
 "excerpt"
 ).value.trim();
 
+
 const body =
 document.getElementById(
 "body"
 ).value.trim();
+
 
 const author =
 document.getElementById(
 "author"
 ).value.trim();
 
+
+const isBreaking =
+document.getElementById(
+"isBreaking"
+).checked;
+
+
 const imageFile =
 document.getElementById(
 "image_file"
 ).files[0];
 
-let imageUrl=null;
+
+let imageUrl =
+null;
+
 
 if(imageFile){
 
@@ -1075,10 +1527,14 @@ showMessage(
 "info"
 );
 
+
 imageUrl =
-await uploadImage(imageFile);
+await uploadImage(
+imageFile
+);
 
 }
+
 
 const slug =
 title
@@ -1096,7 +1552,10 @@ title
 +
 Date.now();
 
-const {error} =
+
+const {
+error
+} =
 await db
 .from("articles")
 .insert({
@@ -1115,6 +1574,8 @@ author:author,
 
 image_url:imageUrl,
 
+is_breaking:isBreaking,
+
 status:"published",
 
 published_at:
@@ -1122,12 +1583,16 @@ new Date().toISOString()
 
 });
 
-if(error)throw error;
+
+if(error)
+throw error;
+
 
 showMessage(
 "Article published successfully!",
 "success"
 );
+
 
 document
 .getElementById(
@@ -1135,28 +1600,37 @@ document
 )
 .reset();
 
+
 document.getElementById(
 "author"
-).value="Marian";
+).value =
+"Marian";
+
 
 document.getElementById(
 "imagePreview"
-).style.display="none";
+).style.display =
+"none";
+
 
 loadArticles();
+
 
 }catch(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
+
 }finally{
 
-button.disabled=false;
+button.disabled =
+false;
 
-button.textContent=
+button.textContent =
 "Publish Article";
 
 }
@@ -1164,69 +1638,95 @@ button.textContent=
 });
 
 
+
 /* SAVE DRAFT */
 
 document
-.getElementById("saveDraftBtn")
+.getElementById(
+"saveDraftBtn"
+)
 .addEventListener(
 "click",
 async function(){
 
-const {data:sessionData} =
+const {
+data:sessionData
+} =
 await db.auth.getSession();
+
 
 if(
 !sessionData.session ||
-sessionData.session.user.id !== ADMIN_ID
+sessionData.session.user.id !==
+ADMIN_ID
 ){
 
-window.location.href="/login.html";
+window.location.href =
+"/login.html";
 
 return;
 
 }
+
 
 const button =
 document.getElementById(
 "saveDraftBtn"
 );
 
-button.disabled=true;
 
-button.textContent=
+button.disabled =
+true;
+
+
+button.textContent =
 "Saving Draft...";
 
+
 try{
+
 
 const title =
 document.getElementById(
 "title"
 ).value.trim();
 
+
 const category =
 document.getElementById(
 "category"
 ).value;
+
 
 const excerpt =
 document.getElementById(
 "excerpt"
 ).value.trim();
 
+
 const body =
 document.getElementById(
 "body"
 ).value.trim();
+
 
 const author =
 document.getElementById(
 "author"
 ).value.trim();
 
+
+const isBreaking =
+document.getElementById(
+"isBreaking"
+).checked;
+
+
 const imageFile =
 document.getElementById(
 "image_file"
 ).files[0];
+
 
 if(!title){
 
@@ -1236,7 +1736,10 @@ throw new Error(
 
 }
 
-let imageUrl=null;
+
+let imageUrl =
+null;
+
 
 if(imageFile){
 
@@ -1245,10 +1748,14 @@ showMessage(
 "info"
 );
 
+
 imageUrl =
-await uploadImage(imageFile);
+await uploadImage(
+imageFile
+);
 
 }
+
 
 const slug =
 title
@@ -1266,7 +1773,10 @@ title
 +
 Date.now();
 
-const {error} =
+
+const {
+error
+} =
 await db
 .from("articles")
 .insert({
@@ -1280,13 +1790,16 @@ excerpt:excerpt,
 body:body,
 
 category:
-category||"UK",
+category || "UK",
 
 author:
-author||"Marian",
+author || "Marian",
 
 image_url:
 imageUrl,
+
+is_breaking:
+isBreaking,
 
 status:"draft",
 
@@ -1294,12 +1807,16 @@ published_at:null
 
 });
 
-if(error)throw error;
+
+if(error)
+throw error;
+
 
 showMessage(
 "Draft saved successfully!",
 "success"
 );
+
 
 document
 .getElementById(
@@ -1307,28 +1824,37 @@ document
 )
 .reset();
 
+
 document.getElementById(
 "author"
-).value="Marian";
+).value =
+"Marian";
+
 
 document.getElementById(
 "imagePreview"
-).style.display="none";
+).style.display =
+"none";
+
 
 loadArticles();
+
 
 }catch(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
+
 }finally{
 
-button.disabled=false;
+button.disabled =
+false;
 
-button.textContent=
+button.textContent =
 "Save Draft";
 
 }
@@ -1336,18 +1862,26 @@ button.textContent=
 });
 
 
+
 /* PUBLISH DRAFT */
 
-async function publishDraft(id){
+async function publishDraft(
+id
+){
 
 const confirmed =
 confirm(
 "Publish this draft article?"
 );
 
-if(!confirmed)return;
 
-const {error} =
+if(!confirmed)
+return;
+
+
+const {
+error
+} =
 await db
 .from("articles")
 .update({
@@ -1358,12 +1892,17 @@ published_at:
 new Date().toISOString()
 
 })
-.eq("id",id);
+.eq(
+"id",
+id
+);
+
 
 if(error){
 
 showMessage(
-"ERROR: "+error.message,
+"ERROR: " +
+error.message,
 "error"
 );
 
@@ -1371,30 +1910,36 @@ return;
 
 }
 
+
 showMessage(
 "Draft published successfully!",
 "success"
 );
+
 
 loadArticles();
 
 }
 
 
+
 /* LOGOUT */
 
 document
-.getElementById("logoutBtn")
+.getElementById(
+"logoutBtn"
+)
 .addEventListener(
 "click",
 async function(){
 
 await db.auth.signOut();
 
-window.location.href=
+window.location.href =
 "/login.html";
 
 });
+
 
 
 /* START */
@@ -1403,6 +1948,7 @@ window.location.href=
 
 const loggedIn =
 await checkLogin();
+
 
 if(loggedIn){
 
