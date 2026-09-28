@@ -3,237 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora News Admin</title>
+<title>Nexora News — Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
+
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f3f4f6;
-  color:#111827;
+margin:0;
+font-family:Arial,sans-serif;
+background:#f3f4f6;
+color:#111827
 }
+
 header{
-  background:#111827;
-  color:white;
-  padding:18px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+background:#111827;
+color:white;
+padding:18px 22px;
+display:flex;
+justify-content:space-between;
+align-items:center
 }
-header h1{margin:0;font-size:22px}
-header button{
-  background:#dc2626;
-  color:white;
-  border:0;
-  padding:10px 16px;
-  border-radius:6px;
-  cursor:pointer;
+
+header h1{
+margin:0;
+font-size:21px
 }
-.container{
-  max-width:1000px;
-  margin:25px auto;
-  padding:0 15px;
+
+button{cursor:pointer}
+
+.logout{
+background:#dc2626;
+color:white;
+border:0;
+padding:10px 15px;
+border-radius:6px
 }
+
+main{
+max-width:1100px;
+margin:25px auto;
+padding:0 15px
+}
+
 .card{
-  background:white;
-  padding:22px;
-  border-radius:10px;
-  margin-bottom:22px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+background:white;
+padding:24px;
+margin-bottom:25px;
+border-radius:12px;
+box-shadow:0 3px 14px rgba(0,0,0,.08)
 }
+
 h2{margin-top:0}
+
 label{
-  display:block;
-  font-weight:bold;
-  margin-top:15px;
-  margin-bottom:6px;
+display:block;
+font-weight:bold;
+margin:16px 0 7px
 }
-input,select,textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid #d1d5db;
-  border-radius:6px;
-  font-size:15px;
+
+input,textarea,select{
+width:100%;
+padding:12px;
+border:1px solid #d1d5db;
+border-radius:7px;
+font-size:15px
 }
-textarea{min-height:180px;resize:vertical}
-.buttons{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:18px;
+
+textarea{
+min-height:160px;
+resize:vertical
 }
-button{
-  border:0;
-  border-radius:6px;
-  padding:11px 17px;
-  cursor:pointer;
-  font-weight:bold;
+
+input[type=file]{
+background:#f9fafb
 }
-.publish{background:#dc2626;color:white}
-.draft{background:#374151;color:white}
-.cancel{background:#e5e7eb;color:#111827}
-.edit{background:#2563eb;color:white}
-.delete{background:#b91c1c;color:white}
-.status{
-  margin-top:15px;
-  padding:12px;
-  border-radius:6px;
-  display:none;
-}
-.success{background:#dcfce7;color:#166534}
-.error{background:#fee2e2;color:#991b1b}
-.article{
-  border:1px solid #e5e7eb;
-  padding:16px;
-  border-radius:8px;
-  margin-top:12px;
-}
-.article h3{margin:0 0 8px}
-.meta{
-  color:#6b7280;
-  font-size:13px;
-  margin-bottom:10px;
-}
-.article-buttons{
-  display:flex;
-  gap:8px;
-  margin-top:12px;
-}
-.thumb{
-  width:100px;
-  height:65px;
-  object-fit:cover;
-  border-radius:5px;
-  margin-bottom:8px;
-}
+
 .preview{
-  max-width:300px;
-  max-height:200px;
-  margin-top:10px;
-  border-radius:8px;
-  display:none;
+display:none;
+width:100%;
+max-height:320px;
+object-fit:cover;
+margin-top:12px;
+border-radius:8px;
+border:1px solid #e5e7eb
 }
-.badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:5px;
-  font-size:12px;
-  font-weight:bold;
+
+.publish,.save,.cancel,.draft-publish{
+margin-top:20px;
+padding:13px 18px;
+border:0;
+border-radius:7px;
+color:white;
+font-weight:bold
 }
-.badge-draft{background:#fef3c7;color:#92400e}
-.badge-published{background:#dcfce7;color:#166534}
+
+.publish{
+background:#b91c1c;
+width:100%
+}
+
+.save{
+background:#2563eb
+}
+
+.draft-publish{
+background:#16a34a
+}
+
+.cancel{
+margin-left:8px;
+background:#6b7280
+}
+
+.article{
+border:1px solid #e5e7eb;
+border-radius:9px;
+padding:15px;
+margin-top:14px
+}
+
+.article h3{
+margin:0 0 7px
+}
+
+.meta{
+color:#6b7280;
+font-size:13px;
+margin-bottom:12px
+}
+
+.status{
+display:inline-block;
+padding:4px 8px;
+border-radius:5px;
+font-size:12px;
+font-weight:bold;
+margin-bottom:10px
+}
+
+.status-published{
+background:#dcfce7;
+color:#166534
+}
+
+.status-draft{
+background:#fef3c7;
+color:#92400e
+}
+
+.article-thumb{
+width:100%;
+max-width:420px;
+max-height:230px;
+object-fit:cover;
+border-radius:8px;
+margin:8px 0 12px
+}
+
+.edit-btn{
+background:#2563eb;
+color:white;
+border:0;
+padding:9px 14px;
+border-radius:6px
+}
+
+.delete-btn{
+background:#dc2626;
+color:white;
+border:0;
+padding:9px 14px;
+border-radius:6px;
+margin-left:6px
+}
+
+#message{
+display:none;
+margin-top:15px;
+padding:12px;
+border-radius:7px
+}
+
+.success{
+display:block!important;
+background:#dcfce7;
+color:#166534
+}
+
+.error{
+display:block!important;
+background:#fee2e2;
+color:#991b1b
+}
+
+.info{
+display:block!important;
+background:#dbeafe;
+color:#1e40af
+}
+
+#editCard{
+display:none
+}
+
+@media(max-width:600px){
+header h1{font-size:17px}
+.card{padding:18px}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>NEXORA NEWS — Admin</h1>
-  <button onclick="logout()">Logout</button>
+<h1>NEXORA NEWS — ADMIN</h1>
+<button class="logout" id="logoutBtn">Logout</button>
 </header>
 
-<div class="container">
+<main>
 
-  <!-- NEW ARTICLE -->
-  <div class="card">
-    <h2>New Article</h2>
+<section class="card">
 
-    <label>Headline</label>
-    <input id="title" placeholder="Enter article headline">
+<h2>Publish New Article</h2>
 
-    <label>Category</label>
-    <select id="category">
-      <option value="London">London</option>
-      <option value="UK">UK</option>
-      <option value="World">World</option>
-      <option value="Business">Business</option>
-      <option value="Technology">Technology</option>
-      <option value="Sports">Sports</option>
-      <option value="Video">Video</option>
-    </select>
+<form id="articleForm">
 
-    <label>Short Description</label>
-    <textarea id="excerpt" style="min-height:100px"
-      placeholder="Short description of the article"></textarea>
+<label>Headline</label>
+<input id="title" required>
 
-    <label>Article Image</label>
-    <input id="image_file" type="file" accept="image/*">
-    <img id="imagePreview" class="preview">
+<label>Category</label>
 
-    <label>Article Body</label>
-    <textarea id="body"
-      placeholder="Write the full article here..."></textarea>
+<select id="category" required>
 
-    <label>Author</label>
-    <input id="author" value="Marian">
+<option value="">Select category</option>
 
-    <div class="buttons">
-      <button class="draft" onclick="saveDraft()">Save Draft</button>
-      <button class="publish" onclick="publishArticle()">Publish Article</button>
-    </div>
+<option>London</option>
+<option>UK</option>
+<option>World</option>
+<option>Business</option>
+<option>Technology</option>
+<option>Sports</option>
+<option>Video</option>
 
-    <div id="newStatus" class="status"></div>
-  </div>
+</select>
 
+<label>Short Description</label>
 
-  <!-- EDIT ARTICLE -->
-  <div class="card" id="editCard" style="display:none">
-    <h2>Edit Article</h2>
+<textarea id="excerpt" required></textarea>
 
-    <input type="hidden" id="editId">
+<label>Article Image</label>
 
-    <label>Headline</label>
-    <input id="editTitle">
+<input id="image_file" type="file" accept="image/*">
 
-    <label>Category</label>
-    <select id="editCategory">
-      <option value="London">London</option>
-      <option value="UK">UK</option>
-      <option value="World">World</option>
-      <option value="Business">Business</option>
-      <option value="Technology">Technology</option>
-      <option value="Sports">Sports</option>
-      <option value="Video">Video</option>
-    </select>
+<img id="imagePreview"
+class="preview"
+alt="Image preview">
 
-    <label>Short Description</label>
-    <textarea id="editExcerpt" style="min-height:100px"></textarea>
+<label>Article Body</label>
 
-    <label>Replace Image</label>
-    <input id="editImageFile" type="file" accept="image/*">
-    <img id="editImagePreview" class="preview">
+<textarea id="body" required></textarea>
 
-    <label>Article Body</label>
-    <textarea id="editBody"></textarea>
+<label>Author</label>
 
-    <label>Author</label>
-    <input id="editAuthor">
+<input id="author"
+value="Marian"
+required>
 
-    <div class="buttons">
-      <button class="edit" onclick="saveEdit()">Save Changes</button>
-      <button class="cancel" onclick="cancelEdit()">Cancel</button>
-    </div>
+<button
+class="publish"
+id="publishBtn"
+type="submit">
 
-    <div id="editStatus" class="status"></div>
-  </div>
+Publish Article
+
+</button>
+
+<button
+class="save"
+id="saveDraftBtn"
+type="button">
+
+Save Draft
+
+</button>
+
+</form>
+
+<div id="message"></div>
+
+</section>
 
 
-  <!-- ARTICLES -->
-  <div class="card">
-    <h2>Articles</h2>
+<section class="card" id="editCard">
 
-    <div class="buttons">
-      <button class="cancel" onclick="showPublished()">Published Articles</button>
-      <button class="draft" onclick="showDrafts()">Draft Articles</button>
-    </div>
+<h2>Edit Article</h2>
 
-    <div id="articlesList">Loading...</div>
-  </div>
+<input type="hidden" id="editId">
 
+<label>Headline</label>
+<input id="editTitle">
+
+<label>Category</label>
+
+<select id="editCategory">
+
+<option>London</option>
+<option>UK</option>
+<option>World</option>
+<option>Business</option>
+<option>Technology</option>
+<option>Sports</option>
+<option>Video</option>
+
+</select>
+
+<label>Short Description</label>
+
+<textarea id="editExcerpt"></textarea>
+
+<label>Article Image</label>
+
+<input
+id="editImageFile"
+type="file"
+accept="image/*">
+
+<img
+id="editImagePreview"
+class="preview"
+alt="Current image">
+
+<input type="hidden" id="editImage">
+
+<label>Article Body</label>
+
+<textarea id="editBody"></textarea>
+
+<label>Author</label>
+
+<input id="editAuthor">
+
+<button
+class="save"
+id="saveEdit">
+
+Save Changes
+
+</button>
+
+<button
+class="cancel"
+id="cancelEdit">
+
+Cancel
+
+</button>
+
+</section>
+
+
+<section class="card">
+
+<h2>Draft Articles</h2>
+
+<div id="draftsList">
+Loading drafts...
 </div>
+
+</section>
+
+
+<section class="card">
+
+<h2>Published Articles</h2>
+
+<div id="articlesList">
+Loading articles...
+</div>
+
+</section>
+
+</main>
 
 
 <script>
@@ -242,608 +394,1023 @@ const SUPABASE_URL =
 "https://qleoqpmxvmqcythacszw.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_-rvHVSnw6yw0_Zb-jxozV_Fma9NccJ";
+"sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
 
 const ADMIN_ID =
 "280627ab-6dfb-4f45-ae11-b5fc14288eb5";
 
-const BUCKET_NAME = "news-images";
+const BUCKET_NAME =
+"news-images";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+const message =
+document.getElementById("message");
 
 
-/* LOGIN CHECK */
+function showMessage(text,type){
+
+message.textContent=text;
+message.className=type;
+
+}
+
+
+function escapeHtml(value){
+
+return String(value||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
 async function checkLogin(){
 
-  const {data:{session}} =
-    await db.auth.getSession();
+const {data,error} =
+await db.auth.getSession();
 
-  if(!session){
-    window.location.href="/login.html";
-    return false;
-  }
+if(error || !data.session){
 
-  if(session.user.id !== ADMIN_ID){
-    await db.auth.signOut();
-    window.location.href="/login.html";
-    return false;
-  }
+window.location.href="/login.html";
 
-  return true;
+return false;
+
+}
+
+if(
+data.session.user.id !== ADMIN_ID
+){
+
+await db.auth.signOut();
+
+window.location.href="/login.html";
+
+return false;
+
+}
+
+return true;
+
 }
 
 
-/* ESCAPE HTML */
-function esc(value){
+/* IMAGE UPLOAD */
 
-  if(value === null || value === undefined)
-    return "";
+async function uploadImage(file){
 
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+if(!file) return null;
+
+if(!file.type.startsWith("image/")){
+
+throw new Error(
+"Please select an image file."
+);
+
 }
 
+if(file.size > 10*1024*1024){
 
-/* SLUG */
-function makeSlug(title){
+throw new Error(
+"Image is too large. Please use an image under 10 MB."
+);
 
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g,"")
-    .replace(/\s+/g,"-")
-    .replace(/-+/g,"-")
-    + "-" + Date.now();
+}
+
+const cleanName =
+file.name
+.toLowerCase()
+.replace(/[^a-z0-9.]+/g,"-");
+
+const filePath =
+ADMIN_ID +
+"/" +
+Date.now() +
+"-" +
+cleanName;
+
+const {error} =
+await db.storage
+.from(BUCKET_NAME)
+.upload(
+filePath,
+file,
+{
+cacheControl:"3600",
+upsert:false
+}
+);
+
+if(error) throw error;
+
+const {data} =
+db.storage
+.from(BUCKET_NAME)
+.getPublicUrl(filePath);
+
+return data.publicUrl;
+
 }
 
 
 /* IMAGE PREVIEW */
-document.getElementById("image_file")
-.addEventListener("change",function(){
 
-  const file=this.files[0];
+document
+.getElementById("image_file")
+.addEventListener(
+"change",
+function(){
 
-  if(!file)return;
+const file =
+this.files[0];
 
-  const preview =
-    document.getElementById("imagePreview");
+const preview =
+document.getElementById(
+"imagePreview"
+);
 
-  preview.src=URL.createObjectURL(file);
-  preview.style.display="block";
+if(!file){
+
+preview.style.display="none";
+
+return;
+
+}
+
+preview.src =
+URL.createObjectURL(file);
+
+preview.style.display="block";
+
 });
 
 
-document.getElementById("editImageFile")
-.addEventListener("change",function(){
+document
+.getElementById("editImageFile")
+.addEventListener(
+"change",
+function(){
 
-  const file=this.files[0];
+const file =
+this.files[0];
 
-  if(!file)return;
+const preview =
+document.getElementById(
+"editImagePreview"
+);
 
-  const preview =
-    document.getElementById("editImagePreview");
+if(!file)return;
 
-  preview.src=URL.createObjectURL(file);
-  preview.style.display="block";
+preview.src =
+URL.createObjectURL(file);
+
+preview.style.display="block";
+
 });
-
-
-/* UPLOAD IMAGE */
-async function uploadImage(file){
-
-  if(!file)return null;
-
-  if(!file.type.startsWith("image/")){
-    throw new Error("Please select an image file.");
-  }
-
-  if(file.size > 10 * 1024 * 1024){
-    throw new Error("Image must be less than 10MB.");
-  }
-
-  const cleanName =
-    file.name.replace(/[^a-zA-Z0-9.-]/g,"-");
-
-  const path =
-    ADMIN_ID + "/" +
-    Date.now() + "-" +
-    cleanName;
-
-  const {error} =
-    await db.storage
-      .from(BUCKET_NAME)
-      .upload(path,file,{
-        cacheControl:"3600",
-        upsert:false
-      });
-
-  if(error) throw error;
-
-  const {data} =
-    db.storage
-      .from(BUCKET_NAME)
-      .getPublicUrl(path);
-
-  return data.publicUrl;
-}
-
-
-/* FORM DATA */
-function getFormData(){
-
-  return {
-    title:document.getElementById("title").value.trim(),
-    category:document.getElementById("category").value,
-    excerpt:document.getElementById("excerpt").value.trim(),
-    body:document.getElementById("body").value.trim(),
-    author:document.getElementById("author").value.trim() || "Marian"
-  };
-}
-
-
-/* MESSAGE */
-function message(id,text,type){
-
-  const box=document.getElementById(id);
-
-  box.textContent=text;
-  box.className="status "+type;
-  box.style.display="block";
-}
-
-
-/* SAVE DRAFT */
-async function saveDraft(){
-
-  try{
-
-    const ok=await checkLogin();
-
-    if(!ok)return;
-
-    const form=getFormData();
-
-    if(!form.title || !form.body){
-
-      message(
-        "newStatus",
-        "Headline and Article Body are required.",
-        "error"
-      );
-
-      return;
-    }
-
-    message(
-      "newStatus",
-      "Saving draft...",
-      "success"
-    );
-
-    const file =
-      document.getElementById("image_file").files[0];
-
-    let imageUrl=null;
-
-    if(file){
-      imageUrl=await uploadImage(file);
-    }
-
-    const {error}=await db
-      .from("articles")
-      .insert([{
-        title:form.title,
-        slug:makeSlug(form.title),
-        excerpt:form.excerpt,
-        body:form.body,
-        category:form.category,
-        author:form.author,
-        image_url:imageUrl,
-        status:"draft",
-        published_at:null
-      }]);
-
-    if(error)throw error;
-
-    message(
-      "newStatus",
-      "Draft saved successfully!",
-      "success"
-    );
-
-    clearNewForm();
-    loadArticles();
-
-  }catch(error){
-
-    message(
-      "newStatus",
-      "ERROR: "+error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* PUBLISH */
-async function publishArticle(){
-
-  try{
-
-    const ok=await checkLogin();
-
-    if(!ok)return;
-
-    const form=getFormData();
-
-    if(!form.title || !form.body){
-
-      message(
-        "newStatus",
-        "Headline and Article Body are required.",
-        "error"
-      );
-
-      return;
-    }
-
-    message(
-      "newStatus",
-      "Publishing article...",
-      "success"
-    );
-
-    const file =
-      document.getElementById("image_file").files[0];
-
-    let imageUrl=null;
-
-    if(file){
-      imageUrl=await uploadImage(file);
-    }
-
-    const {error}=await db
-      .from("articles")
-      .insert([{
-        title:form.title,
-        slug:makeSlug(form.title),
-        excerpt:form.excerpt,
-        body:form.body,
-        category:form.category,
-        author:form.author,
-        image_url:imageUrl,
-        status:"published",
-        published_at:new Date().toISOString()
-      }]);
-
-    if(error)throw error;
-
-    message(
-      "newStatus",
-      "Article published successfully!",
-      "success"
-    );
-
-    clearNewForm();
-    loadArticles();
-
-  }catch(error){
-
-    message(
-      "newStatus",
-      "ERROR: "+error.message,
-      "error"
-    );
-
-  }
-
-}
-
-
-/* CLEAR NEW FORM */
-function clearNewForm(){
-
-  document.getElementById("title").value="";
-  document.getElementById("excerpt").value="";
-  document.getElementById("body").value="";
-  document.getElementById("image_file").value="";
-
-  document.getElementById("imagePreview").style.display="none";
-
-}
 
 
 /* LOAD ARTICLES */
-async function loadArticles(mode="all"){
 
-  const ok=await checkLogin();
+async function loadArticles(){
 
-  if(!ok)return;
+const {data,error} =
+await db
+.from("articles")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
 
-  let query=db
-    .from("articles")
-    .select("*")
-    .order("created_at",{ascending:false});
+const publishedList =
+document.getElementById(
+"articlesList"
+);
 
-  if(mode==="published"){
-    query=query.eq("status","published");
-  }
+const draftsList =
+document.getElementById(
+"draftsList"
+);
 
-  if(mode==="draft"){
-    query=query.eq("status","draft");
-  }
+if(error){
 
-  const {data,error}=await query;
+publishedList.innerHTML =
+"<p>ERROR: "+
+escapeHtml(error.message)+
+"</p>";
 
-  const list=
-    document.getElementById("articlesList");
+draftsList.innerHTML =
+"<p>ERROR: "+
+escapeHtml(error.message)+
+"</p>";
 
-  if(error){
+return;
 
-    list.innerHTML=
-      "<p>ERROR: "+esc(error.message)+"</p>";
+}
 
-    return;
-  }
+const published =
+(data||[]).filter(
+article =>
+article.status === "published"
+);
 
-  if(!data || data.length===0){
+const drafts =
+(data||[]).filter(
+article =>
+article.status === "draft"
+);
 
-    list.innerHTML="<p>No articles found.</p>";
+renderArticleList(
+published,
+publishedList,
+false
+);
 
-    return;
-  }
-
-  list.innerHTML=data.map(article=>{
-
-    const badge =
-      article.status==="draft"
-      ? `<span class="badge badge-draft">DRAFT</span>`
-      : `<span class="badge badge-published">PUBLISHED</span>`;
-
-    const image =
-      article.image_url
-      ? `<img class="thumb" src="${esc(article.image_url)}">`
-      : "";
-
-    return `
-      <div class="article">
-
-        ${image}
-
-        <h3>${esc(article.title)}</h3>
-
-        <div class="meta">
-          ${esc(article.category)}
-          · ${esc(article.author)}
-          · ${badge}
-        </div>
-
-        <div>
-          ${esc(article.excerpt || "")}
-        </div>
-
-        <div class="article-buttons">
-
-          <button
-            class="edit"
-            onclick="editArticle('${article.id}')">
-            Edit
-          </button>
-
-          <button
-            class="delete"
-            onclick="deleteArticle('${article.id}')">
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-  }).join("");
+renderArticleList(
+drafts,
+draftsList,
+true
+);
 
 }
 
 
-/* PUBLISHED */
-function showPublished(){
-  loadArticles("published");
+function renderArticleList(
+items,
+list,
+isDraft
+){
+
+if(!items.length){
+
+list.innerHTML =
+isDraft
+?
+"<p>No draft articles.</p>"
+:
+"<p>No published articles.</p>";
+
+return;
+
+}
+
+list.innerHTML="";
+
+items.forEach(article => {
+
+const div =
+document.createElement("div");
+
+div.className="article";
+
+const image =
+article.image_url
+?
+`<img
+class="article-thumb"
+src="${escapeHtml(article.image_url)}"
+alt="Article image">`
+:
+"";
+
+const statusClass =
+isDraft
+?
+"status-draft"
+:
+"status-published";
+
+const statusText =
+isDraft
+?
+"DRAFT"
+:
+"PUBLISHED";
+
+div.innerHTML = `
+
+<div class="status ${statusClass}">
+${statusText}
+</div>
+
+<h3>
+${escapeHtml(article.title)}
+</h3>
+
+<div class="meta">
+${escapeHtml(article.category||"")}
+·
+${escapeHtml(article.author||"")}
+</div>
+
+${image}
+
+<button
+class="edit-btn"
+onclick="editArticle('${article.id}')">
+
+Edit
+
+</button>
+
+${
+isDraft
+?
+`
+<button
+class="draft-publish"
+onclick="publishDraft('${article.id}')">
+
+Publish
+
+</button>
+`
+:
+""
+}
+
+<button
+class="delete-btn"
+onclick="deleteArticle('${article.id}')">
+
+Delete
+
+</button>
+
+`;
+
+list.appendChild(div);
+
+});
+
 }
 
 
-/* DRAFTS */
-function showDrafts(){
-  loadArticles("draft");
-}
+/* EDIT ARTICLE */
 
-
-/* EDIT */
 async function editArticle(id){
 
-  const {data,error}=await db
-    .from("articles")
-    .select("*")
-    .eq("id",id)
-    .single();
+const {data,error} =
+await db
+.from("articles")
+.select("*")
+.eq("id",id)
+.single();
 
-  if(error){
+if(error){
 
-    alert(error.message);
-    return;
-  }
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
 
-  document.getElementById("editCard")
-    .style.display="block";
+return;
 
-  document.getElementById("editId").value=data.id;
-  document.getElementById("editTitle").value=data.title;
-  document.getElementById("editCategory").value=data.category;
-  document.getElementById("editExcerpt").value=data.excerpt || "";
-  document.getElementById("editBody").value=data.body;
-  document.getElementById("editAuthor").value=data.author || "Marian";
+}
 
-  document.getElementById("editImageFile").value="";
+document.getElementById(
+"editId"
+).value=data.id;
 
-  const preview=
-    document.getElementById("editImagePreview");
+document.getElementById(
+"editTitle"
+).value=data.title||"";
 
-  if(data.image_url){
+document.getElementById(
+"editCategory"
+).value=data.category||"UK";
 
-    preview.src=data.image_url;
-    preview.style.display="block";
+document.getElementById(
+"editExcerpt"
+).value=data.excerpt||"";
 
-  }else{
+document.getElementById(
+"editImage"
+).value=data.image_url||"";
 
-    preview.style.display="none";
+document.getElementById(
+"editBody"
+).value=data.body||"";
 
-  }
+document.getElementById(
+"editAuthor"
+).value=data.author||"Marian";
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+const preview =
+document.getElementById(
+"editImagePreview"
+);
+
+if(data.image_url){
+
+preview.src=data.image_url;
+
+preview.style.display="block";
+
+}else{
+
+preview.style.display="none";
+
+}
+
+document.getElementById(
+"editCard"
+).style.display="block";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 }
 
 
 /* SAVE EDIT */
-async function saveEdit(){
 
-  try{
+document
+.getElementById("saveEdit")
+.addEventListener(
+"click",
+async function(){
 
-    const ok=await checkLogin();
+const id =
+document.getElementById(
+"editId"
+).value;
 
-    if(!ok)return;
+const button =
+document.getElementById(
+"saveEdit"
+);
 
-    const id=
-      document.getElementById("editId").value;
+button.disabled=true;
 
-    let imageUrl=null;
+button.textContent=
+"Saving...";
 
-    const file=
-      document.getElementById("editImageFile").files[0];
+try{
 
-    if(file){
-      imageUrl=await uploadImage(file);
-    }
+let imageUrl =
+document.getElementById(
+"editImage"
+).value.trim();
 
-    const updateData={
+const newImage =
+document.getElementById(
+"editImageFile"
+).files[0];
 
-      title:
-        document.getElementById("editTitle").value.trim(),
+if(newImage){
 
-      category:
-        document.getElementById("editCategory").value,
+showMessage(
+"Uploading new image...",
+"info"
+);
 
-      excerpt:
-        document.getElementById("editExcerpt").value.trim(),
-
-      body:
-        document.getElementById("editBody").value.trim(),
-
-      author:
-        document.getElementById("editAuthor").value.trim() || "Marian"
-
-    };
-
-    if(imageUrl){
-      updateData.image_url=imageUrl;
-    }
-
-    const {error}=await db
-      .from("articles")
-      .update(updateData)
-      .eq("id",id);
-
-    if(error)throw error;
-
-    message(
-      "editStatus",
-      "Article updated successfully!",
-      "success"
-    );
-
-    loadArticles();
-
-  }catch(error){
-
-    message(
-      "editStatus",
-      "ERROR: "+error.message,
-      "error"
-    );
-
-  }
+imageUrl =
+await uploadImage(newImage);
 
 }
 
+const updates = {
 
-/* CANCEL EDIT */
-function cancelEdit(){
+title:
+document.getElementById(
+"editTitle"
+).value.trim(),
 
-  document.getElementById("editCard")
-    .style.display="none";
+category:
+document.getElementById(
+"editCategory"
+).value,
+
+excerpt:
+document.getElementById(
+"editExcerpt"
+).value.trim(),
+
+image_url:
+imageUrl||null,
+
+body:
+document.getElementById(
+"editBody"
+).value.trim(),
+
+author:
+document.getElementById(
+"editAuthor"
+).value.trim()
+
+};
+
+const {error} =
+await db
+.from("articles")
+.update(updates)
+.eq("id",id);
+
+if(error)throw error;
+
+showMessage(
+"Article updated successfully!",
+"success"
+);
+
+document.getElementById(
+"editCard"
+).style.display="none";
+
+loadArticles();
+
+}catch(error){
+
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Save Changes";
 
 }
+
+});
+
+
+document
+.getElementById("cancelEdit")
+.addEventListener(
+"click",
+function(){
+
+document.getElementById(
+"editCard"
+).style.display="none";
+
+});
 
 
 /* DELETE */
+
 async function deleteArticle(id){
 
-  if(!confirm(
-    "Are you sure you want to delete this article?"
-  )) return;
+const confirmed =
+confirm(
+"Are you sure you want to delete this article?"
+);
 
-  const ok=await checkLogin();
+if(!confirmed)return;
 
-  if(!ok)return;
+const {error} =
+await db
+.from("articles")
+.delete()
+.eq("id",id);
 
-  const {error}=await db
-    .from("articles")
-    .delete()
-    .eq("id",id);
+if(error){
 
-  if(error){
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
 
-    alert("ERROR: "+error.message);
-    return;
-  }
+return;
 
-  alert("Article deleted successfully.");
+}
 
-  loadArticles();
+showMessage(
+"Article deleted successfully!",
+"success"
+);
+
+loadArticles();
+
+}
+
+
+/* PUBLISH NEW ARTICLE */
+
+document
+.getElementById("articleForm")
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+const {data:sessionData} =
+await db.auth.getSession();
+
+if(
+!sessionData.session ||
+sessionData.session.user.id !== ADMIN_ID
+){
+
+window.location.href="/login.html";
+
+return;
+
+}
+
+const button =
+document.getElementById(
+"publishBtn"
+);
+
+button.disabled=true;
+
+button.textContent=
+"Publishing...";
+
+try{
+
+const title =
+document.getElementById(
+"title"
+).value.trim();
+
+const category =
+document.getElementById(
+"category"
+).value;
+
+const excerpt =
+document.getElementById(
+"excerpt"
+).value.trim();
+
+const body =
+document.getElementById(
+"body"
+).value.trim();
+
+const author =
+document.getElementById(
+"author"
+).value.trim();
+
+const imageFile =
+document.getElementById(
+"image_file"
+).files[0];
+
+let imageUrl=null;
+
+if(imageFile){
+
+showMessage(
+"Uploading image...",
+"info"
+);
+
+imageUrl =
+await uploadImage(imageFile);
+
+}
+
+const slug =
+title
+.toLowerCase()
+.replace(
+/[^a-z0-9]+/g,
+"-"
+)
+.replace(
+/^-+|-+$/g,
+""
+)
++
+"-"
++
+Date.now();
+
+const {error} =
+await db
+.from("articles")
+.insert({
+
+title:title,
+
+slug:slug,
+
+excerpt:excerpt,
+
+body:body,
+
+category:category,
+
+author:author,
+
+image_url:imageUrl,
+
+status:"published",
+
+published_at:
+new Date().toISOString()
+
+});
+
+if(error)throw error;
+
+showMessage(
+"Article published successfully!",
+"success"
+);
+
+document
+.getElementById(
+"articleForm"
+)
+.reset();
+
+document.getElementById(
+"author"
+).value="Marian";
+
+document.getElementById(
+"imagePreview"
+).style.display="none";
+
+loadArticles();
+
+}catch(error){
+
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Publish Article";
+
+}
+
+});
+
+
+/* SAVE DRAFT */
+
+document
+.getElementById("saveDraftBtn")
+.addEventListener(
+"click",
+async function(){
+
+const {data:sessionData} =
+await db.auth.getSession();
+
+if(
+!sessionData.session ||
+sessionData.session.user.id !== ADMIN_ID
+){
+
+window.location.href="/login.html";
+
+return;
+
+}
+
+const button =
+document.getElementById(
+"saveDraftBtn"
+);
+
+button.disabled=true;
+
+button.textContent=
+"Saving Draft...";
+
+try{
+
+const title =
+document.getElementById(
+"title"
+).value.trim();
+
+const category =
+document.getElementById(
+"category"
+).value;
+
+const excerpt =
+document.getElementById(
+"excerpt"
+).value.trim();
+
+const body =
+document.getElementById(
+"body"
+).value.trim();
+
+const author =
+document.getElementById(
+"author"
+).value.trim();
+
+const imageFile =
+document.getElementById(
+"image_file"
+).files[0];
+
+if(!title){
+
+throw new Error(
+"Please enter a headline before saving the draft."
+);
+
+}
+
+let imageUrl=null;
+
+if(imageFile){
+
+showMessage(
+"Uploading draft image...",
+"info"
+);
+
+imageUrl =
+await uploadImage(imageFile);
+
+}
+
+const slug =
+title
+.toLowerCase()
+.replace(
+/[^a-z0-9]+/g,
+"-"
+)
+.replace(
+/^-+|-+$/g,
+""
+)
++
+"-"
++
+Date.now();
+
+const {error} =
+await db
+.from("articles")
+.insert({
+
+title:title,
+
+slug:slug,
+
+excerpt:excerpt,
+
+body:body,
+
+category:
+category||"UK",
+
+author:
+author||"Marian",
+
+image_url:
+imageUrl,
+
+status:"draft",
+
+published_at:null
+
+});
+
+if(error)throw error;
+
+showMessage(
+"Draft saved successfully!",
+"success"
+);
+
+document
+.getElementById(
+"articleForm"
+)
+.reset();
+
+document.getElementById(
+"author"
+).value="Marian";
+
+document.getElementById(
+"imagePreview"
+).style.display="none";
+
+loadArticles();
+
+}catch(error){
+
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
+
+}finally{
+
+button.disabled=false;
+
+button.textContent=
+"Save Draft";
+
+}
+
+});
+
+
+/* PUBLISH DRAFT */
+
+async function publishDraft(id){
+
+const confirmed =
+confirm(
+"Publish this draft article?"
+);
+
+if(!confirmed)return;
+
+const {error} =
+await db
+.from("articles")
+.update({
+
+status:"published",
+
+published_at:
+new Date().toISOString()
+
+})
+.eq("id",id);
+
+if(error){
+
+showMessage(
+"ERROR: "+error.message,
+"error"
+);
+
+return;
+
+}
+
+showMessage(
+"Draft published successfully!",
+"success"
+);
+
+loadArticles();
 
 }
 
 
 /* LOGOUT */
-async function logout(){
 
-  await db.auth.signOut();
+document
+.getElementById("logoutBtn")
+.addEventListener(
+"click",
+async function(){
 
-  window.location.href="/login.html";
+await db.auth.signOut();
 
-}
+window.location.href=
+"/login.html";
+
+});
 
 
 /* START */
-checkLogin().then(ok=>{
 
-  if(ok){
-    loadArticles();
-  }
+(async function(){
 
-});
+const loggedIn =
+await checkLogin();
+
+if(loggedIn){
+
+loadArticles();
+
+}
+
+})();
 
 </script>
 
