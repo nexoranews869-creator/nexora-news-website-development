@@ -13,21 +13,9 @@ content="Read the latest news and stories from Nexora News."
 
 <meta name="author" content="Nexora News">
 
-<meta
-property="og:type"
-content="article"
->
-
-<meta
-property="og:site_name"
-content="Nexora News"
->
-
-<meta
-property="og:title"
-content="Nexora News — Article"
->
-
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Nexora News">
+<meta property="og:title" content="Nexora News — Article">
 <meta
 property="og:description"
 content="Read the latest news and stories from Nexora News."
@@ -38,10 +26,7 @@ property="og:image"
 content="https://nexora-news-website-development-9ve.vercel.app/"
 >
 
-<meta
-name="twitter:card"
-content="summary_large_image"
->
+<meta name="twitter:card" content="summary_large_image">
 
 <meta
 name="twitter:title"
@@ -53,10 +38,7 @@ name="twitter:description"
 content="Read the latest news and stories from Nexora News."
 >
 
-<meta
-name="robots"
-content="index, follow"
->
+<meta name="robots" content="index, follow">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -262,7 +244,25 @@ await db
 .single();
 
 
-if(error || !data){
+/* SHOW REAL SUPABASE ERROR */
+
+if(error){
+
+console.error("Supabase article error:",error);
+
+container.innerHTML = `
+<div class="error">
+<h2>Unable to load article</h2>
+<p>${escapeHtml(error.message)}</p>
+</div>
+`;
+
+return;
+
+}
+
+
+if(!data){
 
 container.innerHTML = `
 <div class="error">
@@ -298,7 +298,7 @@ data.title +
 
 const description =
 data.excerpt ||
-data.body ||
+data.content ||
 "Read the latest news from Nexora News.";
 
 
@@ -403,6 +403,11 @@ document.querySelector(
 'meta[name="twitter:description"]'
 );
 
+const twitterImage =
+document.querySelector(
+'meta[name="twitter:image"]'
+);
+
 
 if(twitterTitle){
 
@@ -421,13 +426,6 @@ description
 );
 
 }
-
-
-const twitterImage =
-document.querySelector(
-'meta[name="twitter:image"]'
-);
-
 
 if(twitterImage && data.image_url){
 
@@ -473,7 +471,7 @@ ${date ? " · " + date : ""}
 ${image}
 
 <div class="article-body">
-${escapeHtml(data.body)}
+${escapeHtml(data.content)}
 </div>
 
 `;
