@@ -6,6 +6,58 @@
 
 <title>Nexora News — Article</title>
 
+<meta
+name="description"
+content="Read the latest news and stories from Nexora News."
+>
+
+<meta name="author" content="Nexora News">
+
+<meta
+property="og:type"
+content="article"
+>
+
+<meta
+property="og:site_name"
+content="Nexora News"
+>
+
+<meta
+property="og:title"
+content="Nexora News — Article"
+>
+
+<meta
+property="og:description"
+content="Read the latest news and stories from Nexora News."
+>
+
+<meta
+property="og:image"
+content="https://nexora-news-website-development-9ve.vercel.app/"
+>
+
+<meta
+name="twitter:card"
+content="summary_large_image"
+>
+
+<meta
+name="twitter:title"
+content="Nexora News — Article"
+>
+
+<meta
+name="twitter:description"
+content="Read the latest news and stories from Nexora News."
+>
+
+<meta
+name="robots"
+content="index, follow"
+>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -133,7 +185,6 @@ NEXORA NEWS
 
 </header>
 
-
 <main id="article">
 
 <div class="loading">
@@ -141,7 +192,6 @@ Loading article...
 </div>
 
 </main>
-
 
 <script>
 
@@ -239,6 +289,158 @@ year:"numeric"
 : "";
 
 
+/* DYNAMIC SEO */
+
+document.title =
+data.title +
+" | Nexora News";
+
+
+const description =
+data.excerpt ||
+data.body ||
+"Read the latest news from Nexora News.";
+
+
+const existingDescription =
+document.querySelector(
+'meta[name="description"]'
+);
+
+if(existingDescription){
+
+existingDescription.setAttribute(
+"content",
+description
+);
+
+}
+
+
+const canonicalUrl =
+window.location.href;
+
+
+let canonical =
+document.querySelector(
+'link[rel="canonical"]'
+);
+
+
+if(!canonical){
+
+canonical =
+document.createElement("link");
+
+canonical.rel="canonical";
+
+document.head.appendChild(
+canonical
+);
+
+}
+
+canonical.href =
+canonicalUrl;
+
+
+/* OPEN GRAPH */
+
+const ogTitle =
+document.querySelector(
+'meta[property="og:title"]'
+);
+
+const ogDescription =
+document.querySelector(
+'meta[property="og:description"]'
+);
+
+const ogImage =
+document.querySelector(
+'meta[property="og:image"]'
+);
+
+
+if(ogTitle){
+
+ogTitle.setAttribute(
+"content",
+data.title
+);
+
+}
+
+if(ogDescription){
+
+ogDescription.setAttribute(
+"content",
+description
+);
+
+}
+
+
+if(ogImage && data.image_url){
+
+ogImage.setAttribute(
+"content",
+data.image_url
+);
+
+}
+
+
+/* TWITTER */
+
+const twitterTitle =
+document.querySelector(
+'meta[name="twitter:title"]'
+);
+
+const twitterDescription =
+document.querySelector(
+'meta[name="twitter:description"]'
+);
+
+
+if(twitterTitle){
+
+twitterTitle.setAttribute(
+"content",
+data.title
+);
+
+}
+
+if(twitterDescription){
+
+twitterDescription.setAttribute(
+"content",
+description
+);
+
+}
+
+
+const twitterImage =
+document.querySelector(
+'meta[name="twitter:image"]'
+);
+
+
+if(twitterImage && data.image_url){
+
+twitterImage.setAttribute(
+"content",
+data.image_url
+);
+
+}
+
+
+/* ARTICLE IMAGE */
+
 const image =
 data.image_url
 ? `
@@ -250,6 +452,8 @@ alt="${escapeHtml(data.title)}"
 `
 : "";
 
+
+/* ARTICLE CONTENT */
 
 container.innerHTML = `
 
