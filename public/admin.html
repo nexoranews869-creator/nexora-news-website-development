@@ -3,310 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora News — Admin</title>
+<title>Nexora News Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f3f4f6;
-color:#111827
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f4f6;
+  color:#111827;
 }
-
 header{
-background:#111827;
-color:white;
-padding:18px 22px;
-display:flex;
-justify-content:space-between;
-align-items:center
+  background:#111827;
+  color:white;
+  padding:18px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-
-header h1{
-margin:0;
-font-size:21px
+header h1{margin:0;font-size:22px}
+header button{
+  background:#dc2626;
+  color:white;
+  border:0;
+  padding:10px 16px;
+  border-radius:6px;
+  cursor:pointer;
 }
-
-button{cursor:pointer}
-
-.logout{
-background:#dc2626;
-color:white;
-border:0;
-padding:10px 15px;
-border-radius:6px
+.container{
+  max-width:1000px;
+  margin:25px auto;
+  padding:0 15px;
 }
-
-main{
-max-width:1100px;
-margin:25px auto;
-padding:0 15px
-}
-
 .card{
-background:white;
-padding:24px;
-margin-bottom:25px;
-border-radius:12px;
-box-shadow:0 3px 14px rgba(0,0,0,.08)
+  background:white;
+  padding:22px;
+  border-radius:10px;
+  margin-bottom:22px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
-
 h2{margin-top:0}
-
 label{
-display:block;
-font-weight:bold;
-margin:16px 0 7px
+  display:block;
+  font-weight:bold;
+  margin-top:15px;
+  margin-bottom:6px;
 }
-
-input,textarea,select{
-width:100%;
-padding:12px;
-border:1px solid #d1d5db;
-border-radius:7px;
-font-size:15px
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #d1d5db;
+  border-radius:6px;
+  font-size:15px;
 }
-
-textarea{
-min-height:160px;
-resize:vertical
+textarea{min-height:180px;resize:vertical}
+.buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
 }
-
-input[type=file]{
-background:#f9fafb
+button{
+  border:0;
+  border-radius:6px;
+  padding:11px 17px;
+  cursor:pointer;
+  font-weight:bold;
 }
-
-.preview{
-display:none;
-width:100%;
-max-height:320px;
-object-fit:cover;
-margin-top:12px;
-border-radius:8px;
-border:1px solid #e5e7eb
+.publish{background:#dc2626;color:white}
+.draft{background:#374151;color:white}
+.cancel{background:#e5e7eb;color:#111827}
+.edit{background:#2563eb;color:white}
+.delete{background:#b91c1c;color:white}
+.status{
+  margin-top:15px;
+  padding:12px;
+  border-radius:6px;
+  display:none;
 }
-
-.publish,.save{
-margin-top:20px;
-padding:13px 18px;
-border:0;
-border-radius:7px;
-color:white;
-font-weight:bold
-}
-
-.publish{
-background:#b91c1c;
-width:100%
-}
-
-.save{background:#2563eb}
-
-.cancel{
-margin-top:20px;
-margin-left:8px;
-padding:13px 18px;
-border:0;
-border-radius:7px;
-background:#6b7280;
-color:white;
-font-weight:bold
-}
-
+.success{background:#dcfce7;color:#166534}
+.error{background:#fee2e2;color:#991b1b}
 .article{
-border:1px solid #e5e7eb;
-border-radius:9px;
-padding:15px;
-margin-top:14px
+  border:1px solid #e5e7eb;
+  padding:16px;
+  border-radius:8px;
+  margin-top:12px;
 }
-
-.article h3{
-margin:0 0 7px
-}
-
+.article h3{margin:0 0 8px}
 .meta{
-color:#6b7280;
-font-size:13px;
-margin-bottom:12px
+  color:#6b7280;
+  font-size:13px;
+  margin-bottom:10px;
 }
-
-.article-thumb{
-width:100%;
-max-width:420px;
-max-height:230px;
-object-fit:cover;
-border-radius:8px;
-margin:8px 0 12px
+.article-buttons{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
 }
-
-.edit-btn{
-background:#2563eb;
-color:white;
-border:0;
-padding:9px 14px;
-border-radius:6px
+.thumb{
+  width:100px;
+  height:65px;
+  object-fit:cover;
+  border-radius:5px;
+  margin-bottom:8px;
 }
-
-.delete-btn{
-background:#dc2626;
-color:white;
-border:0;
-padding:9px 14px;
-border-radius:6px;
-margin-left:6px
+.preview{
+  max-width:300px;
+  max-height:200px;
+  margin-top:10px;
+  border-radius:8px;
+  display:none;
 }
-
-#message{
-display:none;
-margin-top:15px;
-padding:12px;
-border-radius:7px
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:5px;
+  font-size:12px;
+  font-weight:bold;
 }
-
-.success{
-display:block!important;
-background:#dcfce7;
-color:#166534
-}
-
-.error{
-display:block!important;
-background:#fee2e2;
-color:#991b1b
-}
-
-.info{
-display:block!important;
-background:#dbeafe;
-color:#1e40af
-}
-
-#editCard{display:none}
-
-@media(max-width:600px){
-header h1{font-size:17px}
-.card{padding:18px}
-}
+.badge-draft{background:#fef3c7;color:#92400e}
+.badge-published{background:#dcfce7;color:#166534}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>NEXORA NEWS — ADMIN</h1>
-<button class="logout" id="logoutBtn">Logout</button>
+  <h1>NEXORA NEWS — Admin</h1>
+  <button onclick="logout()">Logout</button>
 </header>
 
-<main>
+<div class="container">
 
-<section class="card">
+  <!-- NEW ARTICLE -->
+  <div class="card">
+    <h2>New Article</h2>
 
-<h2>Publish New Article</h2>
+    <label>Headline</label>
+    <input id="title" placeholder="Enter article headline">
 
-<form id="articleForm">
+    <label>Category</label>
+    <select id="category">
+      <option value="London">London</option>
+      <option value="UK">UK</option>
+      <option value="World">World</option>
+      <option value="Business">Business</option>
+      <option value="Technology">Technology</option>
+      <option value="Sports">Sports</option>
+      <option value="Video">Video</option>
+    </select>
 
-<label>Headline</label>
-<input id="title" required>
+    <label>Short Description</label>
+    <textarea id="excerpt" style="min-height:100px"
+      placeholder="Short description of the article"></textarea>
 
-<label>Category</label>
-<select id="category" required>
-<option value="">Select category</option>
-<option>London</option>
-<option>UK</option>
-<option>World</option>
-<option>Business</option>
-<option>Technology</option>
-<option>Sports</option>
-<option>Video</option>
-</select>
+    <label>Article Image</label>
+    <input id="image_file" type="file" accept="image/*">
+    <img id="imagePreview" class="preview">
 
-<label>Short Description</label>
-<textarea id="excerpt" required></textarea>
+    <label>Article Body</label>
+    <textarea id="body"
+      placeholder="Write the full article here..."></textarea>
 
-<label>Article Image</label>
-<input id="image_file" type="file" accept="image/*">
+    <label>Author</label>
+    <input id="author" value="Marian">
 
-<img id="imagePreview" class="preview" alt="Image preview">
+    <div class="buttons">
+      <button class="draft" onclick="saveDraft()">Save Draft</button>
+      <button class="publish" onclick="publishArticle()">Publish Article</button>
+    </div>
 
-<label>Article Body</label>
-<textarea id="body" required></textarea>
-
-<label>Author</label>
-<input id="author" value="Marian" required>
-
-<button class="publish" id="publishBtn" type="submit">
-Publish Article
-</button>
-
-</form>
-
-<div id="message"></div>
-
-</section>
+    <div id="newStatus" class="status"></div>
+  </div>
 
 
-<section class="card" id="editCard">
+  <!-- EDIT ARTICLE -->
+  <div class="card" id="editCard" style="display:none">
+    <h2>Edit Article</h2>
 
-<h2>Edit Article</h2>
+    <input type="hidden" id="editId">
 
-<input type="hidden" id="editId">
+    <label>Headline</label>
+    <input id="editTitle">
 
-<label>Headline</label>
-<input id="editTitle">
+    <label>Category</label>
+    <select id="editCategory">
+      <option value="London">London</option>
+      <option value="UK">UK</option>
+      <option value="World">World</option>
+      <option value="Business">Business</option>
+      <option value="Technology">Technology</option>
+      <option value="Sports">Sports</option>
+      <option value="Video">Video</option>
+    </select>
 
-<label>Category</label>
-<select id="editCategory">
-<option>London</option>
-<option>UK</option>
-<option>World</option>
-<option>Business</option>
-<option>Technology</option>
-<option>Sports</option>
-<option>Video</option>
-</select>
+    <label>Short Description</label>
+    <textarea id="editExcerpt" style="min-height:100px"></textarea>
 
-<label>Short Description</label>
-<textarea id="editExcerpt"></textarea>
+    <label>Replace Image</label>
+    <input id="editImageFile" type="file" accept="image/*">
+    <img id="editImagePreview" class="preview">
 
-<label>Article Image</label>
-<input id="editImageFile" type="file" accept="image/*">
+    <label>Article Body</label>
+    <textarea id="editBody"></textarea>
 
-<img id="editImagePreview" class="preview" alt="Current image">
+    <label>Author</label>
+    <input id="editAuthor">
 
-<input type="hidden" id="editImage">
+    <div class="buttons">
+      <button class="edit" onclick="saveEdit()">Save Changes</button>
+      <button class="cancel" onclick="cancelEdit()">Cancel</button>
+    </div>
 
-<label>Article Body</label>
-<textarea id="editBody"></textarea>
-
-<label>Author</label>
-<input id="editAuthor">
-
-<button class="save" id="saveEdit">
-Save Changes
-</button>
-
-<button class="cancel" id="cancelEdit">
-Cancel
-</button>
-
-</section>
+    <div id="editStatus" class="status"></div>
+  </div>
 
 
-<section class="card">
+  <!-- ARTICLES -->
+  <div class="card">
+    <h2>Articles</h2>
 
-<h2>Published Articles</h2>
+    <div class="buttons">
+      <button class="cancel" onclick="showPublished()">Published Articles</button>
+      <button class="draft" onclick="showDrafts()">Draft Articles</button>
+    </div>
 
-<div id="articlesList">
-Loading articles...
+    <div id="articlesList">Loading...</div>
+  </div>
+
 </div>
-
-</section>
-
-</main>
 
 
 <script>
@@ -315,580 +242,608 @@ const SUPABASE_URL =
 "https://qleoqpmxvmqcythacszw.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
-
-const db = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
+"sb_publishable_-rvHVSnw6yw0_Zb-jxozV_Fma9NccJ";
 
 const ADMIN_ID =
 "280627ab-6dfb-4f45-ae11-b5fc14288eb5";
 
 const BUCKET_NAME = "news-images";
 
-const message =
-document.getElementById("message");
-
-
-function showMessage(text,type){
-
-message.textContent=text;
-message.className=type;
-
-}
-
-
-function escapeHtml(value){
-
-return String(value||"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
-
-async function checkLogin(){
-
-const {data,error}=await db.auth.getSession();
-
-if(error || !data.session){
-
-window.location.href="/login.html";
-return false;
-
-}
-
-if(data.session.user.id!==ADMIN_ID){
-
-await db.auth.signOut();
-
-window.location.href="/login.html";
-return false;
-
-}
-
-return true;
-
-}
-
-
-/* IMAGE UPLOAD */
-
-async function uploadImage(file){
-
-if(!file) return null;
-
-if(!file.type.startsWith("image/")){
-
-throw new Error("Please select an image file.");
-
-}
-
-if(file.size>10*1024*1024){
-
-throw new Error(
-"Image is too large. Please use an image under 10 MB."
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
 );
 
+
+/* LOGIN CHECK */
+async function checkLogin(){
+
+  const {data:{session}} =
+    await db.auth.getSession();
+
+  if(!session){
+    window.location.href="/login.html";
+    return false;
+  }
+
+  if(session.user.id !== ADMIN_ID){
+    await db.auth.signOut();
+    window.location.href="/login.html";
+    return false;
+  }
+
+  return true;
 }
 
-const cleanName=
-file.name
-.toLowerCase()
-.replace(/[^a-z0-9.]+/g,"-");
 
-const filePath=
-ADMIN_ID+
-"/"+
-Date.now()+
-"-"+
-cleanName;
+/* ESCAPE HTML */
+function esc(value){
 
-const {error}=await db.storage
-.from(BUCKET_NAME)
-.upload(filePath,file,{
-cacheControl:"3600",
-upsert:false
-});
+  if(value === null || value === undefined)
+    return "";
 
-if(error) throw error;
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
-const {data}=db.storage
-.from(BUCKET_NAME)
-.getPublicUrl(filePath);
 
-return data.publicUrl;
+/* SLUG */
+function makeSlug(title){
 
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g,"")
+    .replace(/\s+/g,"-")
+    .replace(/-+/g,"-")
+    + "-" + Date.now();
 }
 
 
 /* IMAGE PREVIEW */
-
 document.getElementById("image_file")
 .addEventListener("change",function(){
 
-const file=this.files[0];
+  const file=this.files[0];
 
-const preview=
-document.getElementById("imagePreview");
+  if(!file)return;
 
-if(!file){
+  const preview =
+    document.getElementById("imagePreview");
 
-preview.style.display="none";
-return;
-
-}
-
-preview.src=URL.createObjectURL(file);
-preview.style.display="block";
-
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
 });
 
 
 document.getElementById("editImageFile")
 .addEventListener("change",function(){
 
-const file=this.files[0];
+  const file=this.files[0];
 
-const preview=
-document.getElementById("editImagePreview");
+  if(!file)return;
 
-if(!file)return;
+  const preview =
+    document.getElementById("editImagePreview");
 
-preview.src=URL.createObjectURL(file);
-preview.style.display="block";
-
+  preview.src=URL.createObjectURL(file);
+  preview.style.display="block";
 });
+
+
+/* UPLOAD IMAGE */
+async function uploadImage(file){
+
+  if(!file)return null;
+
+  if(!file.type.startsWith("image/")){
+    throw new Error("Please select an image file.");
+  }
+
+  if(file.size > 10 * 1024 * 1024){
+    throw new Error("Image must be less than 10MB.");
+  }
+
+  const cleanName =
+    file.name.replace(/[^a-zA-Z0-9.-]/g,"-");
+
+  const path =
+    ADMIN_ID + "/" +
+    Date.now() + "-" +
+    cleanName;
+
+  const {error} =
+    await db.storage
+      .from(BUCKET_NAME)
+      .upload(path,file,{
+        cacheControl:"3600",
+        upsert:false
+      });
+
+  if(error) throw error;
+
+  const {data} =
+    db.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+
+/* FORM DATA */
+function getFormData(){
+
+  return {
+    title:document.getElementById("title").value.trim(),
+    category:document.getElementById("category").value,
+    excerpt:document.getElementById("excerpt").value.trim(),
+    body:document.getElementById("body").value.trim(),
+    author:document.getElementById("author").value.trim() || "Marian"
+  };
+}
+
+
+/* MESSAGE */
+function message(id,text,type){
+
+  const box=document.getElementById(id);
+
+  box.textContent=text;
+  box.className="status "+type;
+  box.style.display="block";
+}
+
+
+/* SAVE DRAFT */
+async function saveDraft(){
+
+  try{
+
+    const ok=await checkLogin();
+
+    if(!ok)return;
+
+    const form=getFormData();
+
+    if(!form.title || !form.body){
+
+      message(
+        "newStatus",
+        "Headline and Article Body are required.",
+        "error"
+      );
+
+      return;
+    }
+
+    message(
+      "newStatus",
+      "Saving draft...",
+      "success"
+    );
+
+    const file =
+      document.getElementById("image_file").files[0];
+
+    let imageUrl=null;
+
+    if(file){
+      imageUrl=await uploadImage(file);
+    }
+
+    const {error}=await db
+      .from("articles")
+      .insert([{
+        title:form.title,
+        slug:makeSlug(form.title),
+        excerpt:form.excerpt,
+        body:form.body,
+        category:form.category,
+        author:form.author,
+        image_url:imageUrl,
+        status:"draft",
+        published_at:null
+      }]);
+
+    if(error)throw error;
+
+    message(
+      "newStatus",
+      "Draft saved successfully!",
+      "success"
+    );
+
+    clearNewForm();
+    loadArticles();
+
+  }catch(error){
+
+    message(
+      "newStatus",
+      "ERROR: "+error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/* PUBLISH */
+async function publishArticle(){
+
+  try{
+
+    const ok=await checkLogin();
+
+    if(!ok)return;
+
+    const form=getFormData();
+
+    if(!form.title || !form.body){
+
+      message(
+        "newStatus",
+        "Headline and Article Body are required.",
+        "error"
+      );
+
+      return;
+    }
+
+    message(
+      "newStatus",
+      "Publishing article...",
+      "success"
+    );
+
+    const file =
+      document.getElementById("image_file").files[0];
+
+    let imageUrl=null;
+
+    if(file){
+      imageUrl=await uploadImage(file);
+    }
+
+    const {error}=await db
+      .from("articles")
+      .insert([{
+        title:form.title,
+        slug:makeSlug(form.title),
+        excerpt:form.excerpt,
+        body:form.body,
+        category:form.category,
+        author:form.author,
+        image_url:imageUrl,
+        status:"published",
+        published_at:new Date().toISOString()
+      }]);
+
+    if(error)throw error;
+
+    message(
+      "newStatus",
+      "Article published successfully!",
+      "success"
+    );
+
+    clearNewForm();
+    loadArticles();
+
+  }catch(error){
+
+    message(
+      "newStatus",
+      "ERROR: "+error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+/* CLEAR NEW FORM */
+function clearNewForm(){
+
+  document.getElementById("title").value="";
+  document.getElementById("excerpt").value="";
+  document.getElementById("body").value="";
+  document.getElementById("image_file").value="";
+
+  document.getElementById("imagePreview").style.display="none";
+
+}
 
 
 /* LOAD ARTICLES */
+async function loadArticles(mode="all"){
 
-async function loadArticles(){
+  const ok=await checkLogin();
 
-const {data,error}=await db
-.from("articles")
-.select("*")
-.order("published_at",{ascending:false});
+  if(!ok)return;
 
-const list=
-document.getElementById("articlesList");
+  let query=db
+    .from("articles")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-if(error){
+  if(mode==="published"){
+    query=query.eq("status","published");
+  }
 
-list.innerHTML=
-"<p>ERROR: "+
-escapeHtml(error.message)+
-"</p>";
+  if(mode==="draft"){
+    query=query.eq("status","draft");
+  }
 
-return;
+  const {data,error}=await query;
+
+  const list=
+    document.getElementById("articlesList");
+
+  if(error){
+
+    list.innerHTML=
+      "<p>ERROR: "+esc(error.message)+"</p>";
+
+    return;
+  }
+
+  if(!data || data.length===0){
+
+    list.innerHTML="<p>No articles found.</p>";
+
+    return;
+  }
+
+  list.innerHTML=data.map(article=>{
+
+    const badge =
+      article.status==="draft"
+      ? `<span class="badge badge-draft">DRAFT</span>`
+      : `<span class="badge badge-published">PUBLISHED</span>`;
+
+    const image =
+      article.image_url
+      ? `<img class="thumb" src="${esc(article.image_url)}">`
+      : "";
+
+    return `
+      <div class="article">
+
+        ${image}
+
+        <h3>${esc(article.title)}</h3>
+
+        <div class="meta">
+          ${esc(article.category)}
+          · ${esc(article.author)}
+          · ${badge}
+        </div>
+
+        <div>
+          ${esc(article.excerpt || "")}
+        </div>
+
+        <div class="article-buttons">
+
+          <button
+            class="edit"
+            onclick="editArticle('${article.id}')">
+            Edit
+          </button>
+
+          <button
+            class="delete"
+            onclick="deleteArticle('${article.id}')">
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
 
 }
 
-if(!data || data.length===0){
 
-list.innerHTML="<p>No articles found.</p>";
-
-return;
-
-}
-
-list.innerHTML="";
-
-data.forEach(article=>{
-
-const div=document.createElement("div");
-
-div.className="article";
-
-const image=
-article.image_url
-? `<img class="article-thumb"
-src="${escapeHtml(article.image_url)}"
-alt="Article image">`
-:"";
-
-div.innerHTML=`
-
-<h3>${escapeHtml(article.title)}</h3>
-
-<div class="meta">
-${escapeHtml(article.category||"")}
-·
-${escapeHtml(article.author||"")}
-</div>
-
-${image}
-
-<button class="edit-btn"
-onclick="editArticle('${article.id}')">
-Edit
-</button>
-
-<button class="delete-btn"
-onclick="deleteArticle('${article.id}')">
-Delete
-</button>
-
-`;
-
-list.appendChild(div);
-
-});
-
+/* PUBLISHED */
+function showPublished(){
+  loadArticles("published");
 }
 
 
-/* EDIT ARTICLE */
+/* DRAFTS */
+function showDrafts(){
+  loadArticles("draft");
+}
 
+
+/* EDIT */
 async function editArticle(id){
 
-const {data,error}=await db
-.from("articles")
-.select("*")
-.eq("id",id)
-.single();
+  const {data,error}=await db
+    .from("articles")
+    .select("*")
+    .eq("id",id)
+    .single();
 
-if(error){
+  if(error){
 
-showMessage(
-"ERROR: "+error.message,
-"error"
-);
+    alert(error.message);
+    return;
+  }
 
-return;
+  document.getElementById("editCard")
+    .style.display="block";
 
-}
+  document.getElementById("editId").value=data.id;
+  document.getElementById("editTitle").value=data.title;
+  document.getElementById("editCategory").value=data.category;
+  document.getElementById("editExcerpt").value=data.excerpt || "";
+  document.getElementById("editBody").value=data.body;
+  document.getElementById("editAuthor").value=data.author || "Marian";
 
-document.getElementById("editId").value=data.id;
+  document.getElementById("editImageFile").value="";
 
-document.getElementById("editTitle").value=
-data.title||"";
+  const preview=
+    document.getElementById("editImagePreview");
 
-document.getElementById("editCategory").value=
-data.category||"UK";
+  if(data.image_url){
 
-document.getElementById("editExcerpt").value=
-data.excerpt||"";
+    preview.src=data.image_url;
+    preview.style.display="block";
 
-document.getElementById("editImage").value=
-data.image_url||"";
+  }else{
 
-document.getElementById("editBody").value=
-data.body||"";
+    preview.style.display="none";
 
-document.getElementById("editAuthor").value=
-data.author||"Marian";
+  }
 
-const preview=
-document.getElementById("editImagePreview");
-
-if(data.image_url){
-
-preview.src=data.image_url;
-preview.style.display="block";
-
-}else{
-
-preview.style.display="none";
-
-}
-
-document.getElementById("editCard").style.display="block";
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
 }
 
 
 /* SAVE EDIT */
+async function saveEdit(){
 
-document.getElementById("saveEdit")
-.addEventListener("click",async function(){
+  try{
 
-const id=
-document.getElementById("editId").value;
+    const ok=await checkLogin();
 
-const button=
-document.getElementById("saveEdit");
+    if(!ok)return;
 
-button.disabled=true;
-button.textContent="Saving...";
+    const id=
+      document.getElementById("editId").value;
 
-try{
+    let imageUrl=null;
 
-let imageUrl=
-document.getElementById("editImage").value.trim();
+    const file=
+      document.getElementById("editImageFile").files[0];
 
-const newImage=
-document.getElementById("editImageFile").files[0];
+    if(file){
+      imageUrl=await uploadImage(file);
+    }
 
-if(newImage){
+    const updateData={
 
-showMessage(
-"Uploading new image...",
-"info"
-);
+      title:
+        document.getElementById("editTitle").value.trim(),
 
-imageUrl=
-await uploadImage(newImage);
+      category:
+        document.getElementById("editCategory").value,
 
-}
+      excerpt:
+        document.getElementById("editExcerpt").value.trim(),
 
-const updates={
+      body:
+        document.getElementById("editBody").value.trim(),
 
-title:
-document.getElementById("editTitle").value.trim(),
+      author:
+        document.getElementById("editAuthor").value.trim() || "Marian"
 
-category:
-document.getElementById("editCategory").value,
+    };
 
-excerpt:
-document.getElementById("editExcerpt").value.trim(),
+    if(imageUrl){
+      updateData.image_url=imageUrl;
+    }
 
-image_url:imageUrl||null,
+    const {error}=await db
+      .from("articles")
+      .update(updateData)
+      .eq("id",id);
 
-body:
-document.getElementById("editBody").value.trim(),
+    if(error)throw error;
 
-author:
-document.getElementById("editAuthor").value.trim()
+    message(
+      "editStatus",
+      "Article updated successfully!",
+      "success"
+    );
 
-};
+    loadArticles();
 
-const {error}=await db
-.from("articles")
-.update(updates)
-.eq("id",id);
+  }catch(error){
 
-if(error)throw error;
+    message(
+      "editStatus",
+      "ERROR: "+error.message,
+      "error"
+    );
 
-showMessage(
-"Article updated successfully!",
-"success"
-);
-
-document.getElementById("editCard").style.display="none";
-
-loadArticles();
-
-}catch(error){
-
-showMessage(
-"ERROR: "+error.message,
-"error"
-);
-
-}finally{
-
-button.disabled=false;
-button.textContent="Save Changes";
+  }
 
 }
 
-});
 
+/* CANCEL EDIT */
+function cancelEdit(){
 
-document.getElementById("cancelEdit")
-.addEventListener("click",function(){
+  document.getElementById("editCard")
+    .style.display="none";
 
-document.getElementById("editCard").style.display="none";
-
-});
+}
 
 
 /* DELETE */
-
 async function deleteArticle(id){
 
-const confirmed=
-confirm(
-"Are you sure you want to delete this article?"
-);
+  if(!confirm(
+    "Are you sure you want to delete this article?"
+  )) return;
 
-if(!confirmed)return;
+  const ok=await checkLogin();
 
-const {error}=await db
-.from("articles")
-.delete()
-.eq("id",id);
+  if(!ok)return;
 
-if(error){
+  const {error}=await db
+    .from("articles")
+    .delete()
+    .eq("id",id);
 
-showMessage(
-"ERROR: "+error.message,
-"error"
-);
+  if(error){
 
-return;
+    alert("ERROR: "+error.message);
+    return;
+  }
 
-}
+  alert("Article deleted successfully.");
 
-showMessage(
-"Article deleted successfully!",
-"success"
-);
-
-loadArticles();
+  loadArticles();
 
 }
 
 
 /* LOGOUT */
+async function logout(){
 
-document.getElementById("logoutBtn")
-.addEventListener("click",async function(){
+  await db.auth.signOut();
 
-await db.auth.signOut();
-
-window.location.href="/login.html";
-
-});
-
-
-/* PUBLISH */
-
-document.getElementById("articleForm")
-.addEventListener("submit",async function(e){
-
-e.preventDefault();
-
-const {data:sessionData}=
-await db.auth.getSession();
-
-if(
-!sessionData.session ||
-sessionData.session.user.id!==ADMIN_ID
-){
-
-window.location.href="/login.html";
-return;
+  window.location.href="/login.html";
 
 }
-
-const button=
-document.getElementById("publishBtn");
-
-button.disabled=true;
-button.textContent="Publishing...";
-
-try{
-
-const title=
-document.getElementById("title").value.trim();
-
-const category=
-document.getElementById("category").value;
-
-const excerpt=
-document.getElementById("excerpt").value.trim();
-
-const body=
-document.getElementById("body").value.trim();
-
-const author=
-document.getElementById("author").value.trim();
-
-const imageFile=
-document.getElementById("image_file").files[0];
-
-let imageUrl=null;
-
-if(imageFile){
-
-showMessage(
-"Uploading image...",
-"info"
-);
-
-imageUrl=
-await uploadImage(imageFile);
-
-}
-
-const slug=
-title
-.toLowerCase()
-.replace(/[^a-z0-9]+/g,"-")
-.replace(/^-+|-+$/g,"")
-+"-"+Date.now();
-
-const {error}=await db
-.from("articles")
-.insert({
-
-title:title,
-
-slug:slug,
-
-excerpt:excerpt,
-
-body:body,
-
-category:category,
-
-author:author,
-
-image_url:imageUrl,
-
-status:"published",
-
-published_at:
-new Date().toISOString()
-
-});
-
-if(error)throw error;
-
-showMessage(
-"Article published successfully!",
-"success"
-);
-
-document.getElementById("articleForm").reset();
-
-document.getElementById("author").value="Marian";
-
-document.getElementById("imagePreview").style.display="none";
-
-loadArticles();
-
-}catch(error){
-
-showMessage(
-"ERROR: "+error.message,
-"error"
-);
-
-}finally{
-
-button.disabled=false;
-button.textContent="Publish Article";
-
-}
-
-});
 
 
 /* START */
+checkLogin().then(ok=>{
 
-(async function(){
+  if(ok){
+    loadArticles();
+  }
 
-const loggedIn=await checkLogin();
-
-if(loggedIn){
-
-loadArticles();
-
-}
-
-})();
+});
 
 </script>
 
