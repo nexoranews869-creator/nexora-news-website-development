@@ -15,7 +15,6 @@ content="Read the latest news and stories from Nexora News.">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Nexora News">
-
 <meta property="og:title" content="Nexora News — Article">
 <meta property="og:description"
 content="Read the latest news and stories from Nexora News.">
@@ -35,79 +34,245 @@ box-sizing:border-box;
 
 body{
 margin:0;
-font-family:Arial,sans-serif;
-background:#fff;
+font-family:Arial,Helvetica,sans-serif;
+background:#f5f6f7;
 color:#111827;
 }
+
+/* HEADER */
 
 header{
 background:#111827;
 color:white;
-padding:18px 22px;
+border-bottom:4px solid #b91c1c;
 }
 
 .header-inner{
-max-width:1100px;
+max-width:1150px;
 margin:auto;
+padding:18px 22px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:20px;
 }
 
 .logo{
-font-size:22px;
-font-weight:bold;
+font-size:24px;
+font-weight:800;
+letter-spacing:.5px;
 }
 
 .back{
 color:white;
 text-decoration:none;
 font-size:14px;
+font-weight:bold;
 }
 
+.back:hover{
+text-decoration:underline;
+}
+
+/* ARTICLE */
+
 main{
-max-width:900px;
+max-width:1000px;
 margin:35px auto;
 padding:0 18px;
 }
 
+.article-card{
+background:white;
+border-radius:12px;
+padding:30px;
+box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+
 .category{
-color:#b91c1c;
-font-size:14px;
-font-weight:bold;
+display:inline-block;
+background:#b91c1c;
+color:white;
+font-size:12px;
+font-weight:800;
+padding:7px 11px;
+border-radius:4px;
 text-transform:uppercase;
-margin-bottom:12px;
+margin-bottom:15px;
+}
+
+.breaking{
+display:inline-block;
+background:#dc2626;
+color:white;
+font-size:12px;
+font-weight:900;
+padding:7px 11px;
+border-radius:4px;
+margin-left:6px;
+margin-bottom:15px;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+0%,100%{opacity:1;}
+50%{opacity:.65;}
 }
 
 h1{
-font-size:44px;
-line-height:1.1;
-margin:0 0 15px;
+font-size:46px;
+line-height:1.08;
+margin:5px 0 16px;
+color:#111827;
+}
+
+.excerpt{
+font-size:20px;
+line-height:1.5;
+color:#4b5563;
+margin:0 0 18px;
+font-weight:500;
 }
 
 .meta{
 color:#6b7280;
 font-size:14px;
-margin-bottom:25px;
+margin-bottom:22px;
+border-bottom:1px solid #e5e7eb;
+padding-bottom:18px;
 }
 
 .hero{
 width:100%;
-max-height:520px;
+max-height:560px;
 object-fit:cover;
 border-radius:10px;
-margin-bottom:30px;
+display:block;
+margin:0 0 28px;
 }
 
 .article-body{
 font-size:19px;
-line-height:1.75;
+line-height:1.8;
+color:#1f2937;
 white-space:pre-wrap;
 }
 
+/* SHARE */
+
+.share-box{
+margin-top:30px;
+padding-top:22px;
+border-top:1px solid #e5e7eb;
+}
+
+.share-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.share-buttons{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.share-btn{
+border:0;
+padding:10px 15px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+font-size:14px;
+}
+
+.copy-btn{
+background:#111827;
+color:white;
+}
+
+.whatsapp-btn{
+background:#16a34a;
+color:white;
+}
+
+.facebook-btn{
+background:#2563eb;
+color:white;
+}
+
+.twitter-btn{
+background:#000;
+color:white;
+}
+
+/* RELATED */
+
+.related{
+margin-top:35px;
+}
+
+.related h2{
+font-size:24px;
+border-left:5px solid #b91c1c;
+padding-left:10px;
+margin-bottom:18px;
+}
+
+.related-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
+
+.related-card{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.06);
+text-decoration:none;
+color:#111827;
+transition:.2s;
+}
+
+.related-card:hover{
+transform:translateY(-3px);
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.related-image{
+width:100%;
+height:150px;
+object-fit:cover;
+background:#e5e7eb;
+}
+
+.related-content{
+padding:14px;
+}
+
+.related-category{
+font-size:11px;
+font-weight:bold;
+color:#b91c1c;
+text-transform:uppercase;
+margin-bottom:7px;
+}
+
+.related-title{
+font-size:17px;
+font-weight:bold;
+line-height:1.3;
+}
+
+/* LOADING / ERROR */
+
 .loading,
 .error{
-padding:30px;
+background:white;
+padding:35px;
+border-radius:10px;
 text-align:center;
 }
 
@@ -115,18 +280,74 @@ text-align:center;
 color:#b91c1c;
 }
 
-@media(max-width:600px){
+.error p{
+color:#6b7280;
+}
+
+/* FOOTER */
+
+footer{
+margin-top:40px;
+background:#111827;
+color:#9ca3af;
+text-align:center;
+padding:25px 15px;
+font-size:13px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.header-inner{
+padding:15px;
+}
+
+.logo{
+font-size:19px;
+}
+
+main{
+margin:20px auto;
+padding:0 10px;
+}
+
+.article-card{
+padding:20px 16px;
+}
 
 h1{
-font-size:31px;
+font-size:32px;
+}
+
+.excerpt{
+font-size:17px;
 }
 
 .article-body{
 font-size:17px;
+line-height:1.7;
 }
 
-.logo{
-font-size:18px;
+.hero{
+border-radius:7px;
+}
+
+.related-grid{
+grid-template-columns:1fr;
+}
+
+.related-image{
+height:190px;
+}
+
+.share-buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+}
+
+.share-btn{
+width:100%;
 }
 
 }
@@ -153,13 +374,28 @@ NEXORA NEWS
 
 </header>
 
-<main id="article">
+
+<main>
+
+<div id="article">
 
 <div class="loading">
 Loading article...
 </div>
 
+</div>
+
+<div id="related"></div>
+
 </main>
+
+
+<footer>
+
+© 2026 Nexora News · All rights reserved.
+
+</footer>
+
 
 <script>
 
@@ -176,7 +412,7 @@ SUPABASE_PUBLISHABLE_KEY
 );
 
 
-/* HTML SECURITY */
+/* SECURITY */
 
 function escapeHtml(value){
 
@@ -190,7 +426,7 @@ return String(value || "")
 }
 
 
-/* CREATE SLUG */
+/* SLUG */
 
 function makeSlug(title){
 
@@ -203,7 +439,7 @@ return String(title || "")
 }
 
 
-/* GET SLUG FROM URL */
+/* URL SLUG */
 
 function getSlug(){
 
@@ -217,6 +453,25 @@ params.get("slug") || ""
 )
 .trim()
 .toLowerCase();
+
+}
+
+
+/* FORMAT DATE */
+
+function formatDate(value){
+
+if(!value) return "";
+
+return new Date(value)
+.toLocaleDateString(
+"en-GB",
+{
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+);
 
 }
 
@@ -235,13 +490,9 @@ getSlug();
 if(!slug){
 
 container.innerHTML = `
-
 <div class="error">
-
 <h2>Article not found</h2>
-
 </div>
-
 `;
 
 return;
@@ -249,9 +500,7 @@ return;
 }
 
 
-/*
-GET PUBLISHED ARTICLES
-*/
+/* GET PUBLISHED ARTICLES */
 
 const {data,error} =
 await db
@@ -265,10 +514,7 @@ await db
 
 if(error){
 
-console.error(
-"Supabase article error:",
-error
-);
+console.error(error);
 
 container.innerHTML = `
 
@@ -289,8 +535,6 @@ return;
 }
 
 
-/* NO ARTICLES */
-
 if(!data || data.length === 0){
 
 container.innerHTML = `
@@ -310,20 +554,7 @@ return;
 }
 
 
-/*
-FIND ARTICLE
-
-IMPORTANT:
-The homepage may create URLs such as:
-
-nexora-news-sabon-labari-1790609778089
-
-while the article title creates:
-
-nexora-news-sabon-labari
-
-So we accept both formats.
-*/
+/* FIND ARTICLE */
 
 const article =
 data.find(item => {
@@ -339,7 +570,7 @@ slug.startsWith(titleSlug + "-")
 });
 
 
-/* ARTICLE NOT FOUND */
+/* NOT FOUND */
 
 if(!article){
 
@@ -365,18 +596,9 @@ return;
 /* DATE */
 
 const date =
+formatDate(
 article.published_at
-? new Date(
-article.published_at
-).toLocaleDateString(
-"en-GB",
-{
-day:"numeric",
-month:"long",
-year:"numeric"
-}
-)
-: "";
+);
 
 
 /* DESCRIPTION */
@@ -411,34 +633,9 @@ description
 }
 
 
-/* CANONICAL */
+/* OG */
 
-let canonical =
-document.querySelector(
-'link[rel="canonical"]'
-);
-
-if(!canonical){
-
-canonical =
-document.createElement("link");
-
-canonical.rel =
-"canonical";
-
-document.head.appendChild(
-canonical
-);
-
-}
-
-canonical.href =
-window.location.href;
-
-
-/* OPEN GRAPH TITLE */
-
-let ogTitle =
+const ogTitle =
 document.querySelector(
 'meta[property="og:title"]'
 );
@@ -452,10 +649,7 @@ article.title
 
 }
 
-
-/* OPEN GRAPH DESCRIPTION */
-
-let ogDescription =
+const ogDescription =
 document.querySelector(
 'meta[property="og:description"]'
 );
@@ -470,42 +664,9 @@ description
 }
 
 
-/* OPEN GRAPH IMAGE */
+/* TWITTER */
 
-if(article.image_url){
-
-let ogImage =
-document.querySelector(
-'meta[property="og:image"]'
-);
-
-if(!ogImage){
-
-ogImage =
-document.createElement("meta");
-
-ogImage.setAttribute(
-"property",
-"og:image"
-);
-
-document.head.appendChild(
-ogImage
-);
-
-}
-
-ogImage.setAttribute(
-"content",
-article.image_url
-);
-
-}
-
-
-/* TWITTER TITLE */
-
-let twitterTitle =
+const twitterTitle =
 document.querySelector(
 'meta[name="twitter:title"]'
 );
@@ -519,10 +680,7 @@ article.title
 
 }
 
-
-/* TWITTER DESCRIPTION */
-
-let twitterDescription =
+const twitterDescription =
 document.querySelector(
 'meta[name="twitter:description"]'
 );
@@ -537,44 +695,13 @@ description
 }
 
 
-/* TWITTER IMAGE */
+/* IMAGE */
+
+let image = "";
 
 if(article.image_url){
 
-let twitterImage =
-document.querySelector(
-'meta[name="twitter:image"]'
-);
-
-if(!twitterImage){
-
-twitterImage =
-document.createElement("meta");
-
-twitterImage.setAttribute(
-"name",
-"twitter:image"
-);
-
-document.head.appendChild(
-twitterImage
-);
-
-}
-
-twitterImage.setAttribute(
-"content",
-article.image_url
-);
-
-}
-
-
-/* ARTICLE IMAGE */
-
-const image =
-article.image_url
-? `
+image = `
 
 <img
 class="hero"
@@ -582,7 +709,16 @@ src="${escapeHtml(article.image_url)}"
 alt="${escapeHtml(article.title)}"
 >
 
-`
+`;
+
+}
+
+
+/* BREAKING */
+
+const breaking =
+article.is_breaking === true
+? `<span class="breaking">BREAKING NEWS</span>`
 : "";
 
 
@@ -590,29 +726,42 @@ alt="${escapeHtml(article.title)}"
 
 container.innerHTML = `
 
-<div class="category">
+<article class="article-card">
 
+<div>
+
+<span class="category">
 ${escapeHtml(article.category)}
+</span>
+
+${breaking}
 
 </div>
 
+
 <h1>
-
 ${escapeHtml(article.title)}
-
 </h1>
+
+
+<p class="excerpt">
+${escapeHtml(article.excerpt || "")}
+</p>
+
 
 <div class="meta">
 
-By ${escapeHtml(
-article.author || "Marian"
-)}
+By <strong>
+${escapeHtml(article.author || "Marian")}
+</strong>
 
 ${date ? " · " + date : ""}
 
 </div>
 
+
 ${image}
+
 
 <div class="article-body">
 
@@ -620,14 +769,256 @@ ${escapeHtml(article.content)}
 
 </div>
 
+
+<div class="share-box">
+
+<div class="share-title">
+Share this story
+</div>
+
+<div class="share-buttons">
+
+<button
+class="share-btn whatsapp-btn"
+onclick="shareWhatsApp()">
+WhatsApp
+</button>
+
+<button
+class="share-btn facebook-btn"
+onclick="shareFacebook()">
+Facebook
+</button>
+
+<button
+class="share-btn twitter-btn"
+onclick="shareTwitter()">
+X
+</button>
+
+<button
+class="share-btn copy-btn"
+onclick="copyLink()">
+Copy Link
+</button>
+
+</div>
+
+</div>
+
+</article>
+
 `;
+
+
+/* RELATED STORIES */
+
+loadRelated(article);
+
+}
+
+
+/* RELATED STORIES */
+
+function loadRelated(current){
+
+const relatedBox =
+document.getElementById("related");
+
+const category =
+current.category;
+
+const currentId =
+current.id;
+
+
+/* SELECT RELATED */
+
+const related =
+window.__articles
+? window.__articles
+    .filter(item =>
+      item.id !== currentId &&
+      item.category === category
+    )
+    .slice(0,3)
+: [];
+
+
+if(related.length === 0){
+
+relatedBox.innerHTML = "";
+
+return;
+
+}
+
+
+relatedBox.innerHTML = `
+
+<section class="related">
+
+<h2>
+Related Stories
+</h2>
+
+<div class="related-grid">
+
+${related.map(item => {
+
+const slug =
+makeSlug(item.title);
+
+const image =
+item.image_url
+? `<img
+class="related-image"
+src="${escapeHtml(item.image_url)}"
+alt="${escapeHtml(item.title)}">`
+: `<div class="related-image"></div>`;
+
+return `
+
+<a
+class="related-card"
+href="/article.html?slug=${encodeURIComponent(slug)}">
+
+${image}
+
+<div class="related-content">
+
+<div class="related-category">
+
+${escapeHtml(item.category)}
+
+</div>
+
+<div class="related-title">
+
+${escapeHtml(item.title)}
+
+</div>
+
+</div>
+
+</a>
+
+`;
+
+}).join("")}
+
+</div>
+
+</section>
+
+`;
+
+}
+
+
+/* SHARE FUNCTIONS */
+
+function currentUrl(){
+
+return window.location.href;
+
+}
+
+
+function shareWhatsApp(){
+
+const url =
+"https://wa.me/?text=" +
+encodeURIComponent(
+document.title + " " + currentUrl()
+);
+
+window.open(
+url,
+"_blank"
+);
+
+}
+
+
+function shareFacebook(){
+
+const url =
+"https://www.facebook.com/sharer/sharer.php?u=" +
+encodeURIComponent(currentUrl());
+
+window.open(
+url,
+"_blank"
+);
+
+}
+
+
+function shareTwitter(){
+
+const url =
+"https://twitter.com/intent/tweet?text=" +
+encodeURIComponent(document.title) +
+"&url=" +
+encodeURIComponent(currentUrl());
+
+window.open(
+url,
+"_blank"
+);
+
+}
+
+
+async function copyLink(){
+
+try{
+
+await navigator.clipboard.writeText(
+currentUrl()
+);
+
+alert("Article link copied!");
+
+}catch(error){
+
+alert("Unable to copy link.");
+
+}
 
 }
 
 
 /* START */
 
-loadArticle();
+async function start(){
+
+/*
+Load all published articles once.
+This is also used for Related Stories.
+*/
+
+const {data} =
+await db
+.from("articles")
+.select("*")
+.eq("status","published")
+.order("published_at",{ascending:false});
+
+
+window.__articles =
+data || [];
+
+
+/* Load main article */
+
+await loadArticle();
+
+}
+
+
+start();
 
 </script>
 
