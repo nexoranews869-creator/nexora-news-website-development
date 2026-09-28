@@ -87,7 +87,6 @@ background:#d71920;
 color:#fff;
 }
 
-
 /* BREAKING NEWS */
 
 .breaking{
@@ -243,6 +242,14 @@ text-align:center;
 color:#666;
 }
 
+.category-heading{
+font-size:34px;
+font-weight:900;
+border-left:6px solid #d71920;
+padding-left:12px;
+margin:10px 0 30px;
+}
+
 footer{
 background:#111;
 color:#fff;
@@ -332,6 +339,9 @@ padding:12px 13px;
 padding:12px 13px;
 }
 
+.category-heading{
+font-size:28px;
+}
 }
 </style>
 </head>
@@ -355,13 +365,13 @@ NEXORA <span>NEWS</span>
 <div class="nav">
 
 <a href="/">HOME</a>
-<a href="?category=UK">UK</a>
-<a href="?category=London">LONDON</a>
-<a href="?category=World">WORLD</a>
-<a href="?category=Business">BUSINESS</a>
-<a href="?category=Technology">TECHNOLOGY</a>
-<a href="?category=Sports">SPORTS</a>
-<a href="?category=Video">VIDEO</a>
+<a href="/?category=UK">UK</a>
+<a href="/?category=London">LONDON</a>
+<a href="/?category=World">WORLD</a>
+<a href="/?category=Business">BUSINESS</a>
+<a href="/?category=Technology">TECHNOLOGY</a>
+<a href="/?category=Sports">SPORTS</a>
+<a href="/?category=Video">VIDEO</a>
 
 <a href="search.html" class="search-link">
 🔍 SEARCH
@@ -373,8 +383,7 @@ NEXORA <span>NEWS</span>
 
 </header>
 
-
-<!-- DYNAMIC BREAKING NEWS -->
+<!-- BREAKING NEWS -->
 
 <div id="breaking" class="breaking">
 
@@ -388,7 +397,6 @@ NEXORA <span>NEWS</span>
 
 </div>
 
-
 <main>
 
 <div id="status" class="loading">
@@ -397,6 +405,10 @@ Loading latest news...
 
 <div id="content" style="display:none">
 
+<div id="categoryPage"></div>
+
+<div id="normalHomepage">
+
 <div class="hero-grid">
 
 <div id="hero"></div>
@@ -404,7 +416,6 @@ Loading latest news...
 <div id="side"></div>
 
 </div>
-
 
 <section>
 
@@ -416,7 +427,6 @@ Latest News
 
 </section>
 
-
 <section>
 
 <h2 class="section-title">
@@ -427,7 +437,6 @@ London
 
 </section>
 
-
 <section>
 
 <h2 class="section-title">
@@ -437,7 +446,6 @@ World
 <div id="world" class="cards"></div>
 
 </section>
-
 
 <section>
 
@@ -451,8 +459,9 @@ Technology
 
 </div>
 
-</main>
+</div>
 
+</main>
 
 <footer>
 
@@ -474,7 +483,6 @@ Independent news, information and educational content.
 
 </footer>
 
-
 <script>
 
 const SUPABASE_URL =
@@ -482,7 +490,6 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
-
 
 const db =
 window.supabase.createClient(
@@ -567,6 +574,8 @@ breaking.style.display="block";
 }
 
 
+/* CARD */
+
 function card(article){
 
 return `
@@ -600,6 +609,8 @@ By ${esc(article.author || "Marian")}
 
 }
 
+
+/* SIDE STORY */
 
 function sideStory(article){
 
@@ -635,6 +646,8 @@ By ${esc(article.author || "Marian")}
 }
 
 
+/* HERO */
+
 function heroStory(article){
 
 return `
@@ -669,6 +682,8 @@ By ${esc(article.author || "Marian")}
 }
 
 
+/* SECTION */
+
 function renderSection(id,articles){
 
 const el =
@@ -686,6 +701,68 @@ articles.length
 
 }
 
+
+/* CATEGORY PAGE */
+
+function renderCategory(category,articles){
+
+const categoryArticles =
+articles.filter(article =>
+String(article.category || "")
+.toLowerCase() ===
+category.toLowerCase()
+);
+
+const categoryPage =
+document.getElementById("categoryPage");
+
+if(categoryArticles.length === 0){
+
+categoryPage.innerHTML = `
+
+<section>
+
+<h2 class="category-heading">
+${esc(category)} News
+</h2>
+
+<div class="empty">
+No ${esc(category)} news available.
+</div>
+
+</section>
+
+`;
+
+return;
+
+}
+
+
+categoryPage.innerHTML = `
+
+<section>
+
+<h2 class="category-heading">
+${esc(category)} News
+</h2>
+
+<div class="cards">
+
+${categoryArticles
+.map(card)
+.join("")}
+
+</div>
+
+</section>
+
+`;
+
+}
+
+
+/* LOAD NEWS */
 
 async function loadNews(){
 
@@ -748,7 +825,7 @@ return;
 const articles=data;
 
 
-/* SHOW BREAKING NEWS */
+/* BREAKING */
 
 const breakingArticle =
 articles.find(
@@ -759,6 +836,35 @@ article.is_breaking === true
 renderBreaking(breakingArticle);
 
 
+/* CHECK CATEGORY */
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const selectedCategory =
+params.get("category");
+
+
+if(selectedCategory){
+
+document.getElementById(
+"normalHomepage"
+).style.display="none";
+
+renderCategory(
+selectedCategory,
+articles
+);
+
+}else{
+
+document.getElementById(
+"categoryPage"
+).innerHTML="";
+
+
 /* HERO */
 
 document.getElementById("hero")
@@ -766,7 +872,7 @@ document.getElementById("hero")
 heroStory(articles[0]);
 
 
-/* SIDE STORIES */
+/* SIDE */
 
 document.getElementById("side")
 .innerHTML =
@@ -821,6 +927,8 @@ a =>
 ==="technology"
 )
 );
+
+}
 
 
 status.style.display="none";
