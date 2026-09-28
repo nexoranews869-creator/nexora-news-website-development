@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search | Nexora News</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+color:#111;
+background:#fff;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.top{
+height:6px;
+background:#d71920;
+}
+
+header{
+border-bottom:1px solid #ddd;
+}
+
+.head{
+max-width:1200px;
+margin:auto;
+padding:18px 20px;
+}
+
+.logo{
+font-size:30px;
+font-weight:900;
+}
+
+.logo span{
+color:#d71920;
+}
+
+nav{
+border-top:1px solid #eee;
+}
+
+.nav{
+max-width:1200px;
+margin:auto;
+display:flex;
+overflow-x:auto;
+white-space:nowrap;
+}
+
+.nav a{
+padding:13px 16px;
+font-size:14px;
+font-weight:700;
+}
+
+.nav a:hover{
+background:#f2f2f2;
+}
+
+main{
+max-width:1000px;
+margin:auto;
+padding:35px 20px;
+}
+
+h1{
+font-size:36px;
+margin:0 0 25px;
+}
+
+.search-box{
+display:flex;
+gap:10px;
+margin-bottom:35px;
+}
+
+.search-box input{
+flex:1;
+padding:15px;
+border:1px solid #bbb;
+font-size:16px;
+border-radius:3px;
+}
+
+.search-box button{
+background:#d71920;
+color:#fff;
+border:0;
+padding:0 25px;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+border-radius:3px;
+}
+
+.search-box button:hover{
+background:#b9151b;
+}
+
+.result{
+display:grid;
+grid-template-columns:220px 1fr;
+gap:20px;
+border-bottom:1px solid #ddd;
+padding:20px 0;
+}
+
+.result-img{
+width:220px;
+height:140px;
+object-fit:cover;
+background:#eee;
+}
+
+.category{
+color:#d71920;
+font-size:13px;
+font-weight:800;
+text-transform:uppercase;
+margin-bottom:7px;
+}
+
+.result h2{
+font-size:24px;
+line-height:1.2;
+margin:5px 0 10px;
+}
+
+.excerpt{
+color:#444;
+line-height:1.5;
+}
+
+.meta{
+font-size:12px;
+color:#666;
+margin-top:10px;
+}
+
+.message{
+padding:30px 0;
+color:#666;
+}
+
+footer{
+background:#111;
+color:#fff;
+margin-top:60px;
+}
+
+.footer-inner{
+max-width:1200px;
+margin:auto;
+padding:35px 20px;
+}
+
+.footer-logo{
+font-size:26px;
+font-weight:900;
+}
+
+.footer-logo span{
+color:#d71920;
+}
+
+.footer-inner p{
+color:#bbb;
+}
+
+@media(max-width:650px){
+
+main{
+padding:25px 15px;
+}
+
+h1{
+font-size:30px;
+}
+
+.search-box{
+flex-direction:column;
+}
+
+.search-box button{
+height:50px;
+}
+
+.result{
+grid-template-columns:1fr;
+}
+
+.result-img{
+width:100%;
+height:210px;
+}
+
+.result h2{
+font-size:21px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="top"></div>
+
+<header>
+
+<div class="head">
+
+<a href="/" class="logo">
+NEXORA <span>NEWS</span>
+</a>
+
+</div>
+
+<nav>
+
+<div class="nav">
+
+<a href="/">HOME</a>
+<a href="?category=UK">UK</a>
+<a href="?category=London">LONDON</a>
+<a href="?category=World">WORLD</a>
+<a href="?category=Business">BUSINESS</a>
+<a href="?category=Technology">TECHNOLOGY</a>
+<a href="?category=Sports">SPORTS</a>
+<a href="?category=Video">VIDEO</a>
+
+</div>
+
+</nav>
+
+</header>
+
+
+<main>
+
+<h1>Search Nexora News</h1>
+
+<div class="search-box">
+
+<input
+id="searchInput"
+type="search"
+placeholder="Search news..."
+autocomplete="off"
+>
+
+<button onclick="searchNews()">
+SEARCH
+</button>
+
+</div>
+
+<div id="results">
+
+<div class="message">
+Enter a keyword to search Nexora News.
+</div>
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div class="footer-inner">
+
+<div class="footer-logo">
+NEXORA <span>NEWS</span>
+</div>
+
+<p>
+Independent news, information and educational content.
+</p>
+
+<p>
+© 2026 Nexora News. All rights reserved.
+</p>
+
+</div>
+
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://qleoqpmxvmqcythacszw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
+
+function esc(value){
+
+return String(value ?? "").replace(
+/[&<>"']/g,
+
+function(c){
+
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[c];
+
+});
+
+}
+
+
+function articleUrl(article){
+
+return "article.html?slug=" +
+encodeURIComponent(article.slug || "");
+
+}
+
+
+function imageHtml(url){
+
+if(url){
+
+return `
+<img
+class="result-img"
+src="${esc(url)}"
+alt=""
+>
+`;
+
+}
+
+return `
+<div class="result-img"></div>
+`;
+
+}
+
+
+async function searchNews(){
+
+const input =
+document.getElementById("searchInput");
+
+const results =
+document.getElementById("results");
+
+const query =
+input.value.trim();
+
+
+if(!query){
+
+results.innerHTML = `
+<div class="message">
+Please enter a search keyword.
+</div>
+`;
+
+return;
+
+}
+
+
+results.innerHTML = `
+<div class="message">
+Searching Nexora News...
+</div>
+`;
+
+
+const {data,error} =
+await db
+
+.from("articles")
+
+.select(`
+id,
+title,
+slug,
+excerpt,
+category,
+author,
+image_url,
+status,
+published_at,
+created_at
+`)
+
+.eq("status","published")
+
+.or(
+"title.ilike.%${query}%,excerpt.ilike.%${query}%,category.ilike.%${query}%"
+)
+
+.order(
+"published_at",
+{ascending:false}
+);
+
+
+if(error){
+
+results.innerHTML = `
+<div class="message">
+Search error: ${esc(error.message)}
+</div>
+`;
+
+return;
+
+}
+
+
+if(!data || data.length===0){
+
+results.innerHTML = `
+<div class="message">
+No news found for "<strong>${esc(query)}</strong>".
+</div>
+`;
+
+return;
+
+}
+
+
+results.innerHTML =
+data.map(article => `
+
+<a
+class="result"
+href="${articleUrl(article)}"
+>
+
+${imageHtml(article.image_url)}
+
+<div>
+
+<div class="category">
+${esc(article.category)}
+</div>
+
+<h2>
+${esc(article.title)}
+</h2>
+
+<div class="excerpt">
+${esc(article.excerpt || "")}
+</div>
+
+<div class="meta">
+By ${esc(article.author || "Marian")}
+</div>
+
+</div>
+
+</a>
+
+`).join("");
+
+}
+
+
+document
+.getElementById("searchInput")
+.addEventListener(
+"keydown",
+function(event){
+
+if(event.key === "Enter"){
+
+searchNews();
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
