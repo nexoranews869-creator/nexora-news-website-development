@@ -235,25 +235,40 @@ return;
 }
 
 
+/*
+LOAD ARTICLE
+
+We use limit(1) instead of single()
+because the database currently has more
+than one matching row for this slug.
+*/
+
 const {data,error} =
 await db
 .from("articles")
 .select("*")
 .eq("slug",slug)
 .eq("status","published")
-.single();
+.order("published_at",{ascending:false})
+.limit(1);
 
-
-/* SHOW REAL SUPABASE ERROR */
 
 if(error){
 
-console.error("Supabase article error:",error);
+console.error(
+"Supabase article error:",
+error
+);
 
 container.innerHTML = `
 <div class="error">
+
 <h2>Unable to load article</h2>
-<p>${escapeHtml(error.message)}</p>
+
+<p>
+${escapeHtml(error.message)}
+</p>
+
 </div>
 `;
 
@@ -262,7 +277,11 @@ return;
 }
 
 
-if(!data){
+/*
+Supabase returns an array when using limit(1)
+*/
+
+if(!data || data.length === 0){
 
 container.innerHTML = `
 <div class="error">
@@ -275,9 +294,16 @@ return;
 }
 
 
+/*
+Take the first article
+*/
+
+const article = data[0];
+
+
 const date =
-data.published_at
-? new Date(data.published_at)
+article.published_at
+? new Date(article.published_at)
 .toLocaleDateString(
 "en-GB",
 {
@@ -292,13 +318,13 @@ year:"numeric"
 /* DYNAMIC SEO */
 
 document.title =
-data.title +
+article.title +
 " | Nexora News";
 
 
 const description =
-data.excerpt ||
-data.content ||
+article.excerpt ||
+article.content ||
 "Read the latest news from Nexora News.";
 
 
@@ -317,6 +343,8 @@ description
 }
 
 
+/* CANONICAL */
+
 const canonicalUrl =
 window.location.href;
 
@@ -332,7 +360,7 @@ if(!canonical){
 canonical =
 document.createElement("link");
 
-canonical.rel="canonical";
+canonical.rel = "canonical";
 
 document.head.appendChild(
 canonical
@@ -366,10 +394,11 @@ if(ogTitle){
 
 ogTitle.setAttribute(
 "content",
-data.title
+article.title
 );
 
 }
+
 
 if(ogDescription){
 
@@ -381,11 +410,11 @@ description
 }
 
 
-if(ogImage && data.image_url){
+if(ogImage && article.image_url){
 
 ogImage.setAttribute(
 "content",
-data.image_url
+article.image_url
 );
 
 }
@@ -413,10 +442,11 @@ if(twitterTitle){
 
 twitterTitle.setAttribute(
 "content",
-data.title
+article.title
 );
 
 }
+
 
 if(twitterDescription){
 
@@ -427,11 +457,12 @@ description
 
 }
 
-if(twitterImage && data.image_url){
+
+if(twitterImage && article.image_url){
 
 twitterImage.setAttribute(
 "content",
-data.image_url
+article.image_url
 );
 
 }
@@ -440,12 +471,12 @@ data.image_url
 /* ARTICLE IMAGE */
 
 const image =
-data.image_url
+article.image_url
 ? `
 <img
 class="hero"
-src="${escapeHtml(data.image_url)}"
-alt="${escapeHtml(data.title)}"
+src="${escapeHtml(article.image_url)}"
+alt="${escapeHtml(article.title)}"
 >
 `
 : "";
@@ -456,22 +487,22 @@ alt="${escapeHtml(data.title)}"
 container.innerHTML = `
 
 <div class="category">
-${escapeHtml(data.category)}
+${escapeHtml(article.category)}
 </div>
 
 <h1>
-${escapeHtml(data.title)}
+${escapeHtml(article.title)}
 </h1>
 
 <div class="meta">
-By ${escapeHtml(data.author || "Marian")}
+By ${escapeHtml(article.author || "Marian")}
 ${date ? " · " + date : ""}
 </div>
 
 ${image}
 
 <div class="article-body">
-${escapeHtml(data.content)}
+${escapeHtml(article.content)}
 </div>
 
 `;
