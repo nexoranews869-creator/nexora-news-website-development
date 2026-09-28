@@ -16,18 +16,12 @@ content="Read the latest news and stories from Nexora News.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Nexora News">
 
-<meta property="og:title"
-content="Nexora News — Article">
-
+<meta property="og:title" content="Nexora News — Article">
 <meta property="og:description"
 content="Read the latest news and stories from Nexora News.">
 
-<meta name="twitter:card"
-content="summary_large_image">
-
-<meta name="twitter:title"
-content="Nexora News — Article">
-
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nexora News — Article">
 <meta name="twitter:description"
 content="Read the latest news and stories from Nexora News.">
 
@@ -159,7 +153,6 @@ NEXORA NEWS
 
 </header>
 
-
 <main id="article">
 
 <div class="loading">
@@ -167,7 +160,6 @@ Loading article...
 </div>
 
 </main>
-
 
 <script>
 
@@ -198,7 +190,7 @@ return String(value || "")
 }
 
 
-/* CREATE SLUG EXACTLY LIKE HOMEPAGE */
+/* CREATE SLUG */
 
 function makeSlug(title){
 
@@ -220,7 +212,7 @@ new URLSearchParams(
 window.location.search
 );
 
-return (
+return decodeURIComponent(
 params.get("slug") || ""
 )
 .trim()
@@ -243,11 +235,13 @@ getSlug();
 if(!slug){
 
 container.innerHTML = `
+
 <div class="error">
 
 <h2>Article not found</h2>
 
 </div>
+
 `;
 
 return;
@@ -257,12 +251,6 @@ return;
 
 /*
 GET PUBLISHED ARTICLES
-
-Instead of depending only on the database
-slug column, we get published articles
-and create the slug from each title.
-
-This matches the homepage URL system.
 */
 
 const {data,error} =
@@ -325,14 +313,30 @@ return;
 /*
 FIND ARTICLE
 
-Compare the URL slug with the slug
-generated from every article title.
+IMPORTANT:
+The homepage may create URLs such as:
+
+nexora-news-sabon-labari-1790609778089
+
+while the article title creates:
+
+nexora-news-sabon-labari
+
+So we accept both formats.
 */
 
 const article =
-data.find(
-item => makeSlug(item.title) === slug
+data.find(item => {
+
+const titleSlug =
+makeSlug(item.title);
+
+return (
+slug === titleSlug ||
+slug.startsWith(titleSlug + "-")
 );
+
+});
 
 
 /* ARTICLE NOT FOUND */
@@ -390,7 +394,7 @@ article.title +
 " | Nexora News";
 
 
-/* DESCRIPTION META */
+/* META DESCRIPTION */
 
 const metaDescription =
 document.querySelector(
@@ -592,13 +596,11 @@ ${escapeHtml(article.category)}
 
 </div>
 
-
 <h1>
 
 ${escapeHtml(article.title)}
 
 </h1>
-
 
 <div class="meta">
 
@@ -610,9 +612,7 @@ ${date ? " · " + date : ""}
 
 </div>
 
-
 ${image}
-
 
 <div class="article-body">
 
