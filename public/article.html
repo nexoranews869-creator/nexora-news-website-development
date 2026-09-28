@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,12 +15,19 @@ content="Read the latest news and stories from Nexora News.">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Nexora News">
-<meta property="og:title" content="Nexora News — Article">
+
+<meta property="og:title"
+content="Nexora News — Article">
+
 <meta property="og:description"
 content="Read the latest news and stories from Nexora News.">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nexora News — Article">
+<meta name="twitter:card"
+content="summary_large_image">
+
+<meta name="twitter:title"
+content="Nexora News — Article">
+
 <meta name="twitter:description"
 content="Read the latest news and stories from Nexora News.">
 
@@ -130,6 +138,7 @@ font-size:18px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -150,6 +159,7 @@ NEXORA NEWS
 
 </header>
 
+
 <main id="article">
 
 <div class="loading">
@@ -157,6 +167,7 @@ Loading article...
 </div>
 
 </main>
+
 
 <script>
 
@@ -173,6 +184,8 @@ SUPABASE_PUBLISHABLE_KEY
 );
 
 
+/* HTML SECURITY */
+
 function escapeHtml(value){
 
 return String(value || "")
@@ -185,6 +198,21 @@ return String(value || "")
 }
 
 
+/* CREATE SLUG EXACTLY LIKE HOMEPAGE */
+
+function makeSlug(title){
+
+return String(title || "")
+.toLowerCase()
+.trim()
+.replace(/[^a-z0-9]+/g,"-")
+.replace(/^-+|-+$/g,"");
+
+}
+
+
+/* GET SLUG FROM URL */
+
 function getSlug(){
 
 const params =
@@ -192,35 +220,33 @@ new URLSearchParams(
 window.location.search
 );
 
-const rawSlug =
-params.get("slug") || "";
-
-try{
-
-return decodeURIComponent(rawSlug).trim();
-
-}catch{
-
-return rawSlug.trim();
+return (
+params.get("slug") || ""
+)
+.trim()
+.toLowerCase();
 
 }
 
-}
 
+/* LOAD ARTICLE */
 
 async function loadArticle(){
 
-const slug = getSlug();
-
 const container =
 document.getElementById("article");
+
+const slug =
+getSlug();
 
 
 if(!slug){
 
 container.innerHTML = `
 <div class="error">
-Article not found.
+
+<h2>Article not found</h2>
+
 </div>
 `;
 
@@ -230,21 +256,24 @@ return;
 
 
 /*
-Load article by slug.
+GET PUBLISHED ARTICLES
 
-We intentionally do NOT filter by status
-inside the Supabase query. This helps avoid
-the previous article-not-found problem.
+Instead of depending only on the database
+slug column, we get published articles
+and create the slug from each title.
+
+This matches the homepage URL system.
 */
 
 const {data,error} =
 await db
 .from("articles")
 .select("*")
-.eq("slug",slug)
-.order("published_at",{ascending:false})
-.limit(1);
+.eq("status","published")
+.order("published_at",{ascending:false});
 
+
+/* DATABASE ERROR */
 
 if(error){
 
@@ -254,6 +283,7 @@ error
 );
 
 container.innerHTML = `
+
 <div class="error">
 
 <h2>Unable to load article</h2>
@@ -263,6 +293,7 @@ ${escapeHtml(error.message)}
 </p>
 
 </div>
+
 `;
 
 return;
@@ -270,14 +301,46 @@ return;
 }
 
 
+/* NO ARTICLES */
+
 if(!data || data.length === 0){
 
-console.error(
-"No article found for slug:",
-slug
+container.innerHTML = `
+
+<div class="error">
+
+<h2>Article not found</h2>
+
+<p>No published articles were found.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+/*
+FIND ARTICLE
+
+Compare the URL slug with the slug
+generated from every article title.
+*/
+
+const article =
+data.find(
+item => makeSlug(item.title) === slug
 );
 
+
+/* ARTICLE NOT FOUND */
+
+if(!article){
+
 container.innerHTML = `
+
 <div class="error">
 
 <h2>Article not found</h2>
@@ -287,6 +350,7 @@ Slug: ${escapeHtml(slug)}
 </p>
 
 </div>
+
 `;
 
 return;
@@ -294,30 +358,13 @@ return;
 }
 
 
-const article = data[0];
-
-
-/*
-Only published articles should be displayed.
-*/
-
-if(article.status !== "published"){
-
-container.innerHTML = `
-<div class="error">
-This article is not published.
-</div>
-`;
-
-return;
-
-}
-
+/* DATE */
 
 const date =
 article.published_at
-? new Date(article.published_at)
-.toLocaleDateString(
+? new Date(
+article.published_at
+).toLocaleDateString(
 "en-GB",
 {
 day:"numeric",
@@ -328,12 +375,7 @@ year:"numeric"
 : "";
 
 
-/* DYNAMIC SEO */
-
-document.title =
-article.title +
-" | Nexora News";
-
+/* DESCRIPTION */
 
 const description =
 article.excerpt ||
@@ -341,16 +383,23 @@ article.content ||
 "Read the latest news from Nexora News.";
 
 
-/* DESCRIPTION */
+/* PAGE TITLE */
 
-const existingDescription =
+document.title =
+article.title +
+" | Nexora News";
+
+
+/* DESCRIPTION META */
+
+const metaDescription =
 document.querySelector(
 'meta[name="description"]'
 );
 
-if(existingDescription){
+if(metaDescription){
 
-existingDescription.setAttribute(
+metaDescription.setAttribute(
 "content",
 description
 );
@@ -365,13 +414,13 @@ document.querySelector(
 'link[rel="canonical"]'
 );
 
-
 if(!canonical){
 
 canonical =
 document.createElement("link");
 
-canonical.rel = "canonical";
+canonical.rel =
+"canonical";
 
 document.head.appendChild(
 canonical
@@ -383,18 +432,12 @@ canonical.href =
 window.location.href;
 
 
-/* OPEN GRAPH */
+/* OPEN GRAPH TITLE */
 
-const ogTitle =
+let ogTitle =
 document.querySelector(
 'meta[property="og:title"]'
 );
-
-const ogDescription =
-document.querySelector(
-'meta[property="og:description"]'
-);
-
 
 if(ogTitle){
 
@@ -406,6 +449,13 @@ article.title
 }
 
 
+/* OPEN GRAPH DESCRIPTION */
+
+let ogDescription =
+document.querySelector(
+'meta[property="og:description"]'
+);
+
 if(ogDescription){
 
 ogDescription.setAttribute(
@@ -416,7 +466,7 @@ description
 }
 
 
-/* OG IMAGE */
+/* OPEN GRAPH IMAGE */
 
 if(article.image_url){
 
@@ -449,18 +499,12 @@ article.image_url
 }
 
 
-/* TWITTER */
+/* TWITTER TITLE */
 
-const twitterTitle =
+let twitterTitle =
 document.querySelector(
 'meta[name="twitter:title"]'
 );
-
-const twitterDescription =
-document.querySelector(
-'meta[name="twitter:description"]'
-);
-
 
 if(twitterTitle){
 
@@ -471,6 +515,13 @@ article.title
 
 }
 
+
+/* TWITTER DESCRIPTION */
+
+let twitterDescription =
+document.querySelector(
+'meta[name="twitter:description"]'
+);
 
 if(twitterDescription){
 
@@ -520,42 +571,61 @@ article.image_url
 const image =
 article.image_url
 ? `
+
 <img
 class="hero"
 src="${escapeHtml(article.image_url)}"
 alt="${escapeHtml(article.title)}"
 >
+
 `
 : "";
 
 
-/* ARTICLE CONTENT */
+/* DISPLAY ARTICLE */
 
 container.innerHTML = `
 
 <div class="category">
+
 ${escapeHtml(article.category)}
+
 </div>
+
 
 <h1>
+
 ${escapeHtml(article.title)}
+
 </h1>
 
+
 <div class="meta">
-By ${escapeHtml(article.author || "Marian")}
+
+By ${escapeHtml(
+article.author || "Marian"
+)}
+
 ${date ? " · " + date : ""}
+
 </div>
+
 
 ${image}
 
+
 <div class="article-body">
+
 ${escapeHtml(article.content)}
+
 </div>
 
 `;
 
 }
 
+
+/* START */
 
 loadArticle();
 
