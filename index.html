@@ -2,731 +2,1030 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
+<meta name="google-site-verification" content="OMFTYBR8QStqpnQomIKYdrOvO9WXN-hlruMT73o4NUE">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nexora News</title>
+<title>Nexora News | UK, London & World News</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="description" content="Nexora News brings you the latest UK, London, world, business, technology and sports news, plus educational content.">
+<meta name="keywords" content="Nexora News, UK news, London news, world news, business news, technology news, sports news">
+<meta name="author" content="Nexora News">
+
+<link rel="canonical" href="https://nexora-news-website-development-9ve.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nexora News | UK, London & World News">
+<meta property="og:description" content="Latest UK, London, world, business, technology and sports news from Nexora News.">
+<meta property="og:url" content="https://nexora-news-website-development-9ve.vercel.app/">
+<meta property="og:site_name" content="Nexora News">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nexora News | UK, London & World News">
+<meta name="twitter:description" content="Latest UK, London, world, business, technology and sports news from Nexora News.">
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-color:#111;
-background:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#fff;
+  color:#111;
 }
 
 a{
-text-decoration:none;
-color:inherit;
+  text-decoration:none;
+  color:inherit;
 }
 
-.top{
-height:6px;
-background:#d71920;
+.topbar{
+  background:#d71920;
+  height:7px;
 }
 
 header{
-border-bottom:1px solid #ddd;
-background:#fff;
+  border-bottom:1px solid #ddd;
+  background:#fff;
 }
 
-.head{
-max-width:1200px;
-margin:auto;
-padding:18px 20px;
-display:flex;
-align-items:center;
-justify-content:space-between;
+.header-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 }
 
 .logo{
-font-size:30px;
-font-weight:900;
-letter-spacing:-1px;
+  font-size:30px;
+  font-weight:900;
+  letter-spacing:-1px;
 }
 
 .logo span{
-color:#d71920;
+  color:#d71920;
+}
+
+.search-link{
+  font-weight:700;
+  color:#333;
 }
 
 nav{
-border-top:1px solid #eee;
+  border-top:1px solid #eee;
+  border-bottom:1px solid #eee;
+  overflow-x:auto;
+  white-space:nowrap;
 }
 
-.nav{
-max-width:1200px;
-margin:auto;
-display:flex;
-overflow-x:auto;
-white-space:nowrap;
+.nav-inner{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
 }
 
-.nav a{
-padding:13px 16px;
-font-size:14px;
-font-weight:700;
+.nav-inner a{
+  padding:14px 17px;
+  font-size:14px;
+  font-weight:700;
 }
 
-.nav a:hover{
-background:#f2f2f2;
+.nav-inner a:hover{
+  background:#f2f2f2;
+  color:#d71920;
 }
 
 .breaking{
-background:#111;
-color:#fff;
+  background:#111;
+  color:#fff;
+  overflow:hidden;
 }
 
 .breaking-inner{
-max-width:1200px;
-margin:auto;
-padding:10px 20px;
-font-size:14px;
-font-weight:700;
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  min-height:42px;
 }
 
-.breaking b{
-background:#d71920;
-padding:5px 8px;
-margin-right:10px;
+.breaking-label{
+  background:#d71920;
+  padding:12px 15px;
+  font-weight:900;
+  font-size:13px;
+  flex-shrink:0;
+}
+
+.breaking-track{
+  padding-left:20px;
+  font-size:14px;
+  white-space:nowrap;
 }
 
 main{
-max-width:1200px;
-margin:auto;
-padding:24px 20px;
-}
-
-.hero-grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:24px;
-margin-bottom:35px;
-}
-
-.hero{
-border-bottom:1px solid #ddd;
-padding-bottom:20px;
-}
-
-.hero-img{
-width:100%;
-height:390px;
-object-fit:cover;
-display:block;
-background:#eee;
-margin-bottom:14px;
-}
-
-.category{
-color:#d71920;
-font-size:13px;
-font-weight:800;
-text-transform:uppercase;
-margin:7px 0;
-}
-
-h1{
-font-size:38px;
-line-height:1.08;
-margin:6px 0 10px;
-}
-
-.excerpt{
-font-size:17px;
-line-height:1.5;
-color:#444;
-}
-
-.side{
-display:grid;
-gap:18px;
-}
-
-.story{
-display:grid;
-grid-template-columns:150px 1fr;
-gap:14px;
-border-bottom:1px solid #ddd;
-padding-bottom:17px;
-}
-
-.story-img{
-width:100%;
-height:100px;
-object-fit:cover;
-background:#eee;
-}
-
-.story h2{
-font-size:20px;
-line-height:1.15;
-margin:5px 0;
-}
-
-.meta{
-font-size:12px;
-color:#666;
-margin-top:8px;
-}
-
-section{
-margin:35px 0;
+  max-width:1200px;
+  margin:30px auto;
+  padding:0 20px;
 }
 
 .section-title{
-font-size:24px;
-border-top:4px solid #111;
-padding-top:10px;
-margin-bottom:18px;
+  font-size:23px;
+  font-weight:900;
+  border-left:5px solid #d71920;
+  padding-left:10px;
+  margin:35px 0 18px;
 }
 
-.cards{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:22px;
+.hero{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
 }
 
-.card{
-border-bottom:1px solid #ddd;
-padding-bottom:16px;
+.hero-main{
+  position:relative;
+  min-height:390px;
+  overflow:hidden;
+  background:#111;
 }
 
-.card-img{
-width:100%;
-height:180px;
-object-fit:cover;
-background:#eee;
-margin-bottom:10px;
+.hero-main img{
+  width:100%;
+  height:390px;
+  object-fit:cover;
 }
 
-.card h3{
-font-size:20px;
-line-height:1.2;
-margin:5px 0;
+.hero-overlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:35px 25px 25px;
+  color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.9));
 }
 
-.loading,
-.empty,
-.error{
-padding:30px;
-text-align:center;
-color:#666;
+.hero-category{
+  display:inline-block;
+  background:#d71920;
+  padding:6px 9px;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.hero-title{
+  font-size:34px;
+  line-height:1.08;
+  font-weight:900;
+}
+
+.hero-excerpt{
+  margin-top:10px;
+  font-size:15px;
+  line-height:1.5;
+  color:#eee;
+}
+
+.side-stories{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.story-card{
+  border-bottom:1px solid #ddd;
+  padding-bottom:15px;
+}
+
+.story-card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  display:block;
+}
+
+.story-category{
+  color:#d71920;
+  font-size:12px;
+  font-weight:900;
+  margin-top:9px;
+  text-transform:uppercase;
+}
+
+.story-title{
+  font-size:20px;
+  line-height:1.2;
+  font-weight:800;
+  margin-top:5px;
+}
+
+.story-meta{
+  color:#777;
+  font-size:12px;
+  margin-top:8px;
+}
+
+.featured{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.featured .story-card img{
+  height:180px;
+}
+
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.news-card{
+  border-top:1px solid #ddd;
+  padding-top:12px;
+}
+
+.news-card img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+}
+
+.news-card .story-title{
+  font-size:20px;
+}
+
+.view-all{
+  display:inline-block;
+  margin-top:15px;
+  color:#d71920;
+  font-weight:800;
+}
+
+.loading{
+  text-align:center;
+  padding:60px 20px;
+  font-size:18px;
+  color:#777;
+}
+
+.empty{
+  padding:40px 0;
+  color:#777;
 }
 
 footer{
-background:#111;
-color:#fff;
-margin-top:50px;
+  margin-top:60px;
+  background:#111;
+  color:#fff;
 }
 
 .footer-inner{
-max-width:1200px;
-margin:auto;
-padding:35px 20px;
+  max-width:1200px;
+  margin:auto;
+  padding:35px 20px;
 }
 
 .footer-logo{
-font-size:26px;
-font-weight:900;
-margin-bottom:10px;
+  font-size:25px;
+  font-weight:900;
 }
 
-.footer-logo span{
-color:#d71920;
+.footer-text{
+  margin-top:10px;
+  color:#bbb;
+  line-height:1.5;
 }
 
-.footer-inner p{
-color:#bbb;
+.footer-copy{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid #333;
+  color:#888;
+  font-size:13px;
+}
+
+.category-page{
+  display:none;
+}
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.breaking-badge{
+  display:inline-block;
+  background:#d71920;
+  color:#fff;
+  padding:5px 8px;
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:7px;
 }
 
 @media(max-width:800px){
 
-.hero-grid{
-grid-template-columns:1fr;
+  .header-inner{
+    padding:15px;
+  }
+
+  .logo{
+    font-size:24px;
+  }
+
+  .nav-inner a{
+    padding:12px 13px;
+    font-size:12px;
+  }
+
+  main{
+    margin:20px auto;
+    padding:0 15px;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  .hero-main,
+  .hero-main img{
+    min-height:300px;
+    height:300px;
+  }
+
+  .hero-title{
+    font-size:26px;
+  }
+
+  .featured,
+  .news-grid,
+  .category-grid{
+    grid-template-columns:1fr;
+  }
+
+  .side-stories{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .side-stories .story-card img{
+    height:130px;
+  }
+
+  .section-title{
+    font-size:21px;
+  }
 }
 
-h1{
-font-size:30px;
-}
+@media(max-width:500px){
 
-.cards{
-grid-template-columns:1fr;
-}
+  .side-stories{
+    grid-template-columns:1fr;
+  }
 
-.hero-img{
-height:250px;
-}
+  .breaking-label{
+    font-size:11px;
+    padding:11px;
+  }
 
-.head{
-padding:15px;
-}
+  .breaking-track{
+    font-size:12px;
+  }
 
-main{
-padding:18px 15px;
-}
-
-}
-
-@media(max-width:520px){
-
-.story{
-grid-template-columns:110px 1fr;
-}
-
-.story-img{
-height:80px;
-}
-
-.story h2{
-font-size:17px;
-}
-
-.card-img{
-height:210px;
-}
-
+  .hero-title{
+    font-size:23px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="top"></div>
+<div class="topbar"></div>
 
 <header>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      NEXORA <span>NEWS</span>
+    </a>
 
-<div class="head">
+    <a href="search.html" class="search-link">
+      🔍 SEARCH
+    </a>
+  </div>
 
-<a href="/" class="logo">
-NEXORA <span>NEWS</span>
-</a>
-
-</div>
-
-<nav>
-
-<div class="nav">
-
-<a href="/">HOME</a>
-<a href="?category=UK">UK</a>
-<a href="?category=London">LONDON</a>
-<a href="?category=World">WORLD</a>
-<a href="?category=Business">BUSINESS</a>
-<a href="?category=Technology">TECHNOLOGY</a>
-<a href="?category=Sports">SPORTS</a>
-<a href="?category=Video">VIDEO</a>
-
-</div>
-
-</nav>
-
+  <nav>
+    <div class="nav-inner">
+      <a href="/">HOME</a>
+      <a href="/?category=UK">UK</a>
+      <a href="/?category=London">LONDON</a>
+      <a href="/?category=World">WORLD</a>
+      <a href="/?category=Business">BUSINESS</a>
+      <a href="/?category=Technology">TECHNOLOGY</a>
+      <a href="/?category=Sports">SPORTS</a>
+      <a href="/?category=Video">VIDEO</a>
+    </div>
+  </nav>
 </header>
 
-<div class="breaking">
-
-<div class="breaking-inner">
-
-<b>BREAKING</b>
-Latest news and updates from Nexora News
-
-</div>
-
-</div>
+<section class="breaking">
+  <div class="breaking-inner">
+    <div class="breaking-label">BREAKING NEWS</div>
+    <div class="breaking-track" id="breakingTrack">
+      Loading latest news...
+    </div>
+  </div>
+</section>
 
 <main>
 
-<div id="status" class="loading">
-Loading latest news...
-</div>
+  <div id="homepage">
 
-<div id="content" style="display:none">
+    <h2 class="section-title">TOP STORY</h2>
 
-<div class="hero-grid">
+    <section class="hero" id="hero">
+      <div class="loading">Loading latest news...</div>
+    </section>
 
-<div id="hero"></div>
+    <h2 class="section-title">FEATURED NEWS</h2>
 
-<div id="side"></div>
+    <section class="featured" id="featured">
+      <div class="loading">Loading...</div>
+    </section>
 
-</div>
+    <h2 class="section-title">LATEST NEWS</h2>
 
+    <section class="news-grid" id="latest">
+      <div class="loading">Loading...</div>
+    </section>
 
-<section>
+    <h2 class="section-title">LONDON</h2>
 
-<h2 class="section-title">
-Latest News
-</h2>
+    <section class="news-grid" id="london">
+      <div class="loading">Loading...</div>
+    </section>
 
-<div id="latest" class="cards"></div>
+    <h2 class="section-title">UK</h2>
 
-</section>
+    <section class="news-grid" id="uk">
+      <div class="loading">Loading...</div>
+    </section>
 
+    <h2 class="section-title">WORLD</h2>
 
-<section>
+    <section class="news-grid" id="world">
+      <div class="loading">Loading...</div>
+    </section>
 
-<h2 class="section-title">
-London
-</h2>
+    <h2 class="section-title">BUSINESS</h2>
 
-<div id="london" class="cards"></div>
+    <section class="news-grid" id="business">
+      <div class="loading">Loading...</div>
+    </section>
 
-</section>
+    <h2 class="section-title">TECHNOLOGY</h2>
 
+    <section class="news-grid" id="technology">
+      <div class="loading">Loading...</div>
+    </section>
 
-<section>
+    <h2 class="section-title">SPORTS</h2>
 
-<h2 class="section-title">
-World
-</h2>
+    <section class="news-grid" id="sports">
+      <div class="loading">Loading...</div>
+    </section>
 
-<div id="world" class="cards"></div>
+    <h2 class="section-title">VIDEO</h2>
 
-</section>
+    <section class="news-grid" id="video">
+      <div class="loading">Loading...</div>
+    </section>
 
+  </div>
 
-<section>
+  <div id="categoryPage" class="category-page">
 
-<h2 class="section-title">
-Technology
-</h2>
+    <h1 class="section-title" id="categoryTitle">
+      Category News
+    </h1>
 
-<div id="technology" class="cards"></div>
+    <div class="category-grid" id="categoryGrid"></div>
 
-</section>
-
-</div>
+  </div>
 
 </main>
 
-
 <footer>
+  <div class="footer-inner">
 
-<div class="footer-inner">
+    <div class="footer-logo">
+      NEXORA NEWS
+    </div>
 
-<div class="footer-logo">
-NEXORA <span>NEWS</span>
-</div>
+    <div class="footer-text">
+      Nexora News brings you the latest UK, London, world,
+      business, technology and sports news.
+    </div>
 
-<p>
-Independent news, information and educational content.
-</p>
+    <div class="footer-copy">
+      © 2026 Nexora News. All rights reserved.
+    </div>
 
-<p>
-© 2026 Nexora News. All rights reserved.
-</p>
-
-</div>
-
+  </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-
 const SUPABASE_URL =
 "https://qleoqpmxvmqcythacszw.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
-
 
 const db =
 window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
+function escapeHTML(value){
 
-function esc(value){
+  if(value === null || value === undefined){
+    return "";
+  }
 
-return String(value ?? "").replace(
-/[&<>"']/g,
-
-function(c){
-
-return {
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-}[c];
-
-});
-
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
+function makeSlug(text){
+
+  return String(text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
 
 function articleUrl(article){
 
-return "article.html?slug=" +
-encodeURIComponent(article.slug || "");
-
+  return "article.html?slug=" +
+    encodeURIComponent(
+      makeSlug(article.title) +
+      "-" +
+      Date.now()
+    );
 }
 
+function formatDate(date){
 
-function imageHtml(url,className){
+  if(!date) return "";
 
-if(url){
-
-return `
-<img
-class="${className}"
-src="${esc(url)}"
-alt=""
->
-`;
-
+  return new Date(date).toLocaleDateString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
 }
 
-return `<div class="${className}"></div>`;
+function imageHTML(article,height="190px"){
 
+  if(!article.image_url){
+    return "";
+  }
+
+  return `
+    <img
+      src="${escapeHTML(article.image_url)}"
+      alt="${escapeHTML(article.title)}"
+      loading="lazy"
+      style="height:${height}"
+    >
+  `;
 }
 
+function cardHTML(article){
 
-function card(article){
+  return `
+    <article class="news-card">
 
-return `
+      <a href="${articleUrl(article)}">
 
-<a
-class="card"
-href="${articleUrl(article)}"
->
+        ${imageHTML(article,"190px")}
 
-${imageHtml(article.image_url,"card-img")}
+        <div class="story-category">
+          ${escapeHTML(article.category || "News")}
+        </div>
 
-<div class="category">
-${esc(article.category)}
-</div>
+        ${
+          article.is_breaking
+          ? `<div class="breaking-badge">BREAKING NEWS</div>`
+          : ""
+        }
 
-<h3>
-${esc(article.title)}
-</h3>
+        <h3 class="story-title">
+          ${escapeHTML(article.title)}
+        </h3>
 
-<div class="excerpt">
-${esc(article.excerpt || "")}
-</div>
+        ${
+          article.excerpt
+          ? `<p style="margin-top:8px;color:#555;line-height:1.45;">
+              ${escapeHTML(article.excerpt)}
+             </p>`
+          : ""
+        }
 
-<div class="meta">
-By ${esc(article.author || "Marian")}
-</div>
+        <div class="story-meta">
+          By ${escapeHTML(article.author || "Nexora News")}
+          ${article.published_at ? " · " + formatDate(article.published_at) : ""}
+        </div>
 
-</a>
+      </a>
 
-`;
-
+    </article>
+  `;
 }
 
+function sideCardHTML(article){
 
-function sideStory(article){
+  return `
+    <article class="story-card">
 
-return `
+      <a href="${articleUrl(article)}">
 
-<a
-class="story"
-href="${articleUrl(article)}"
->
+        ${imageHTML(article,"150px")}
 
-${imageHtml(article.image_url,"story-img")}
+        <div class="story-category">
+          ${escapeHTML(article.category || "News")}
+        </div>
 
-<div>
+        ${
+          article.is_breaking
+          ? `<div class="breaking-badge">BREAKING NEWS</div>`
+          : ""
+        }
 
-<div class="category">
-${esc(article.category)}
-</div>
+        <h3 class="story-title">
+          ${escapeHTML(article.title)}
+        </h3>
 
-<h2>
-${esc(article.title)}
-</h2>
+        <div class="story-meta">
+          By ${escapeHTML(article.author || "Nexora News")}
+          ${article.published_at ? " · " + formatDate(article.published_at) : ""}
+        </div>
 
-<div class="meta">
-By ${esc(article.author || "Marian")}
-</div>
+      </a>
 
-</div>
-
-</a>
-
-`;
-
+    </article>
+  `;
 }
-
-
-function heroStory(article){
-
-return `
-
-<a
-class="hero"
-href="${articleUrl(article)}"
->
-
-${imageHtml(article.image_url,"hero-img")}
-
-<div class="category">
-${esc(article.category)}
-</div>
-
-<h1>
-${esc(article.title)}
-</h1>
-
-<div class="excerpt">
-${esc(article.excerpt || "")}
-</div>
-
-<div class="meta">
-By ${esc(article.author || "Marian")}
-</div>
-
-</a>
-
-`;
-
-}
-
 
 function renderSection(id,articles){
 
-const el =
-document.getElementById(id);
+  const box =
+    document.getElementById(id);
 
-el.innerHTML =
-articles.length
+  if(!box) return;
 
-? articles
-.slice(0,6)
-.map(card)
-.join("")
+  if(!articles.length){
 
-: '<div class="empty">No stories available.</div>';
+    box.innerHTML =
+      `<div class="empty">No news available.</div>`;
 
+    return;
+  }
+
+  box.innerHTML =
+    articles.map(cardHTML).join("");
 }
-
 
 async function loadNews(){
 
-const status =
-document.getElementById("status");
+  const {
+    data,
+    error
+  } = await db
+    .from("articles")
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      body,
+      category,
+      author,
+      image_url,
+      status,
+      published_at,
+      created_at,
+      is_breaking
+    `)
+    .eq("status","published")
+    .order("published_at",{ascending:false});
 
+  if(error){
 
-const {data,error} =
-await db
+    console.error(error);
 
-.from("articles")
+    document.getElementById("hero").innerHTML =
+      `<div class="empty">
+        Unable to load news.
+        <br>
+        ${escapeHTML(error.message)}
+      </div>`;
 
-.select(`
-id,
-title,
-slug,
-excerpt,
-body,
-category,
-author,
-image_url,
-status,
-published_at,
-created_at
-`)
+    return;
+  }
 
-.eq("status","published")
+  const articles =
+    data || [];
 
-.order(
-"published_at",
-{ascending:false}
-);
+  if(!articles.length){
 
+    document.getElementById("hero").innerHTML =
+      `<div class="empty">
+        No published news yet.
+      </div>`;
 
-if(error){
+    return;
+  }
 
-status.className="error";
+  renderBreaking(articles);
 
-status.textContent =
-"ERROR: " + error.message;
+  renderHero(articles);
 
-return;
+  renderFeatured(articles);
 
+  renderSection(
+    "latest",
+    articles.slice(0,6)
+  );
+
+  renderSection(
+    "london",
+    articles.filter(
+      x => x.category === "London"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "uk",
+    articles.filter(
+      x => x.category === "UK"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "world",
+    articles.filter(
+      x => x.category === "World"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "business",
+    articles.filter(
+      x => x.category === "Business"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "technology",
+    articles.filter(
+      x => x.category === "Technology"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "sports",
+    articles.filter(
+      x => x.category === "Sports"
+    ).slice(0,6)
+  );
+
+  renderSection(
+    "video",
+    articles.filter(
+      x => x.category === "Video"
+    ).slice(0,6)
+  );
 }
 
+function renderBreaking(articles){
 
-if(!data || data.length===0){
+  const breaking =
+    articles.find(
+      x => x.is_breaking === true
+    );
 
-status.className="empty";
+  const track =
+    document.getElementById("breakingTrack");
 
-status.textContent =
-"No published articles yet.";
+  const item =
+    breaking || articles[0];
 
-return;
-
+  track.innerHTML =
+    `<a href="${articleUrl(item)}">
+      ${escapeHTML(item.title)}
+    </a>`;
 }
 
+function renderHero(articles){
 
-const articles=data;
+  const hero =
+    document.getElementById("hero");
 
+  const main =
+    articles[0];
 
-document.getElementById("hero")
-.innerHTML =
-heroStory(articles[0]);
+  const side =
+    articles.slice(1,4);
 
+  hero.innerHTML = `
 
-document.getElementById("side")
-.innerHTML =
-articles
-.slice(1,4)
-.map(sideStory)
-.join("");
+    <article class="hero-main">
 
+      <a href="${articleUrl(main)}">
 
-renderSection(
-"latest",
-articles.slice(0,6)
-);
+        ${
+          main.image_url
+          ? `<img
+              src="${escapeHTML(main.image_url)}"
+              alt="${escapeHTML(main.title)}"
+              loading="eager"
+            >`
+          : ""
+        }
 
+        <div class="hero-overlay">
 
-renderSection(
-"london",
-articles.filter(
-a =>
-(a.category || "")
-.toLowerCase()
-==="london"
-)
-);
+          <div class="hero-category">
+            ${escapeHTML(main.category || "NEWS")}
+          </div>
 
+          ${
+            main.is_breaking
+            ? `<div class="breaking-badge">
+                BREAKING NEWS
+              </div>`
+            : ""
+          }
 
-renderSection(
-"world",
-articles.filter(
-a =>
-(a.category || "")
-.toLowerCase()
-==="world"
-)
-);
+          <h1 class="hero-title">
+            ${escapeHTML(main.title)}
+          </h1>
 
+          ${
+            main.excerpt
+            ? `<p class="hero-excerpt">
+                ${escapeHTML(main.excerpt)}
+              </p>`
+            : ""
+          }
 
-renderSection(
-"technology",
-articles.filter(
-a =>
-(a.category || "")
-.toLowerCase()
-==="technology"
-)
-);
+        </div>
 
+      </a>
 
-status.style.display="none";
+    </article>
 
-document.getElementById("content")
-.style.display="block";
+    <div class="side-stories">
 
+      ${
+        side.length
+        ? side.map(sideCardHTML).join("")
+        : `<div class="empty">More stories coming soon.</div>`
+      }
+
+    </div>
+  `;
 }
 
+function renderFeatured(articles){
 
-loadNews();
+  const box =
+    document.getElementById("featured");
 
+  const items =
+    articles.slice(0,3);
+
+  box.innerHTML =
+    items.map(cardHTML).join("");
+}
+
+function showCategory(category){
+
+  const homepage =
+    document.getElementById("homepage");
+
+  const categoryPage =
+    document.getElementById("categoryPage");
+
+  const categoryTitle =
+    document.getElementById("categoryTitle");
+
+  const categoryGrid =
+    document.getElementById("categoryGrid");
+
+  homepage.style.display = "none";
+
+  categoryPage.style.display = "block";
+
+  categoryTitle.textContent =
+    category + " News";
+
+  db
+    .from("articles")
+    .select(`
+      id,
+      title,
+      slug,
+      excerpt,
+      body,
+      category,
+      author,
+      image_url,
+      status,
+      published_at,
+      created_at,
+      is_breaking
+    `)
+    .eq("status","published")
+    .eq("category",category)
+    .order("published_at",{ascending:false})
+    .then(({data,error}) => {
+
+      if(error){
+
+        categoryGrid.innerHTML =
+          `<div class="empty">
+            ${escapeHTML(error.message)}
+          </div>`;
+
+        return;
+      }
+
+      if(!data || !data.length){
+
+        categoryGrid.innerHTML =
+          `<div class="empty">
+            No ${escapeHTML(category)} news available.
+          </div>`;
+
+        return;
+      }
+
+      categoryGrid.innerHTML =
+        data.map(cardHTML).join("");
+
+    });
+}
+
+function checkCategory(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const category =
+    params.get("category");
+
+  if(category){
+
+    showCategory(category);
+
+    return true;
+  }
+
+  return false;
+}
+
+if(!checkCategory()){
+
+  loadNews();
+
+}
 </script>
 
 </body>
