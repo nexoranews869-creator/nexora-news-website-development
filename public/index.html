@@ -74,9 +74,13 @@ font-weight:700;
 background:#f2f2f2;
 }
 
+
+/* BREAKING NEWS */
+
 .breaking{
 background:#111;
 color:#fff;
+display:none;
 }
 
 .breaking-inner{
@@ -85,12 +89,22 @@ margin:auto;
 padding:10px 20px;
 font-size:14px;
 font-weight:700;
+display:flex;
+align-items:center;
+gap:10px;
+overflow:hidden;
 }
 
 .breaking b{
 background:#d71920;
 padding:5px 8px;
-margin-right:10px;
+flex-shrink:0;
+}
+
+.breaking-link{
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 main{
@@ -288,6 +302,15 @@ font-size:17px;
 height:210px;
 }
 
+.breaking-inner{
+padding:9px 15px;
+font-size:13px;
+}
+
+.breaking b{
+padding:4px 6px;
+}
+
 }
 </style>
 </head>
@@ -325,16 +348,21 @@ NEXORA <span>NEWS</span>
 
 </header>
 
-<div class="breaking">
+
+<!-- DYNAMIC BREAKING NEWS -->
+
+<div id="breaking" class="breaking">
 
 <div class="breaking-inner">
 
 <b>BREAKING</b>
-Latest news and updates from Nexora News
+
+<a id="breakingLink" class="breaking-link" href="#"></a>
 
 </div>
 
 </div>
+
 
 <main>
 
@@ -485,6 +513,35 @@ return `<div class="${className}"></div>`;
 }
 
 
+/* BREAKING NEWS */
+
+function renderBreaking(article){
+
+const breaking =
+document.getElementById("breaking");
+
+const link =
+document.getElementById("breakingLink");
+
+if(!article){
+
+breaking.style.display="none";
+
+return;
+
+}
+
+link.href =
+articleUrl(article);
+
+link.textContent =
+article.title;
+
+breaking.style.display="block";
+
+}
+
+
 function card(article){
 
 return `
@@ -627,7 +684,8 @@ author,
 image_url,
 status,
 published_at,
-created_at
+created_at,
+is_breaking
 `)
 
 .eq("status","published")
@@ -665,10 +723,25 @@ return;
 const articles=data;
 
 
+/* SHOW BREAKING NEWS */
+
+const breakingArticle =
+articles.find(
+article =>
+article.is_breaking === true
+);
+
+renderBreaking(breakingArticle);
+
+
+/* HERO */
+
 document.getElementById("hero")
 .innerHTML =
 heroStory(articles[0]);
 
+
+/* SIDE STORIES */
 
 document.getElementById("side")
 .innerHTML =
@@ -678,11 +751,15 @@ articles
 .join("");
 
 
+/* LATEST */
+
 renderSection(
 "latest",
 articles.slice(0,6)
 );
 
+
+/* LONDON */
 
 renderSection(
 "london",
@@ -695,6 +772,8 @@ a =>
 );
 
 
+/* WORLD */
+
 renderSection(
 "world",
 articles.filter(
@@ -705,6 +784,8 @@ a =>
 )
 );
 
+
+/* TECHNOLOGY */
 
 renderSection(
 "technology",
