@@ -107,10 +107,6 @@ cursor:pointer;
 border-radius:3px;
 }
 
-.search-box button:hover{
-background:#b9151b;
-}
-
 .result{
 display:grid;
 grid-template-columns:220px 1fr;
@@ -235,20 +231,19 @@ NEXORA <span>NEWS</span>
 <div class="nav">
 
 <a href="/">HOME</a>
-<a href="?category=UK">UK</a>
-<a href="?category=London">LONDON</a>
-<a href="?category=World">WORLD</a>
-<a href="?category=Business">BUSINESS</a>
-<a href="?category=Technology">TECHNOLOGY</a>
-<a href="?category=Sports">SPORTS</a>
-<a href="?category=Video">VIDEO</a>
+<a href="/?category=UK">UK</a>
+<a href="/?category=London">LONDON</a>
+<a href="/?category=World">WORLD</a>
+<a href="/?category=Business">BUSINESS</a>
+<a href="/?category=Technology">TECHNOLOGY</a>
+<a href="/?category=Sports">SPORTS</a>
+<a href="/?category=Video">VIDEO</a>
 
 </div>
 
 </nav>
 
 </header>
-
 
 <main>
 
@@ -263,7 +258,7 @@ placeholder="Search news..."
 autocomplete="off"
 >
 
-<button onclick="searchNews()">
+<button id="searchButton">
 SEARCH
 </button>
 
@@ -278,7 +273,6 @@ Enter a keyword to search Nexora News.
 </div>
 
 </main>
-
 
 <footer>
 
@@ -299,7 +293,6 @@ Independent news, information and educational content.
 </div>
 
 </footer>
-
 
 <script>
 
@@ -374,7 +367,7 @@ const results =
 document.getElementById("results");
 
 const query =
-input.value.trim();
+input.value.trim().toLowerCase();
 
 
 if(!query){
@@ -417,10 +410,6 @@ created_at
 
 .eq("status","published")
 
-.or(
-"title.ilike.%${query}%,excerpt.ilike.%${query}%,category.ilike.%${query}%"
-)
-
 .order(
 "published_at",
 {ascending:false}
@@ -440,7 +429,30 @@ return;
 }
 
 
-if(!data || data.length===0){
+const articles = data || [];
+
+
+const matches = articles.filter(article => {
+
+const title =
+String(article.title || "").toLowerCase();
+
+const excerpt =
+String(article.excerpt || "").toLowerCase();
+
+const category =
+String(article.category || "").toLowerCase();
+
+return (
+title.includes(query) ||
+excerpt.includes(query) ||
+category.includes(query)
+);
+
+});
+
+
+if(matches.length === 0){
 
 results.innerHTML = `
 <div class="message">
@@ -454,7 +466,7 @@ return;
 
 
 results.innerHTML =
-data.map(article => `
+matches.map(article => `
 
 <a
 class="result"
@@ -488,6 +500,14 @@ By ${esc(article.author || "Marian")}
 `).join("");
 
 }
+
+
+document
+.getElementById("searchButton")
+.addEventListener(
+"click",
+searchNews
+);
 
 
 document
