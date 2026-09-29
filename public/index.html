@@ -1617,7 +1617,7 @@ function initNewsletter(){
     }
 
     console.error(error);
-    msg.textContent = "Could not subscribe: " + ((error && (error.message || error.code)) || "unexpected response");
+    msg.textContent = "Could not subscribe. Please try again later.";
 
   });
 
