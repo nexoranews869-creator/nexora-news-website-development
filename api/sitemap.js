@@ -52,18 +52,34 @@ async function getArticles() {
     "&order=published_at.desc.nullslast" +
     "&limit=1000";
 
+  /* New-style "sb_publishable_" keys are not JWTs: send them only in the
+     apikey header, never as a Bearer token. */
   const response = await fetch(url, {
     headers: {
       apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
+      Accept: "application/json"
     }
   });
 
+  const text = await response.text();
+
   if (!response.ok) {
-    throw new Error("Supabase responded with " + response.status);
+    const error = new Error("Supabase responded with " + response.status);
+    error.detail = text.slice(0, 500);
+    throw error;
   }
 
-  return response.json();
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    const error = new Error("Supabase returned something that is not JSON");
+    error.detail = text.slice(0, 500);
+    throw error;
+  }
+
+  return data;
 }
 
 function urlEntry(loc, lastmod) {
@@ -77,13 +93,30 @@ function urlEntry(loc, lastmod) {
 
 module.exports = async function handler(req, res) {
   let articles = [];
+  let failure = null;
 
   try {
     articles = await getArticles();
   } catch (error) {
     /* If the database cannot be reached, still return a valid sitemap
        with the fixed pages instead of an error. */
-    console.error("Sitemap: could not load articles:", error);
+    failure = error;
+    console.error("Sitemap: could not load articles:", error, error.detail || "");
+  }
+
+  /* Open /sitemap.xml?debug=1 (or /api/sitemap?debug=1) to see what happened */
+  const wantsDebug =
+    req.url && /[?&]debug=1(&|$)/.test(req.url);
+
+  if (wantsDebug) {
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).send(
+      failure
+        ? "FAILED: " + failure.message + "\n" + (failure.detail || "")
+        : "OK: " + (articles || []).length + " published articles found"
+    );
+    return;
   }
 
   let xml =
@@ -114,6 +147,12 @@ module.exports = async function handler(req, res) {
   xml += "</urlset>\n";
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
-  res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+  /* Do not cache a sitemap that is missing its articles because of an error */
+  res.setHeader(
+    "Cache-Control",
+    failure
+      ? "no-store"
+      : "public, s-maxage=3600, stale-while-revalidate=86400"
+  );
   res.status(200).send(xml);
 };
