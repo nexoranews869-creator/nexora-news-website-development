@@ -14,4 +14,8 @@
     <loc>https://nexora-news-website-development-9ve.vercel.app/login.html</loc>
   </url>
 
+  <url>
+    <loc>https://nexora-news-website-development-9ve.vercel.app/article.html?slug=sabon-labari</loc>
+  </url>
+
 </urlset>
