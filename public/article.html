@@ -973,7 +973,10 @@ function updateSEO(article){
     "Read the latest news and stories from Nexora News.";
 
   const canonical =
-    window.location.href;
+  window.location.origin +
+  window.location.pathname +
+  "?slug=" +
+  encodeURIComponent(makeSlug(article.title));
 
   document.title =
     title;
