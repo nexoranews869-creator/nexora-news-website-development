@@ -1,427 +1,738 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nexora News — Article</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Nexora News | Article</title>
 
 <meta name="description"
-content="Read the latest news and stories from Nexora News.">
+      content="Read the latest news and stories from Nexora News.">
 
-<meta name="author" content="Nexora News">
-<meta name="robots" content="index, follow">
+<meta name="author"
+      content="Nexora News">
 
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Nexora News">
-<meta property="og:title" content="Nexora News — Article">
-<meta property="og:description"
-content="Read the latest news and stories from Nexora News.">
+<meta property="og:type"
+      content="article">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nexora News — Article">
-<meta name="twitter:description"
-content="Read the latest news and stories from Nexora News.">
+<meta property="og:site_name"
+      content="Nexora News">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="twitter:card"
+      content="summary_large_image">
+
+<link rel="icon" href="data:,">
 
 <style>
 
 *{
-box-sizing:border-box;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f5f6f7;
-color:#111827;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+  line-height:1.7;
 }
 
 /* HEADER */
 
 header{
-background:#111827;
-color:white;
-border-bottom:4px solid #b91c1c;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
 .header-inner{
-max-width:1150px;
-margin:auto;
-padding:18px 22px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:20px;
+  max-width:1250px;
+  margin:auto;
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
 }
 
 .logo{
-font-size:24px;
-font-weight:800;
-letter-spacing:.5px;
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-1px;
+  color:#111;
+  text-decoration:none;
 }
 
-.back{
-color:white;
-text-decoration:none;
-font-size:14px;
-font-weight:bold;
+.logo span{
+  color:#b00020;
 }
 
-.back:hover{
-text-decoration:underline;
+.header-links{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.header-links a{
+  text-decoration:none;
+  color:#111;
+  font-weight:700;
+  padding:8px 12px;
+  border-radius:5px;
+}
+
+.header-links a:hover{
+  background:#eee;
+}
+
+.search-btn{
+  background:#111;
+  color:#fff !important;
+}
+
+/* NAVIGATION */
+
+nav{
+  background:#111;
+}
+
+.nav-inner{
+  max-width:1250px;
+  margin:auto;
+  display:flex;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.nav-inner::-webkit-scrollbar{
+  display:none;
+}
+
+.nav-inner a{
+  color:#fff;
+  text-decoration:none;
+  padding:13px 17px;
+  font-size:13px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+.nav-inner a:hover{
+  background:#b00020;
+}
+
+/* BREAKING NEWS */
+
+.breaking{
+  background:#b00020;
+  color:#fff;
+  overflow:hidden;
+}
+
+.breaking-inner{
+  max-width:1250px;
+  margin:auto;
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+
+.breaking-label{
+  background:#111;
+  color:#fff;
+  font-weight:900;
+  padding:12px 16px;
+  white-space:nowrap;
+  flex-shrink:0;
+  z-index:5;
+  font-size:12px;
+}
+
+.ticker{
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.ticker span{
+  display:inline-block;
+  padding:11px 0 11px 100%;
+  white-space:nowrap;
+  animation:tickerMove 22s linear infinite;
+}
+
+@keyframes tickerMove{
+  0%{
+    transform:translateX(0);
+  }
+
+  100%{
+    transform:translateX(-100%);
+  }
 }
 
 /* ARTICLE */
 
-main{
-max-width:1000px;
-margin:35px auto;
-padding:0 18px;
+.article-container{
+  max-width:950px;
+  margin:45px auto;
+  padding:0 20px;
 }
 
 .article-card{
-background:white;
-border-radius:12px;
-padding:30px;
-box-shadow:0 2px 12px rgba(0,0,0,.06);
+  background:#fff;
+  padding:40px;
+  box-shadow:0 2px 12px rgba(0,0,0,.07);
 }
 
 .category{
-display:inline-block;
-background:#b91c1c;
-color:white;
-font-size:12px;
-font-weight:800;
-padding:7px 11px;
-border-radius:4px;
-text-transform:uppercase;
-margin-bottom:15px;
+  display:inline-block;
+  background:#b00020;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  padding:6px 12px;
+  margin-bottom:18px;
+  text-transform:uppercase;
 }
 
-.breaking{
-display:inline-block;
-background:#dc2626;
-color:white;
-font-size:12px;
-font-weight:900;
-padding:7px 11px;
-border-radius:4px;
-margin-left:6px;
-margin-bottom:15px;
-animation:pulse 1.5s infinite;
+.breaking-badge{
+  display:inline-block;
+  background:#111;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  padding:6px 12px;
+  margin-left:8px;
+  margin-bottom:18px;
+  text-transform:uppercase;
 }
 
-@keyframes pulse{
-0%,100%{opacity:1;}
-50%{opacity:.65;}
+.article-title{
+  font-size:46px;
+  line-height:1.12;
+  font-weight:900;
+  letter-spacing:-1.2px;
+  margin-bottom:18px;
 }
 
-h1{
-font-size:46px;
-line-height:1.08;
-margin:5px 0 16px;
-color:#111827;
+.article-excerpt{
+  font-size:20px;
+  color:#555;
+  line-height:1.55;
+  margin-bottom:20px;
 }
 
-.excerpt{
-font-size:20px;
-line-height:1.5;
-color:#4b5563;
-margin:0 0 18px;
-font-weight:500;
+.article-meta{
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  padding:13px 0;
+  margin-bottom:28px;
+  color:#555;
+  font-size:14px;
 }
 
-.meta{
-color:#6b7280;
-font-size:14px;
-margin-bottom:22px;
-border-bottom:1px solid #e5e7eb;
-padding-bottom:18px;
+.article-meta strong{
+  color:#111;
 }
 
-.hero{
-width:100%;
-max-height:560px;
-object-fit:cover;
-border-radius:10px;
-display:block;
-margin:0 0 28px;
+.hero-image{
+  width:100%;
+  max-height:540px;
+  object-fit:cover;
+  display:block;
+  margin-bottom:32px;
 }
 
 .article-body{
-font-size:19px;
-line-height:1.8;
-color:#1f2937;
-white-space:pre-wrap;
+  font-size:18px;
+  line-height:1.85;
+  color:#222;
+}
+
+.article-body p{
+  margin-bottom:22px;
+}
+
+.article-body h2{
+  font-size:28px;
+  line-height:1.3;
+  margin:32px 0 14px;
+}
+
+.article-body h3{
+  font-size:23px;
+  margin:28px 0 12px;
+}
+
+.article-body img{
+  max-width:100%;
+  height:auto;
+  display:block;
+  margin:25px auto;
+}
+
+.article-body a{
+  color:#b00020;
+  font-weight:700;
 }
 
 /* SHARE */
 
 .share-box{
-margin-top:30px;
-padding-top:22px;
-border-top:1px solid #e5e7eb;
+  border-top:1px solid #ddd;
+  margin-top:35px;
+  padding-top:25px;
 }
 
-.share-title{
-font-size:15px;
-font-weight:bold;
-margin-bottom:12px;
+.share-box h3{
+  margin-bottom:15px;
+  font-size:20px;
 }
 
 .share-buttons{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
 }
 
-.share-btn{
-border:0;
-padding:10px 15px;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-font-size:14px;
+.share-buttons button,
+.share-buttons a{
+  border:0;
+  padding:10px 15px;
+  border-radius:5px;
+  cursor:pointer;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:800;
 }
 
-.copy-btn{
-background:#111827;
-color:white;
+.whatsapp{
+  background:#25D366;
+  color:#fff;
 }
 
-.whatsapp-btn{
-background:#16a34a;
-color:white;
+.facebook{
+  background:#1877F2;
+  color:#fff;
 }
 
-.facebook-btn{
-background:#2563eb;
-color:white;
+.x{
+  background:#111;
+  color:#fff;
 }
 
-.twitter-btn{
-background:#000;
-color:white;
+.copy{
+  background:#ddd;
+  color:#111;
 }
 
-/* RELATED */
+/* RELATED STORIES */
 
 .related{
-margin-top:35px;
+  margin-top:45px;
 }
 
 .related h2{
-font-size:24px;
-border-left:5px solid #b91c1c;
-padding-left:10px;
-margin-bottom:18px;
+  font-size:27px;
+  margin-bottom:20px;
+  border-left:5px solid #b00020;
+  padding-left:12px;
 }
 
 .related-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
 .related-card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,.06);
-text-decoration:none;
-color:#111827;
-transition:.2s;
+  background:#fff;
+  text-decoration:none;
+  color:#111;
+  display:block;
+  border:1px solid #ddd;
+  transition:.2s;
 }
 
 .related-card:hover{
-transform:translateY(-3px);
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+  transform:translateY(-3px);
+  box-shadow:0 5px 15px rgba(0,0,0,.1);
 }
 
-.related-image{
-width:100%;
-height:150px;
-object-fit:cover;
-background:#e5e7eb;
+.related-card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  display:block;
 }
 
 .related-content{
-padding:14px;
+  padding:15px;
 }
 
 .related-category{
-font-size:11px;
-font-weight:bold;
-color:#b91c1c;
-text-transform:uppercase;
-margin-bottom:7px;
+  color:#b00020;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:5px;
 }
 
 .related-title{
-font-size:17px;
-font-weight:bold;
-line-height:1.3;
+  font-size:17px;
+  font-weight:900;
+  line-height:1.35;
 }
 
-/* LOADING / ERROR */
+/* LOADING */
 
-.loading,
-.error{
-background:white;
-padding:35px;
-border-radius:10px;
-text-align:center;
+.loading{
+  text-align:center;
+  padding:80px 20px;
+  font-size:20px;
+  color:#555;
 }
 
+/* ERROR */
+
 .error{
-color:#b91c1c;
+  background:#fff;
+  padding:50px 25px;
+  text-align:center;
+}
+
+.error h1{
+  font-size:32px;
+  margin-bottom:12px;
 }
 
 .error p{
-color:#6b7280;
+  color:#666;
+  margin-bottom:20px;
+}
+
+.error a{
+  display:inline-block;
+  background:#b00020;
+  color:#fff;
+  padding:10px 18px;
+  text-decoration:none;
+  font-weight:800;
+  border-radius:5px;
 }
 
 /* FOOTER */
 
 footer{
-margin-top:40px;
-background:#111827;
-color:#9ca3af;
-text-align:center;
-padding:25px 15px;
-font-size:13px;
+  background:#111;
+  color:#fff;
+  margin-top:60px;
+}
+
+.footer-inner{
+  max-width:1250px;
+  margin:auto;
+  padding:35px 20px;
+  display:flex;
+  justify-content:space-between;
+  gap:30px;
+}
+
+.footer-logo{
+  font-size:24px;
+  font-weight:900;
+}
+
+.footer-logo span{
+  color:#e00028;
+}
+
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.footer-links a{
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.copyright{
+  border-top:1px solid #333;
+  text-align:center;
+  padding:18px;
+  color:#aaa;
+  font-size:12px;
 }
 
 /* MOBILE */
 
 @media(max-width:700px){
 
-.header-inner{
-padding:15px;
-}
+  .header-inner{
+    min-height:62px;
+    padding:0 12px;
+  }
 
-.logo{
-font-size:19px;
-}
+  .logo{
+    font-size:22px;
+  }
 
-main{
-margin:20px auto;
-padding:0 10px;
-}
+  .header-links a{
+    padding:6px 8px;
+    font-size:12px;
+  }
 
-.article-card{
-padding:20px 16px;
-}
+  .nav-inner a{
+    padding:12px 13px;
+    font-size:12px;
+  }
 
-h1{
-font-size:32px;
-}
+  .breaking-label{
+    padding:12px 10px;
+    font-size:10px;
+  }
 
-.excerpt{
-font-size:17px;
-}
+  .ticker{
+    font-size:12px;
+  }
 
-.article-body{
-font-size:17px;
-line-height:1.7;
-}
+  .article-container{
+    margin:20px auto;
+    padding:0 10px;
+  }
 
-.hero{
-border-radius:7px;
-}
+  .article-card{
+    padding:22px 17px;
+  }
 
-.related-grid{
-grid-template-columns:1fr;
-}
+  .article-title{
+    font-size:31px;
+    line-height:1.15;
+  }
 
-.related-image{
-height:190px;
-}
+  .article-excerpt{
+    font-size:17px;
+  }
 
-.share-buttons{
-display:grid;
-grid-template-columns:1fr 1fr;
-}
+  .article-body{
+    font-size:17px;
+    line-height:1.75;
+  }
 
-.share-btn{
-width:100%;
-}
+  .article-body h2{
+    font-size:24px;
+  }
+
+  .hero-image{
+    max-height:320px;
+    margin-bottom:22px;
+  }
+
+  .related-grid{
+    grid-template-columns:1fr;
+  }
+
+  .related-card img{
+    height:200px;
+  }
+
+  .footer-inner{
+    flex-direction:column;
+  }
 
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
 
-<div class="header-inner">
+  <div class="header-inner">
 
-<div class="logo">
-NEXORA NEWS
-</div>
+    <a href="index.html"
+       class="logo">
+      NEXORA <span>NEWS</span>
+    </a>
 
-<a class="back" href="/">
-← Back to Home
-</a>
+    <div class="header-links">
 
-</div>
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="search.html"
+         class="search-btn">
+        Search
+      </a>
+
+    </div>
+
+  </div>
 
 </header>
 
+<nav>
 
-<main>
+  <div class="nav-inner">
 
-<div id="article">
+    <a href="index.html">
+      HOME
+    </a>
 
-<div class="loading">
-Loading article...
+    <a href="index.html?category=London">
+      LONDON
+    </a>
+
+    <a href="index.html?category=UK">
+      UK
+    </a>
+
+    <a href="index.html?category=World">
+      WORLD
+    </a>
+
+    <a href="index.html?category=Business">
+      BUSINESS
+    </a>
+
+    <a href="index.html?category=Technology">
+      TECHNOLOGY
+    </a>
+
+    <a href="index.html?category=Sports">
+      SPORTS
+    </a>
+
+    <a href="index.html?category=Video">
+      VIDEO
+    </a>
+
+  </div>
+
+</nav>
+
+<div class="breaking"
+     id="breaking">
+
+  <div class="breaking-inner">
+
+    <div class="breaking-label">
+      BREAKING NEWS
+    </div>
+
+    <div class="ticker"
+         id="ticker">
+    </div>
+
+  </div>
+
 </div>
 
-</div>
+<main class="article-container"
+      id="articleContainer">
 
-<div id="related"></div>
+  <div class="loading">
+    Loading article...
+  </div>
 
 </main>
 
-
 <footer>
 
-© 2026 Nexora News · All rights reserved.
+  <div class="footer-inner">
+
+    <div>
+      <div class="footer-logo">
+        NEXORA <span>NEWS</span>
+      </div>
+
+      <p style="color:#aaa;margin-top:8px;">
+        Latest UK, London and world news.
+      </p>
+    </div>
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html?category=London">
+        London
+      </a>
+
+      <a href="index.html?category=UK">
+        UK
+      </a>
+
+      <a href="index.html?category=World">
+        World
+      </a>
+
+      <a href="index.html?category=Business">
+        Business
+      </a>
+
+      <a href="index.html?category=Technology">
+        Technology
+      </a>
+
+      <a href="search.html">
+        Search
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="copyright">
+    © 2026 Nexora News. All rights reserved.
+  </div>
 
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
+/* SUPABASE */
 
 const SUPABASE_URL =
 "https://qleoqpmxvmqcythacszw.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
 const db =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
 
-/* SECURITY */
+/* ESCAPE HTML */
 
-function escapeHtml(value){
+function esc(value){
 
-return String(value || "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
@@ -430,48 +741,145 @@ return String(value || "")
 
 function makeSlug(title){
 
-return String(title || "")
-.toLowerCase()
-.trim()
-.replace(/[^a-z0-9]+/g,"-")
-.replace(/^-+|-+$/g,"");
+  return String(title || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g,"")
+    .replace(/\s+/g,"-")
+    .replace(/-+/g,"-");
 
 }
 
 
-/* URL SLUG */
+/* DATE */
 
-function getSlug(){
+function formatDate(date){
 
-const params =
-new URLSearchParams(
-window.location.search
-);
+  if(!date){
+    return "";
+  }
 
-return decodeURIComponent(
-params.get("slug") || ""
-)
-.trim()
-.toLowerCase();
+  const d =
+    new Date(date);
+
+  if(isNaN(d.getTime())){
+    return "";
+  }
+
+  return d.toLocaleDateString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
+    }
+  );
 
 }
 
 
-/* FORMAT DATE */
+/* ARTICLE URL */
 
-function formatDate(value){
+function articleUrl(article){
 
-if(!value) return "";
+  return "article.html?slug=" +
+    encodeURIComponent(
+      makeSlug(article.title)
+    );
 
-return new Date(value)
-.toLocaleDateString(
-"en-GB",
-{
-day:"numeric",
-month:"long",
-year:"numeric"
 }
-);
+
+
+/* SHARE */
+
+function shareArticle(){
+
+  const url =
+    window.location.href;
+
+  const title =
+    document.title;
+
+  const whatsapp =
+    "https://wa.me/?text=" +
+    encodeURIComponent(
+      title + " " + url
+    );
+
+  window.open(
+    whatsapp,
+    "_blank"
+  );
+
+}
+
+
+/* FACEBOOK */
+
+function shareFacebook(){
+
+  const url =
+    window.location.href;
+
+  const facebook =
+    "https://www.facebook.com/sharer/sharer.php?u=" +
+    encodeURIComponent(url);
+
+  window.open(
+    facebook,
+    "_blank",
+    "width=600,height=500"
+  );
+
+}
+
+
+/* X */
+
+function shareX(){
+
+  const url =
+    window.location.href;
+
+  const title =
+    document.title;
+
+  const x =
+    "https://twitter.com/intent/tweet?text=" +
+    encodeURIComponent(title) +
+    "&url=" +
+    encodeURIComponent(url);
+
+  window.open(
+    x,
+    "_blank",
+    "width=600,height=500"
+  );
+
+}
+
+
+/* COPY LINK */
+
+async function copyLink(){
+
+  const url =
+    window.location.href;
+
+  try{
+
+    await navigator.clipboard.writeText(url);
+
+    alert("Article link copied.");
+
+  }catch(error){
+
+    prompt(
+      "Copy this article link:",
+      url
+    );
+
+  }
 
 }
 
@@ -480,545 +888,429 @@ year:"numeric"
 
 async function loadArticle(){
 
-const container =
-document.getElementById("article");
+  const container =
+    document.getElementById(
+      "articleContainer"
+    );
 
-const slug =
-getSlug();
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const slug =
+    params.get("slug");
+
+  if(!slug){
+
+    container.innerHTML = `
+      <div class="error">
+        <h1>Article not found</h1>
+        <p>No article was selected.</p>
+        <a href="index.html">
+          Back to Home
+        </a>
+      </div>
+    `;
+
+    return;
+
+  }
 
 
-if(!slug){
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("articles")
+      .select("*")
+      .eq("status","published")
+      .order(
+        "published_at",
+        {
+          ascending:false
+        }
+      );
 
-container.innerHTML = `
-<div class="error">
-<h2>Article not found</h2>
-</div>
-`;
 
-return;
+  if(error){
+
+    console.error(error);
+
+    container.innerHTML = `
+      <div class="error">
+        <h1>Unable to load article</h1>
+        <p>Please try again later.</p>
+        <a href="index.html">
+          Back to Home
+        </a>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const articles =
+    data || [];
+
+
+  /*
+    Match:
+    1. Exact article slug
+    2. Old timestamped slug
+  */
+
+  const article =
+    articles.find(item => {
+
+      const titleSlug =
+        makeSlug(item.title);
+
+      return (
+        slug === titleSlug ||
+        slug.startsWith(
+          titleSlug + "-"
+        )
+      );
+
+    });
+
+
+  if(!article){
+
+    container.innerHTML = `
+      <div class="error">
+        <h1>Article not found</h1>
+
+        <p>
+          The article may have been removed
+          or the link may be incorrect.
+        </p>
+
+        <a href="index.html">
+          Back to Home
+        </a>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  /* PAGE TITLE */
+
+  document.title =
+    article.title +
+    " | Nexora News";
+
+
+  /* META DESCRIPTION */
+
+  const description =
+    article.excerpt ||
+    "Latest news from Nexora News.";
+
+
+  let meta =
+    document.querySelector(
+      'meta[name="description"]'
+    );
+
+  if(meta){
+
+    meta.setAttribute(
+      "content",
+      description
+    );
+
+  }
+
+
+  /* BREAKING NEWS */
+
+  const breakingArticles =
+    articles
+      .filter(
+        item =>
+          item.is_breaking === true
+      )
+      .slice(0,5);
+
+
+  if(
+    breakingArticles.length
+  ){
+
+    document.getElementById(
+      "breaking"
+    ).style.display =
+      "block";
+
+
+    const text =
+      breakingArticles
+        .map(
+          item => item.title
+        )
+        .join("   •   ");
+
+
+    document.getElementById(
+      "ticker"
+    ).innerHTML =
+      `<span>${esc(text)}</span>`;
+
+  }
+
+
+  /* ARTICLE BODY */
+
+  let body =
+    article.body || "";
+
+
+  /*
+    If body is plain text,
+    preserve line breaks.
+  */
+
+  if(
+    !body.includes("<p>") &&
+    !body.includes("<h2>") &&
+    !body.includes("<h3>") &&
+    !body.includes("<br")
+  ){
+
+    body =
+      body
+        .split(/\n\s*\n/)
+        .map(
+          paragraph =>
+            `<p>${esc(paragraph)
+              .replace(/\n/g,"<br>")}</p>`
+        )
+        .join("");
+
+  }
+
+
+  /* HERO IMAGE */
+
+  const image =
+    article.image_url
+      ? `
+        <img
+          class="hero-image"
+          src="${esc(article.image_url)}"
+          alt="${esc(article.title)}"
+          onerror="this.style.display='none'"
+        >
+      `
+      : "";
+
+
+  /* BREAKING BADGE */
+
+  const breakingBadge =
+    article.is_breaking === true
+      ? `
+        <span class="breaking-badge">
+          BREAKING NEWS
+        </span>
+      `
+      : "";
+
+
+  /* RELATED STORIES */
+
+  const related =
+    articles
+      .filter(item =>
+        item.id !== article.id &&
+        item.category === article.category
+      )
+      .slice(0,3);
+
+
+  let relatedHTML = "";
+
+
+  if(related.length){
+
+    relatedHTML = `
+      <section class="related">
+
+        <h2>
+          Related Stories
+        </h2>
+
+        <div class="related-grid">
+
+          ${related.map(item => `
+
+            <a
+              class="related-card"
+              href="${articleUrl(item)}"
+            >
+
+              ${
+                item.image_url
+                ?
+                `
+                <img
+                  src="${esc(item.image_url)}"
+                  alt="${esc(item.title)}"
+                  onerror="this.style.display='none'"
+                >
+                `
+                :
+                ""
+              }
+
+              <div class="related-content">
+
+                <div class="related-category">
+                  ${esc(item.category || "News")}
+                </div>
+
+                <div class="related-title">
+                  ${esc(item.title)}
+                </div>
+
+              </div>
+
+            </a>
+
+          `).join("")}
+
+        </div>
+
+      </section>
+    `;
+
+  }
+
+
+  /* RENDER */
+
+  container.innerHTML = `
+
+    <article class="article-card">
+
+      <div>
+
+        <span class="category">
+          ${esc(article.category || "News")}
+        </span>
+
+        ${breakingBadge}
+
+      </div>
+
+
+      <h1 class="article-title">
+        ${esc(article.title)}
+      </h1>
+
+
+      ${
+        article.excerpt
+        ?
+        `
+        <div class="article-excerpt">
+          ${esc(article.excerpt)}
+        </div>
+        `
+        :
+        ""
+      }
+
+
+      <div class="article-meta">
+
+        By
+        <strong>
+          ${esc(article.author || "Nexora News")}
+        </strong>
+
+        &nbsp; • &nbsp;
+
+        ${formatDate(
+          article.published_at ||
+          article.created_at
+        )}
+
+      </div>
+
+
+      ${image}
+
+
+      <div class="article-body">
+
+        ${body}
+
+      </div>
+
+
+      <div class="share-box">
+
+        <h3>
+          Share this story
+        </h3>
+
+        <div class="share-buttons">
+
+          <button
+            class="whatsapp"
+            onclick="shareArticle()"
+          >
+            WhatsApp
+          </button>
+
+
+          <button
+            class="facebook"
+            onclick="shareFacebook()"
+          >
+            Facebook
+          </button>
+
+
+          <button
+            class="x"
+            onclick="shareX()"
+          >
+            X
+          </button>
+
+
+          <button
+            class="copy"
+            onclick="copyLink()"
+          >
+            Copy Link
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    ${relatedHTML}
+
+  `;
 
 }
 
 
-/* GET PUBLISHED ARTICLES */
-
-const {data,error} =
-await db
-.from("articles")
-.select("*")
-.eq("status","published")
-.order("published_at",{ascending:false});
-
-
-/* DATABASE ERROR */
-
-if(error){
-
-console.error(error);
-
-container.innerHTML = `
-
-<div class="error">
-
-<h2>Unable to load article</h2>
-
-<p>
-${escapeHtml(error.message)}
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-if(!data || data.length === 0){
-
-container.innerHTML = `
-
-<div class="error">
-
-<h2>Article not found</h2>
-
-<p>No published articles were found.</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-/* FIND ARTICLE */
-
-const article =
-data.find(item => {
-
-const titleSlug =
-makeSlug(item.title);
-
-return (
-slug === titleSlug ||
-slug.startsWith(titleSlug + "-")
-);
-
-});
-
-
-/* NOT FOUND */
-
-if(!article){
-
-container.innerHTML = `
-
-<div class="error">
-
-<h2>Article not found</h2>
-
-<p>
-Slug: ${escapeHtml(slug)}
-</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-
-/* DATE */
-
-const date =
-formatDate(
-article.published_at
-);
-
-
-/* DESCRIPTION */
-
-const description =
-article.excerpt ||
-article.content ||
-"Read the latest news from Nexora News.";
-
-
-/* PAGE TITLE */
-
-document.title =
-article.title +
-" | Nexora News";
-
-
-/* META DESCRIPTION */
-
-const metaDescription =
-document.querySelector(
-'meta[name="description"]'
-);
-
-if(metaDescription){
-
-metaDescription.setAttribute(
-"content",
-description
-);
-
-}
-
-
-/* OG */
-
-const ogTitle =
-document.querySelector(
-'meta[property="og:title"]'
-);
-
-if(ogTitle){
-
-ogTitle.setAttribute(
-"content",
-article.title
-);
-
-}
-
-const ogDescription =
-document.querySelector(
-'meta[property="og:description"]'
-);
-
-if(ogDescription){
-
-ogDescription.setAttribute(
-"content",
-description
-);
-
-}
-
-
-/* TWITTER */
-
-const twitterTitle =
-document.querySelector(
-'meta[name="twitter:title"]'
-);
-
-if(twitterTitle){
-
-twitterTitle.setAttribute(
-"content",
-article.title
-);
-
-}
-
-const twitterDescription =
-document.querySelector(
-'meta[name="twitter:description"]'
-);
-
-if(twitterDescription){
-
-twitterDescription.setAttribute(
-"content",
-description
-);
-
-}
-
-
-/* IMAGE */
-
-let image = "";
-
-if(article.image_url){
-
-image = `
-
-<img
-class="hero"
-src="${escapeHtml(article.image_url)}"
-alt="${escapeHtml(article.title)}"
->
-
-`;
-
-}
-
-
-/* BREAKING */
-
-const breaking =
-article.is_breaking === true
-? `<span class="breaking">BREAKING NEWS</span>`
-: "";
-
-
-/* DISPLAY ARTICLE */
-
-container.innerHTML = `
-
-<article class="article-card">
-
-<div>
-
-<span class="category">
-${escapeHtml(article.category)}
-</span>
-
-${breaking}
-
-</div>
-
-
-<h1>
-${escapeHtml(article.title)}
-</h1>
-
-
-<p class="excerpt">
-${escapeHtml(article.excerpt || "")}
-</p>
-
-
-<div class="meta">
-
-By <strong>
-${escapeHtml(article.author || "Marian")}
-</strong>
-
-${date ? " · " + date : ""}
-
-</div>
-
-
-${image}
-
-
-<div class="article-body">
-
-${escapeHtml(article.content)}
-
-</div>
-
-
-<div class="share-box">
-
-<div class="share-title">
-Share this story
-</div>
-
-<div class="share-buttons">
-
-<button
-class="share-btn whatsapp-btn"
-onclick="shareWhatsApp()">
-WhatsApp
-</button>
-
-<button
-class="share-btn facebook-btn"
-onclick="shareFacebook()">
-Facebook
-</button>
-
-<button
-class="share-btn twitter-btn"
-onclick="shareTwitter()">
-X
-</button>
-
-<button
-class="share-btn copy-btn"
-onclick="copyLink()">
-Copy Link
-</button>
-
-</div>
-
-</div>
-
-</article>
-
-`;
-
-
-/* RELATED STORIES */
-
-loadRelated(article);
-
-}
-
-
-/* RELATED STORIES */
-
-function loadRelated(current){
-
-const relatedBox =
-document.getElementById("related");
-
-const category =
-current.category;
-
-const currentId =
-current.id;
-
-
-/* SELECT RELATED */
-
-const related =
-window.__articles
-? window.__articles
-    .filter(item =>
-      item.id !== currentId &&
-      item.category === category
-    )
-    .slice(0,3)
-: [];
-
-
-if(related.length === 0){
-
-relatedBox.innerHTML = "";
-
-return;
-
-}
-
-
-relatedBox.innerHTML = `
-
-<section class="related">
-
-<h2>
-Related Stories
-</h2>
-
-<div class="related-grid">
-
-${related.map(item => {
-
-const slug =
-makeSlug(item.title);
-
-const image =
-item.image_url
-? `<img
-class="related-image"
-src="${escapeHtml(item.image_url)}"
-alt="${escapeHtml(item.title)}">`
-: `<div class="related-image"></div>`;
-
-return `
-
-<a
-class="related-card"
-href="/article.html?slug=${encodeURIComponent(slug)}">
-
-${image}
-
-<div class="related-content">
-
-<div class="related-category">
-
-${escapeHtml(item.category)}
-
-</div>
-
-<div class="related-title">
-
-${escapeHtml(item.title)}
-
-</div>
-
-</div>
-
-</a>
-
-`;
-
-}).join("")}
-
-</div>
-
-</section>
-
-`;
-
-}
-
-
-/* SHARE FUNCTIONS */
-
-function currentUrl(){
-
-return window.location.href;
-
-}
-
-
-function shareWhatsApp(){
-
-const url =
-"https://wa.me/?text=" +
-encodeURIComponent(
-document.title + " " + currentUrl()
-);
-
-window.open(
-url,
-"_blank"
-);
-
-}
-
-
-function shareFacebook(){
-
-const url =
-"https://www.facebook.com/sharer/sharer.php?u=" +
-encodeURIComponent(currentUrl());
-
-window.open(
-url,
-"_blank"
-);
-
-}
-
-
-function shareTwitter(){
-
-const url =
-"https://twitter.com/intent/tweet?text=" +
-encodeURIComponent(document.title) +
-"&url=" +
-encodeURIComponent(currentUrl());
-
-window.open(
-url,
-"_blank"
-);
-
-}
-
-
-async function copyLink(){
-
-try{
-
-await navigator.clipboard.writeText(
-currentUrl()
-);
-
-alert("Article link copied!");
-
-}catch(error){
-
-alert("Unable to copy link.");
-
-}
-
-}
-
-
-/* START */
-
-async function start(){
-
-/*
-Load all published articles once.
-This is also used for Related Stories.
-*/
-
-const {data} =
-await db
-.from("articles")
-.select("*")
-.eq("status","published")
-.order("published_at",{ascending:false});
-
-
-window.__articles =
-data || [];
-
-
-/* Load main article */
-
-await loadArticle();
-
-}
-
-
-start();
+loadArticle();
 
 </script>
 
