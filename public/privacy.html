@@ -1,386 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<meta name="robots"
-      content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d0102a">
 
 <title>Privacy Policy | Nexora News</title>
+<meta name="description" content="Privacy Policy for Nexora News. Learn how Nexora News handles information, cookies, analytics and newsletter subscriptions.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://nexora-news-website-development-9ve.vercel.app/privacy.html">
 
-<meta name="description"
-      content="Privacy Policy for Nexora News. Learn how Nexora News handles information, cookies, analytics and newsletter subscriptions.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nexora News">
+<meta property="og:title" content="Privacy Policy | Nexora News">
+<meta property="og:description" content="Privacy Policy for Nexora News. Learn how Nexora News handles information, cookies, analytics and newsletter subscriptions.">
+<meta property="og:url" content="https://nexora-news-website-development-9ve.vercel.app/privacy.html">
+<meta property="og:image" content="https://nexora-news-website-development-9ve.vercel.app/og-image.jpg">
 
-<link rel="canonical"
-      href="https://nexora-news-website-development-9ve.vercel.app/privacy.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%23d0102a'/%3E%3Ctext x='50' y='73' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem("theme");
+    if(t){ document.documentElement.setAttribute("data-theme", t); }
+  }catch(e){}
+})();
+</script>
 
 <style>
-
-*{
-  box-sizing:border-box;
+:root{
+  --bg:#f2f4f8; --surface:#ffffff; --soft:#e8ecf3; --text:#0d1220; --body-text:#1c2334;
+  --muted:#586279; --line:#e0e5ee; --red:#d0102a; --accent-text:#c60f28;
+  --ink:#0b1020; --on-ink:#f4f6fb; --glass:rgba(242,244,248,.82);
+  --shadow:0 1px 2px rgba(13,18,32,.05),0 8px 24px rgba(13,18,32,.06);
+  --display:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
 }
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f4f4f4;
-  color:#171717;
-  line-height:1.7;
-}
-
-.header{
-  background:#fff;
-  border-top:5px solid #b00020;
-  border-bottom:1px solid #ddd;
-}
-
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-}
-
-.logo{
-  font-size:28px;
-  font-weight:900;
-  text-decoration:none;
-  color:#111;
-}
-
-.logo span{
-  color:#b00020;
-}
-
-.back{
-  text-decoration:none;
-  font-weight:700;
-  color:#111;
-}
-
-.back:hover{
-  color:#b00020;
-}
-
-.container{
-  max-width:900px;
-  margin:45px auto;
-  padding:0 20px;
-}
-
-.card{
-  background:#fff;
-  border:1px solid #ddd;
-  padding:40px;
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-h1{
-  font-size:40px;
-  line-height:1.15;
-  margin-top:0;
-}
-
-h2{
-  font-size:24px;
-  margin-top:35px;
-}
-
-.red-line{
-  width:70px;
-  height:5px;
-  background:#b00020;
-  margin:20px 0 30px;
-}
-
-p{
-  font-size:16px;
-  color:#333;
-}
-
-ul{
-  color:#333;
-  padding-left:25px;
-}
-
-li{
-  margin-bottom:8px;
-}
-
-a{
-  color:#b00020;
-}
-
-.footer{
-  background:#111;
-  color:#fff;
-  margin-top:60px;
-  padding:35px 20px;
-}
-
-.footer-inner{
-  max-width:1100px;
-  margin:auto;
-  text-align:center;
-}
-
-.footer a{
-  color:#fff;
-  text-decoration:none;
-  margin:0 10px;
-}
-
-.footer a:hover{
-  color:#ff5268;
-}
-
-.footer p{
-  color:#aaa;
-  font-size:13px;
-}
-
-@media(max-width:600px){
-
-  .header-inner{
-    padding:15px;
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#080b12; --surface:#121724; --soft:#1b2233; --text:#eef1f8; --body-text:#dde2ee;
+    --muted:#a2acc3; --line:#222b3f; --accent-text:#ff6f82; --ink:#04060b;
+    --glass:rgba(8,11,18,.82);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
   }
-
-  .logo{
-    font-size:23px;
-  }
-
-  .back{
-    font-size:13px;
-  }
-
-  .container{
-    margin:25px auto;
-    padding:0 12px;
-  }
-
-  .card{
-    padding:25px 18px;
-  }
-
-  h1{
-    font-size:31px;
-  }
-
-  h2{
-    font-size:21px;
-  }
-
-  p,
-  li{
-    font-size:15px;
-  }
-
 }
+:root[data-theme="dark"]{
+  --bg:#080b12; --surface:#121724; --soft:#1b2233; --text:#eef1f8; --body-text:#dde2ee;
+  --muted:#a2acc3; --line:#222b3f; --accent-text:#ff6f82; --ink:#04060b;
+  --glass:rgba(8,11,18,.82);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid #ffbf47;outline-offset:2px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:absolute;left:-999px;top:0;background:#ffbf47;color:#111;padding:10px 14px;font-weight:700;z-index:100}
+.skip-link:focus{left:0}
 
+.site-head{position:sticky;top:0;z-index:50;background:var(--glass);-webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.03em}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:800;letter-spacing:0;transform:rotate(-6deg)}
+.logo em{font-style:normal;color:var(--accent-text)}
+.header-actions{display:flex;gap:8px}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:600 14px/1 var(--font);cursor:pointer;transition:background .15s ease,color .15s ease,border-color .15s ease}
+.icon-btn:hover{background:var(--text);color:var(--surface);border-color:var(--text)}
+.icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav{border-top:1px solid var(--line)}
+.nav-inner{display:flex;gap:6px;overflow-x:auto;padding:9px 20px;max-width:1280px;margin:0 auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+nav a{flex-shrink:0;padding:8px 16px;border-radius:999px;font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap;transition:background .15s ease,color .15s ease}
+nav a:hover{background:var(--soft);color:var(--text)}
+
+main{max-width:820px;margin:0 auto;padding:52px 20px 8px;min-height:60vh}
+.eyebrow{display:inline-block;background:var(--red);color:#fff;font-size:14px;font-weight:700;padding:6px 14px;border-radius:999px;margin-bottom:18px}
+h1{font-family:var(--display);font-size:clamp(36px,6vw,62px);line-height:1.02;font-weight:800;letter-spacing:-.035em;margin-bottom:18px;text-wrap:balance}
+.lead{font-size:clamp(19px,2.3vw,23px);color:var(--muted);line-height:1.5;margin-bottom:34px}
+.updated{color:var(--muted);font-size:15px;margin-bottom:34px}
+.prose{font-size:19px;line-height:1.75;color:var(--body-text)}
+.prose h2{font-family:var(--display);font-size:29px;line-height:1.15;letter-spacing:-.025em;color:var(--text);margin:42px 0 12px}
+.prose p{margin-bottom:20px}
+.prose ul{margin:0 0 20px 24px}
+.prose li{margin-bottom:8px}
+.prose a{color:var(--accent-text);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:10px 0 10px}
+.card{background:var(--surface);border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+.card h3{font-family:var(--display);font-size:21px;letter-spacing:-.02em;margin-bottom:8px}
+.card p{font-size:16px;line-height:1.55;color:var(--muted);margin:0}
+.note{background:var(--surface);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow);font-size:16px;color:var(--muted);margin-top:34px}
+.sections{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 20px}
+.sections a{display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:15px;font-weight:600;color:var(--text);text-decoration:none}
+.sections a:hover{background:var(--text);color:var(--surface);border-color:var(--text)}
+
+footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:32px 32px 0 0}
+.footer-inner{max-width:1280px;margin:0 auto;padding:44px 20px 28px;display:flex;justify-content:space-between;gap:30px}
+.footer-brand p{color:#aab3c8;margin-top:12px;font-size:15px}
+.footer-links{display:flex;flex-wrap:wrap;gap:12px 22px;align-content:flex-start;max-width:460px}
+.footer-links a{color:#aab3c8;font-size:15px}
+.footer-links a:hover{color:#fff}
+.copyright{max-width:1280px;margin:0 auto;border-top:1px solid #1f2842;padding:20px;color:#8b95ad;font-size:13px}
+
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none !important}}
+@media(max-width:800px){.cards{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .wrap,.nav-inner,main{padding-left:14px;padding-right:14px}
+  .header-inner{height:58px}
+  .logo{font-size:21px}
+  .logo-mark{width:30px;height:30px;font-size:18px}
+  .icon-btn{width:40px;padding:0}
+  .icon-btn .btn-text{display:none}
+  main{padding-top:32px}
+  .prose{font-size:18px}
+  .prose h2{font-size:25px}
+  footer{border-radius:26px 26px 0 0}
+  .footer-inner{flex-direction:column}
+}
 </style>
-
 </head>
 
 <body>
 
-<header class="header">
+<a class="skip-link" href="#main">Skip to content</a>
 
-  <div class="header-inner">
+<div class="site-head">
+  <header>
+    <div class="wrap header-inner">
+      <a href="/" class="logo" aria-label="Nexora News home">
+        <span class="logo-mark" aria-hidden="true">N</span>
+        <span>Nexora <em>News</em></span>
+      </a>
+      <div class="header-actions">
+        <button type="button" class="icon-btn" id="themeToggle" aria-label="Switch between light and dark mode">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <span class="btn-text">Theme</span>
+        </button>
+        <a href="search.html" class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <span class="btn-text">Search</span>
+        </a>
+      </div>
+    </div>
+  </header>
+  <nav aria-label="Main">
+    <div class="nav-inner">
+      <a href="/">Home</a>
+      <a href="/?category=UK">UK</a>
+      <a href="/?category=London">London</a>
+      <a href="/?category=World">World</a>
+      <a href="/?category=Business">Business</a>
+      <a href="/?category=Technology">Technology</a>
+      <a href="/?category=Sports">Sports</a>
+      <a href="/?category=Video">Video</a>
+    </div>
+  </nav>
+</div>
 
-    <a href="/" class="logo">
-      NEXORA <span>NEWS</span>
-    </a>
+<main id="main">
 
-    <a href="/" class="back">
-      ← Back to Home
-    </a>
+<span class="eyebrow">Legal</span>
 
-  </div>
+<h1>Privacy Policy</h1>
 
-</header>
+<p class="updated"><strong>Last updated: September 2026</strong></p>
 
+<p class="lead">Nexora News respects your privacy. This Privacy Policy explains how information may be collected, used and protected when you visit and use the Nexora News website.</p>
 
-<main class="container">
+<div class="prose">
 
-  <article class="card">
+<h2>1. Information We Collect</h2>
 
-    <h1>Privacy Policy</h1>
+<p>Nexora News may collect information that you voluntarily provide when using certain features of the website.</p>
 
-    <div class="red-line"></div>
-
-    <p>
-      <strong>Last updated: September 2026</strong>
-    </p>
-
-    <p>
-      Nexora News respects your privacy. This Privacy Policy
-      explains how information may be collected, used and
-      protected when you visit and use the Nexora News website.
-    </p>
-
-
-    <h2>1. Information We Collect</h2>
-
-    <p>
-      Nexora News may collect information that you voluntarily
-      provide when using certain features of the website.
-    </p>
-
-    <p>
-      For example, if you subscribe to our newsletter, we may
-      collect your email address so that we can send you
-      requested updates.
-    </p>
-
-
-    <h2>2. Newsletter Subscriptions</h2>
-
-    <p>
-      If you choose to subscribe to the Nexora News newsletter,
-      your email address may be stored securely for the purpose
-      of sending newsletter communications.
-    </p>
-
-    <p>
-      You can choose to stop receiving newsletter communications
-      at any time.
-    </p>
+<p>For example, if you subscribe to our newsletter, we may collect your email address so that we can send you requested updates.</p>
 
 
-    <h2>3. Website Usage Information</h2>
+<h2>2. Newsletter Subscriptions</h2>
 
-    <p>
-      We may use technical information such as browser type,
-      device information, approximate location and pages visited
-      to understand how visitors use the website and improve
-      our services.
-    </p>
+<p>If you choose to subscribe to the Nexora News newsletter, your email address may be stored securely for the purpose of sending newsletter communications.</p>
 
-    <p>
-      This information may be collected through analytics or
-      similar technologies if such services are enabled.
-    </p>
+<p>You can choose to stop receiving newsletter communications at any time.</p>
 
 
-    <h2>4. Cookies</h2>
+<h2>3. Website Usage Information</h2>
 
-    <p>
-      Nexora News may use cookies or similar technologies to
-      improve website functionality, remember preferences and
-      understand website usage.
-    </p>
+<p>We may use technical information such as browser type, device information, approximate location and pages visited to understand how visitors use the website and improve our services.</p>
 
-    <p>
-      You can control or disable cookies through your browser
-      settings. Disabling certain cookies may affect some
-      website features.
-    </p>
+<p>This information may be collected through analytics or similar technologies if such services are enabled.</p>
 
 
-    <h2>5. Third-Party Services</h2>
+<h2>4. Cookies</h2>
 
-    <p>
-      Nexora News may use third-party services to provide
-      website functionality, analytics, hosting, authentication,
-      newsletter services or other technical features.
-    </p>
+<p>Nexora News may use cookies or similar technologies to improve website functionality, remember preferences and understand website usage.</p>
 
-    <p>
-      These services may process information according to their
-      own privacy policies.
-    </p>
+<p>You can control or disable cookies through your browser settings. Disabling certain cookies may affect some website features.</p>
 
 
-    <h2>6. Advertising</h2>
+<h2>5. Third-Party Services</h2>
 
-    <p>
-      Nexora News may display advertising in the future.
-      Advertising providers may use cookies or similar
-      technologies to provide relevant advertisements and
-      measure advertising performance.
-    </p>
+<p>Nexora News may use third-party services to provide website functionality, analytics, hosting, authentication, newsletter services or other technical features.</p>
 
-    <p>
-      Any advertising services used on the website will be
-      subject to the applicable policies of those providers.
-    </p>
+<p>These services may process information according to their own privacy policies.</p>
 
 
-    <h2>7. Data Security</h2>
+<h2>6. Advertising</h2>
 
-    <p>
-      We take reasonable measures to protect information
-      handled through the website. However, no method of
-      transmission or electronic storage can be guaranteed
-      to be completely secure.
-    </p>
+<p>Nexora News may display advertising in the future. Advertising providers may use cookies or similar technologies to provide relevant advertisements and measure advertising performance.</p>
+
+<p>Any advertising services used on the website will be subject to the applicable policies of those providers.</p>
 
 
-    <h2>8. Children's Privacy</h2>
+<h2>7. Data Security</h2>
 
-    <p>
-      Nexora News is not intended to knowingly collect personal
-      information from children without appropriate consent.
-    </p>
+<p>We take reasonable measures to protect information handled through the website. However, no method of transmission or electronic storage can be guaranteed to be completely secure.</p>
 
 
-    <h2>9. Your Rights</h2>
+<h2>8. Children's Privacy</h2>
 
-    <p>
-      Depending on your location and applicable law, you may
-      have rights concerning your personal information, including
-      rights to access, correct or request deletion of certain
-      information.
-    </p>
+<p>Nexora News is not intended to knowingly collect personal information from children without appropriate consent.</p>
 
 
-    <h2>10. Changes to This Privacy Policy</h2>
+<h2>9. Your Rights</h2>
 
-    <p>
-      We may update this Privacy Policy from time to time.
-      Changes will be published on this page with an updated
-      date.
-    </p>
+<p>Depending on your location and applicable law, you may have rights concerning your personal information, including rights to access, correct or request deletion of certain information.</p>
 
 
-    <h2>11. Contact</h2>
+<h2>10. Changes to This Privacy Policy</h2>
 
-    <p>
-      If you have questions about this Privacy Policy or how
-      Nexora News handles information, please contact us through
-      our <a href="/contact.html">Contact page</a>.
-    </p>
+<p>We may update this Privacy Policy from time to time. Changes will be published on this page with an updated date.</p>
 
-  </article>
+
+<h2>11. Contact</h2>
+
+<p>If you have questions about this Privacy Policy or how Nexora News handles information, please contact us through our <a href="/contact.html">Contact page</a>.</p>
+
+</div>
 
 </main>
 
-
-<footer class="footer">
-
+<footer>
   <div class="footer-inner">
-
-    <div>
-      <a href="/">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy.html">Privacy Policy</a>
+    <div class="footer-brand">
+      <a href="/" class="logo">
+        <span class="logo-mark" aria-hidden="true">N</span>
+        <span>Nexora News</span>
+      </a>
+      <p>Fast, clear reporting on the UK, London and the world.</p>
     </div>
-
-    <p>
-      © 2026 Nexora News. All rights reserved.
-    </p>
-
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/?category=UK">UK</a>
+      <a href="/?category=London">London</a>
+      <a href="/?category=World">World</a>
+      <a href="/?category=Business">Business</a>
+      <a href="/?category=Technology">Technology</a>
+      <a href="/?category=Sports">Sports</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
   </div>
-
+  <div class="copyright">© 2026 Nexora News. All rights reserved.</div>
 </footer>
+
+<script>
+document.getElementById("themeToggle").addEventListener("click",function(){
+  var root = document.documentElement;
+  var current = root.getAttribute("data-theme") ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  var next = current === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme",next);
+  try{ localStorage.setItem("theme",next); }catch(e){}
+});
+</script>
 
 </body>
 </html>
