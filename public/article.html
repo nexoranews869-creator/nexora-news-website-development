@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -14,16 +15,67 @@
 <meta name="author"
       content="Nexora News">
 
+<meta name="robots"
+      content="index, follow">
+
+<link rel="canonical"
+      href="https://nexora-news-website-development-9ve.vercel.app/article.html">
+
+<!-- OPEN GRAPH -->
+
 <meta property="og:type"
       content="article">
 
 <meta property="og:site_name"
       content="Nexora News">
 
+<meta property="og:title"
+      content="Nexora News | Article">
+
+<meta property="og:description"
+      content="Read the latest news and stories from Nexora News.">
+
+<meta property="og:url"
+      content="https://nexora-news-website-development-9ve.vercel.app/article.html">
+
+<meta property="og:image"
+      content="https://nexora-news-website-development-9ve.vercel.app/">
+
+<!-- TWITTER -->
+
 <meta name="twitter:card"
       content="summary_large_image">
 
+<meta name="twitter:title"
+      content="Nexora News | Article">
+
+<meta name="twitter:description"
+      content="Read the latest news and stories from Nexora News.">
+
+<meta name="twitter:image"
+      content="https://nexora-news-website-development-9ve.vercel.app/">
+
 <link rel="icon" href="data:,">
+
+<!-- NEWS ARTICLE STRUCTURED DATA -->
+
+<script type="application/ld+json"
+        id="articleSchema">
+{
+  "@context":"https://schema.org",
+  "@type":"NewsArticle",
+  "headline":"Nexora News Article",
+  "description":"Read the latest news and stories from Nexora News.",
+  "author":{
+    "@type":"Person",
+    "name":"Nexora News"
+  },
+  "publisher":{
+    "@type":"Organization",
+    "name":"Nexora News"
+  }
+}
+</script>
 
 <style>
 
@@ -132,6 +184,7 @@ nav{
   background:#b00020;
   color:#fff;
   overflow:hidden;
+  display:none;
 }
 
 .breaking-inner{
@@ -150,6 +203,7 @@ nav{
   padding:12px 16px;
   white-space:nowrap;
   flex-shrink:0;
+  position:relative;
   z-index:5;
   font-size:12px;
 }
@@ -158,17 +212,19 @@ nav{
   flex:1;
   min-width:0;
   overflow:hidden;
+  position:relative;
   white-space:nowrap;
 }
 
 .ticker span{
   display:inline-block;
-  padding:11px 0 11px 100%;
   white-space:nowrap;
+  padding-left:100%;
   animation:tickerMove 22s linear infinite;
 }
 
 @keyframes tickerMove{
+
   0%{
     transform:translateX(0);
   }
@@ -176,6 +232,7 @@ nav{
   100%{
     transform:translateX(-100%);
   }
+
 }
 
 /* ARTICLE */
@@ -507,6 +564,10 @@ footer{
     font-size:12px;
   }
 
+  .ticker span{
+    animation-duration:16s;
+  }
+
   .article-container{
     margin:20px auto;
     padding:0 10px;
@@ -554,6 +615,7 @@ footer{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -583,6 +645,7 @@ footer{
   </div>
 
 </header>
+
 
 <nav>
 
@@ -624,6 +687,7 @@ footer{
 
 </nav>
 
+
 <div class="breaking"
      id="breaking">
 
@@ -641,6 +705,7 @@ footer{
 
 </div>
 
+
 <main class="article-container"
       id="articleContainer">
 
@@ -650,11 +715,13 @@ footer{
 
 </main>
 
+
 <footer>
 
   <div class="footer-inner">
 
     <div>
+
       <div class="footer-logo">
         NEXORA <span>NEWS</span>
       </div>
@@ -662,7 +729,9 @@ footer{
       <p style="color:#aaa;margin-top:8px;">
         Latest UK, London and world news.
       </p>
+
     </div>
+
 
     <div class="footer-links">
 
@@ -690,6 +759,10 @@ footer{
         Technology
       </a>
 
+      <a href="index.html?category=Sports">
+        Sports
+      </a>
+
       <a href="search.html">
         Search
       </a>
@@ -698,13 +771,16 @@ footer{
 
   </div>
 
+
   <div class="copyright">
     © 2026 Nexora News. All rights reserved.
   </div>
 
 </footer>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
@@ -751,6 +827,18 @@ function makeSlug(title){
 }
 
 
+/* ARTICLE URL */
+
+function articleUrl(article){
+
+  return "article.html?slug=" +
+    encodeURIComponent(
+      makeSlug(article.title)
+    );
+
+}
+
+
 /* DATE */
 
 function formatDate(date){
@@ -778,19 +866,7 @@ function formatDate(date){
 }
 
 
-/* ARTICLE URL */
-
-function articleUrl(article){
-
-  return "article.html?slug=" +
-    encodeURIComponent(
-      makeSlug(article.title)
-    );
-
-}
-
-
-/* SHARE */
+/* SHARE WHATSAPP */
 
 function shareArticle(){
 
@@ -884,6 +960,245 @@ async function copyLink(){
 }
 
 
+/* UPDATE SEO */
+
+function updateSEO(article){
+
+  const title =
+    article.title +
+    " | Nexora News";
+
+  const description =
+    article.excerpt ||
+    "Read the latest news and stories from Nexora News.";
+
+  const canonical =
+    window.location.href;
+
+  document.title =
+    title;
+
+
+  /* DESCRIPTION */
+
+  const descriptionMeta =
+    document.querySelector(
+      'meta[name="description"]'
+    );
+
+  if(descriptionMeta){
+
+    descriptionMeta.setAttribute(
+      "content",
+      description
+    );
+
+  }
+
+
+  /* CANONICAL */
+
+  const canonicalMeta =
+    document.querySelector(
+      'link[rel="canonical"]'
+    );
+
+  if(canonicalMeta){
+
+    canonicalMeta.setAttribute(
+      "href",
+      canonical
+    );
+
+  }
+
+
+  /* OG TITLE */
+
+  const ogTitle =
+    document.querySelector(
+      'meta[property="og:title"]'
+    );
+
+  if(ogTitle){
+
+    ogTitle.setAttribute(
+      "content",
+      title
+    );
+
+  }
+
+
+  /* OG DESCRIPTION */
+
+  const ogDescription =
+    document.querySelector(
+      'meta[property="og:description"]'
+    );
+
+  if(ogDescription){
+
+    ogDescription.setAttribute(
+      "content",
+      description
+    );
+
+  }
+
+
+  /* OG URL */
+
+  const ogUrl =
+    document.querySelector(
+      'meta[property="og:url"]'
+    );
+
+  if(ogUrl){
+
+    ogUrl.setAttribute(
+      "content",
+      canonical
+    );
+
+  }
+
+
+  /* OG IMAGE */
+
+  const ogImage =
+    document.querySelector(
+      'meta[property="og:image"]'
+    );
+
+  if(
+    ogImage &&
+    article.image_url
+  ){
+
+    ogImage.setAttribute(
+      "content",
+      article.image_url
+    );
+
+  }
+
+
+  /* TWITTER TITLE */
+
+  const twitterTitle =
+    document.querySelector(
+      'meta[name="twitter:title"]'
+    );
+
+  if(twitterTitle){
+
+    twitterTitle.setAttribute(
+      "content",
+      title
+    );
+
+  }
+
+
+  /* TWITTER DESCRIPTION */
+
+  const twitterDescription =
+    document.querySelector(
+      'meta[name="twitter:description"]'
+    );
+
+  if(twitterDescription){
+
+    twitterDescription.setAttribute(
+      "content",
+      description
+    );
+
+  }
+
+
+  /* TWITTER IMAGE */
+
+  const twitterImage =
+    document.querySelector(
+      'meta[name="twitter:image"]'
+    );
+
+  if(
+    twitterImage &&
+    article.image_url
+  ){
+
+    twitterImage.setAttribute(
+      "content",
+      article.image_url
+    );
+
+  }
+
+
+  /* STRUCTURED DATA */
+
+  const schema =
+    document.getElementById(
+      "articleSchema"
+    );
+
+  if(schema){
+
+    schema.textContent =
+      JSON.stringify({
+
+        "@context":
+          "https://schema.org",
+
+        "@type":
+          "NewsArticle",
+
+        "headline":
+          article.title,
+
+        "description":
+          description,
+
+        "image":
+          article.image_url
+            ? [article.image_url]
+            : [],
+
+        "datePublished":
+          article.published_at ||
+          article.created_at,
+
+        "dateModified":
+          article.published_at ||
+          article.created_at,
+
+        "author":{
+          "@type":"Person",
+          "name":
+            article.author ||
+            "Nexora News"
+        },
+
+        "publisher":{
+          "@type":"Organization",
+          "name":"Nexora News"
+        },
+
+        "mainEntityOfPage":{
+          "@type":"WebPage",
+          "@id":canonical
+        }
+
+      });
+
+  }
+
+}
+
+
 /* LOAD ARTICLE */
 
 async function loadArticle(){
@@ -893,24 +1208,37 @@ async function loadArticle(){
       "articleContainer"
     );
 
+
   const params =
     new URLSearchParams(
       window.location.search
     );
 
+
   const slug =
     params.get("slug");
+
 
   if(!slug){
 
     container.innerHTML = `
+
       <div class="error">
-        <h1>Article not found</h1>
-        <p>No article was selected.</p>
+
+        <h1>
+          Article not found
+        </h1>
+
+        <p>
+          No article was selected.
+        </p>
+
         <a href="index.html">
           Back to Home
         </a>
+
       </div>
+
     `;
 
     return;
@@ -939,13 +1267,23 @@ async function loadArticle(){
     console.error(error);
 
     container.innerHTML = `
+
       <div class="error">
-        <h1>Unable to load article</h1>
-        <p>Please try again later.</p>
+
+        <h1>
+          Unable to load article
+        </h1>
+
+        <p>
+          Please try again later.
+        </p>
+
         <a href="index.html">
           Back to Home
         </a>
+
       </div>
+
     `;
 
     return;
@@ -970,10 +1308,13 @@ async function loadArticle(){
         makeSlug(item.title);
 
       return (
+
         slug === titleSlug ||
+
         slug.startsWith(
           titleSlug + "-"
         )
+
       );
 
     });
@@ -982,8 +1323,12 @@ async function loadArticle(){
   if(!article){
 
     container.innerHTML = `
+
       <div class="error">
-        <h1>Article not found</h1>
+
+        <h1>
+          Article not found
+        </h1>
 
         <p>
           The article may have been removed
@@ -993,7 +1338,9 @@ async function loadArticle(){
         <a href="index.html">
           Back to Home
         </a>
+
       </div>
+
     `;
 
     return;
@@ -1001,33 +1348,9 @@ async function loadArticle(){
   }
 
 
-  /* PAGE TITLE */
+  /* UPDATE SEO */
 
-  document.title =
-    article.title +
-    " | Nexora News";
-
-
-  /* META DESCRIPTION */
-
-  const description =
-    article.excerpt ||
-    "Latest news from Nexora News.";
-
-
-  let meta =
-    document.querySelector(
-      'meta[name="description"]'
-    );
-
-  if(meta){
-
-    meta.setAttribute(
-      "content",
-      description
-    );
-
-  }
+  updateSEO(article);
 
 
   /* BREAKING NEWS */
@@ -1079,10 +1402,15 @@ async function loadArticle(){
   */
 
   if(
+
     !body.includes("<p>") &&
+
     !body.includes("<h2>") &&
+
     !body.includes("<h3>") &&
+
     !body.includes("<br")
+
   ){
 
     body =
@@ -1090,8 +1418,14 @@ async function loadArticle(){
         .split(/\n\s*\n/)
         .map(
           paragraph =>
+
             `<p>${esc(paragraph)
-              .replace(/\n/g,"<br>")}</p>`
+              .replace(
+                /\n/g,
+                "<br>"
+              )
+            }</p>`
+
         )
         .join("");
 
@@ -1103,12 +1437,14 @@ async function loadArticle(){
   const image =
     article.image_url
       ? `
+
         <img
           class="hero-image"
           src="${esc(article.image_url)}"
           alt="${esc(article.title)}"
           onerror="this.style.display='none'"
         >
+
       `
       : "";
 
@@ -1118,9 +1454,11 @@ async function loadArticle(){
   const breakingBadge =
     article.is_breaking === true
       ? `
+
         <span class="breaking-badge">
           BREAKING NEWS
         </span>
+
       `
       : "";
 
@@ -1130,8 +1468,11 @@ async function loadArticle(){
   const related =
     articles
       .filter(item =>
+
         item.id !== article.id &&
+
         item.category === article.category
+
       )
       .slice(0,3);
 
@@ -1142,6 +1483,7 @@ async function loadArticle(){
   if(related.length){
 
     relatedHTML = `
+
       <section class="related">
 
         <h2>
@@ -1161,11 +1503,13 @@ async function loadArticle(){
                 item.image_url
                 ?
                 `
+
                 <img
                   src="${esc(item.image_url)}"
                   alt="${esc(item.title)}"
                   onerror="this.style.display='none'"
                 >
+
                 `
                 :
                 ""
@@ -1174,7 +1518,10 @@ async function loadArticle(){
               <div class="related-content">
 
                 <div class="related-category">
-                  ${esc(item.category || "News")}
+                  ${esc(
+                    item.category ||
+                    "News"
+                  )}
                 </div>
 
                 <div class="related-title">
@@ -1190,21 +1537,29 @@ async function loadArticle(){
         </div>
 
       </section>
+
     `;
 
   }
 
 
-  /* RENDER */
+  /* RENDER ARTICLE */
 
   container.innerHTML = `
 
-    <article class="article-card">
+    <article
+      class="article-card"
+      itemscope
+      itemtype="https://schema.org/NewsArticle"
+    >
 
       <div>
 
         <span class="category">
-          ${esc(article.category || "News")}
+          ${esc(
+            article.category ||
+            "News"
+          )}
         </span>
 
         ${breakingBadge}
@@ -1212,7 +1567,10 @@ async function loadArticle(){
       </div>
 
 
-      <h1 class="article-title">
+      <h1
+        class="article-title"
+        itemprop="headline"
+      >
         ${esc(article.title)}
       </h1>
 
@@ -1220,12 +1578,20 @@ async function loadArticle(){
       ${
         article.excerpt
         ?
+
         `
-        <div class="article-excerpt">
+
+        <div
+          class="article-excerpt"
+          itemprop="description"
+        >
           ${esc(article.excerpt)}
         </div>
+
         `
+
         :
+
         ""
       }
 
@@ -1233,16 +1599,29 @@ async function loadArticle(){
       <div class="article-meta">
 
         By
-        <strong>
-          ${esc(article.author || "Nexora News")}
+
+        <strong itemprop="author">
+          ${esc(
+            article.author ||
+            "Nexora News"
+          )}
         </strong>
 
         &nbsp; • &nbsp;
 
-        ${formatDate(
-          article.published_at ||
-          article.created_at
-        )}
+        <time
+          itemprop="datePublished"
+          datetime="${esc(
+            article.published_at ||
+            article.created_at ||
+            ""
+          )}"
+        >
+          ${formatDate(
+            article.published_at ||
+            article.created_at
+          )}
+        </time>
 
       </div>
 
@@ -1250,7 +1629,10 @@ async function loadArticle(){
       ${image}
 
 
-      <div class="article-body">
+      <div
+        class="article-body"
+        itemprop="articleBody"
+      >
 
         ${body}
 
