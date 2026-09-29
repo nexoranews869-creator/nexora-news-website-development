@@ -772,8 +772,8 @@ footer{
   }
 
   .hero-main{
-  min-height:360px;
-  height:360px;
+  min-height:0;
+  height:auto;
 }
 
 .hero-main img{
@@ -783,17 +783,11 @@ footer{
 }
 
 .hero-overlay{
-  left:0;
-  right:0;
-  bottom:0;
+  position:static;
   width:100%;
-  padding:22px 18px 20px;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.97) 0%,
-    rgba(0,0,0,.82) 50%,
-    rgba(0,0,0,0) 100%
-  );
+  padding:18px;
+  background:var(--surface);
+  color:var(--text);
 }
 
   .hero-title{
@@ -805,10 +799,9 @@ footer{
 }
 
   .hero-excerpt{
-  width:100%;
-  max-width:100%;
+  color:var(--muted);
   font-size:14px;
-  line-height:1.45;
+  line-height:1.5;
   margin-top:10px;
 }
 
