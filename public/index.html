@@ -1075,6 +1075,31 @@ footer{
   font-size:13px;
 }
 
+.copyright{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px 24px;
+}
+
+.legal-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 22px;
+}
+
+.legal-links a{
+  color:#c9d0e0;
+  font-size:14px;
+  font-weight:600;
+}
+
+.legal-links a:hover{
+  color:#fff;
+}
+
+
 /* ---------- TABLET ---------- */
 
 @media(max-width:1050px){
@@ -1418,9 +1443,17 @@ footer{
 
     </form>
 
-    <p class="copyright">
-      © 2026 Nexora News. All rights reserved.
-    </p>
+    <div class="copyright">
+
+      <div class="legal-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+
+      <p>© 2026 Nexora News. All rights reserved.</p>
+
+    </div>
 
   </div>
 
