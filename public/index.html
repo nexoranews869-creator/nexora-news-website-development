@@ -846,13 +846,9 @@ function makeSlug(title){
 
 function articleUrl(article){
 
+  function articleUrl(article){
   return "article.html?slug=" +
-    encodeURIComponent(
-      makeSlug(article.title) +
-      "-" +
-      Date.now()
-    );
-
+    encodeURIComponent(makeSlug(article.title));
 }
 
 
