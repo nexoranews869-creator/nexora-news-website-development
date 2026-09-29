@@ -1595,24 +1595,29 @@ function initNewsletter(){
     btn.disabled = true;
     msg.textContent = "Subscribing...";
 
-    const { error } =
-      await db.from("subscribers").insert({ email });
+    const { data, error } =
+      await db.rpc("subscribe", { p_email: email });
 
     btn.disabled = false;
 
-    if(!error){
+    if(!error && data === "ok"){
       msg.textContent = "You're subscribed. Thank you!";
       form.reset();
       return;
     }
 
-    if(error.code === "23505"){
+    if(!error && data === "exists"){
       msg.textContent = "This email is already subscribed.";
       return;
     }
 
+    if(!error && data === "invalid"){
+      msg.textContent = "Enter a valid email address.";
+      return;
+    }
+
     console.error(error);
-    msg.textContent = "Could not subscribe: " + (error.message || error.code || "unknown error");
+    msg.textContent = "Could not subscribe: " + ((error && (error.message || error.code)) || "unexpected response");
 
   });
 
