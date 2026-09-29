@@ -389,6 +389,33 @@ nav a[aria-current="page"]{
   max-width:850px;
 }
 
+.hero-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px 18px;
+  margin-top:14px;
+  font-size:14px;
+  color:#e6e6e6;
+}
+
+.hero-meta span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.hero-meta svg{
+  width:16px;
+  height:16px;
+  flex-shrink:0;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
 /* SIDE */
 
 .side{
@@ -772,38 +799,30 @@ footer{
   }
 
   .hero-main{
-  min-height:0;
-  height:auto;
-}
+    min-height:0;
+  }
 
-.hero-main img{
-  width:100%;
-  height:360px;
-  object-fit:cover;
-}
+  .hero-main img{
+    height:auto;
+    aspect-ratio:1.3 / 1;
+  }
 
-.hero-overlay{
-  position:static;
-  width:100%;
-  padding:18px;
-  background:var(--surface);
-  color:var(--text);
-}
+  .hero-overlay{
+    padding:20px;
+  }
 
   .hero-title{
-  width:100%;
-  max-width:100%;
-  font-size:27px;
-  line-height:1.12;
-  font-weight:900;
-}
+    font-size:26px;
+  }
 
   .hero-excerpt{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.5;
-  margin-top:10px;
-}
+    font-size:14px;
+  }
+
+  .hero-meta{
+    font-size:13px;
+    gap:6px 14px;
+  }
 
   .side{
     display:grid;
@@ -1106,6 +1125,29 @@ function img(a,w,h,extra){
     ${extra || 'loading="lazy"'}
     onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
   >`;
+
+}
+
+const ICON_USER =
+'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>';
+
+const ICON_CAL =
+'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+
+const ICON_PIN =
+'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+
+function heroDate(a){
+
+  const d =
+    new Date(a.published_at || a.created_at);
+
+  return isNaN(d)
+    ? ""
+    : d.toLocaleDateString(
+        "en-GB",
+        { day:"numeric", month:"short", year:"numeric" }
+      );
 
 }
 
@@ -1488,6 +1530,27 @@ async function loadNews(){
           <p class="hero-excerpt">
             ${esc(hero.excerpt || "")}
           </p>
+
+          <div class="hero-meta">
+
+            <span>
+              ${ICON_USER}
+              By ${esc(hero.author || DEFAULT_AUTHOR)}
+            </span>
+
+            ${
+              heroDate(hero)
+              ? `<span>${ICON_CAL} ${esc(heroDate(hero))}</span>`
+              : ""
+            }
+
+            ${
+              hero.category
+              ? `<span>${ICON_PIN} ${esc(hero.category)}</span>`
+              : ""
+            }
+
+          </div>
 
         </div>
 
