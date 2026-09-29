@@ -1612,7 +1612,7 @@ function initNewsletter(){
     }
 
     console.error(error);
-    msg.textContent = "Could not subscribe. Please try again later.";
+    msg.textContent = "Could not subscribe: " + (error.message || error.code || "unknown error");
 
   });
 
