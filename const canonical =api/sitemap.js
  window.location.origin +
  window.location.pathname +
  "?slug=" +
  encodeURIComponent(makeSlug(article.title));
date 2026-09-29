@@ -1,0 +1,105 @@
+const SUPABASE_URL =
+  "https://qleoqpmxvmqcythacszw.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
+
+export default async function handler(req, res) {
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/articles" +
+      "?select=title,published_at,created_at,status" +
+      "&status=eq.published" +
+      "&order=published_at.desc",
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Supabase request failed");
+    }
+
+    const articles = await response.json();
+
+    function makeSlug(title) {
+      return String(title || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
+
+    const base =
+      "https://nexora-news-website-development-9ve.vercel.app";
+
+    const urls = [];
+
+    urls.push(`
+      <url>
+        <loc>${base}/</loc>
+      </url>
+    `);
+
+    urls.push(`
+      <url>
+        <loc>${base}/search.html</loc>
+      </url>
+    `);
+
+    articles.forEach(article => {
+
+      const slug = makeSlug(article.title);
+
+      const lastmod =
+        article.published_at ||
+        article.created_at;
+
+      urls.push(`
+        <url>
+          <loc>${base}/article.html?slug=${encodeURIComponent(slug)}</loc>
+          <lastmod>${new Date(lastmod).toISOString()}</lastmod>
+        </url>
+      `);
+
+    });
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+${urls.join("\n")}
+
+</urlset>`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/xml; charset=utf-8"
+    );
+
+    res.status(200).send(xml);
+
+  } catch (error) {
+
+    res.setHeader(
+      "Content-Type",
+      "application/xml; charset=utf-8"
+    );
+
+    res.status(500).send(
+      `<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <message>Sitemap generation failed</message>
+</error>`
+    );
+
+  }
+
+}
