@@ -5,7 +5,12 @@ const SUPABASE_URL = "https://qleoqpmxvmqcythacszw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 const ADMIN_ID = "280627ab-6dfb-4f45-ae11-b5fc14288eb5";
 
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-5-5";
+const MODELS = [
+  process.env.ANTHROPIC_MODEL,
+  "claude-sonnet-5-5",
+  "claude-sonnet-4-6"
+].filter(Boolean);
+
 const MAX_INPUT = 12000;
 
 const BASE =
@@ -95,38 +100,57 @@ module.exports = async (req, res) => {
 
   const userMessage = task + "\n\n" + context + "\nTEXT:\n" + text;
 
-  try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 1600,
-        system: BASE,
-        messages: [{ role: "user", content: userMessage }]
-      })
-    });
+  let lastError = "Unknown error.";
 
-    const data = await r.json();
+  for (const model of MODELS) {
+    try {
+      const r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": process.env.ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01"
+        },
+        body: JSON.stringify({
+          model: model,
+          max_tokens: 1600,
+          system: BASE,
+          messages: [{ role: "user", content: userMessage }]
+        })
+      });
 
-    if (!r.ok) {
-      console.error("Anthropic error:", data);
-      return res.status(502).json({ error: "The AI service returned an error. Try again." });
+      const data = await r.json();
+
+      if (r.ok) {
+        const result = (data.content || [])
+          .filter(b => b.type === "text")
+          .map(b => b.text)
+          .join("")
+          .trim();
+
+        return res.status(200).json({ result });
+      }
+
+      const errType = data.error && data.error.type;
+      const errMsg = (data.error && data.error.message) || ("HTTP " + r.status);
+
+      console.error("Anthropic error (" + model + "):", data);
+
+      lastError = "[" + model + "] " + errMsg;
+
+      // Try the next model only if this model was not found
+      if (errType === "not_found_error" || r.status === 404) {
+        continue;
+      }
+
+      break;
+
+    } catch (e) {
+      console.error(e);
+      lastError = "Could not reach the AI service.";
+      break;
     }
-
-    const result = (data.content || [])
-      .filter(b => b.type === "text")
-      .map(b => b.text)
-      .join("")
-      .trim();
-
-    return res.status(200).json({ result });
-  } catch (e) {
-    console.error(e);
-    return res.status(502).json({ error: "Could not reach the AI service. Try again." });
   }
+
+  return res.status(502).json({ error: "AI error: " + lastError });
 };
