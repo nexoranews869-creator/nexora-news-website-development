@@ -4,6 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#b00020">
 
 <title>Nexora News | UK, London & World News</title>
 
@@ -18,16 +19,82 @@
 <meta property="og:description" content="Latest UK, London, world, business, technology and sports news from Nexora News.">
 <meta property="og:url" content="https://nexora-news-website-development-9ve.vercel.app/">
 <meta property="og:site_name" content="Nexora News">
+<!-- Add a 1200x630 image named og-image.jpg to your project root -->
+<meta property="og:image" content="https://nexora-news-website-development-9ve.vercel.app/og-image.jpg">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nexora News | UK, London & World News">
 <meta name="twitter:description" content="Latest UK, London, world, business, technology and sports news from Nexora News.">
+<meta name="twitter:image" content="https://nexora-news-website-development-9ve.vercel.app/og-image.jpg">
 
 <link rel="canonical" href="https://nexora-news-website-development-9ve.vercel.app/">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b00020'/%3E%3Ctext x='50' y='72' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsMediaOrganization",
+  "name": "Nexora News",
+  "url": "https://nexora-news-website-development-9ve.vercel.app/"
+}
+</script>
+
+<!-- Apply saved theme before first paint -->
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem("theme");
+    if(t){ document.documentElement.setAttribute("data-theme", t); }
+  }catch(e){}
+})();
+</script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+:root{
+  --bg:#f3f4f6;
+  --surface:#fff;
+  --text:#171717;
+  --muted:#555;
+  --meta:#666;
+  --line:#ddd;
+  --red:#b00020;
+  --accent-text:#b00020;
+  --nav:#111;
+  --trend:#111;
+  --trend-card:#1b1b1b;
+  --trend-hover:#242424;
+  --trend-line:#333;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e0e10;
+    --surface:#1a1a1d;
+    --text:#f1f1f1;
+    --muted:#b8b8b8;
+    --meta:#9c9c9c;
+    --line:#333;
+    --accent-text:#ff6b7d;
+    --nav:#000;
+    --trend:#000;
+  }
+}
+
+:root[data-theme="dark"]{
+  --bg:#0e0e10;
+  --surface:#1a1a1d;
+  --text:#f1f1f1;
+  --muted:#b8b8b8;
+  --meta:#9c9c9c;
+  --line:#333;
+  --accent-text:#ff6b7d;
+  --nav:#000;
+  --trend:#000;
+}
 
 *{
   box-sizing:border-box;
@@ -41,8 +108,8 @@ html{
 
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:#f3f4f6;
-  color:#171717;
+  background:var(--bg);
+  color:var(--text);
 }
 
 a{
@@ -50,14 +117,48 @@ a{
   color:inherit;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible{
+  outline:3px solid #ffbf47;
+  outline-offset:2px;
+}
+
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+.skip-link{
+  position:absolute;
+  left:-999px;
+  top:0;
+  background:#ffbf47;
+  color:#111;
+  padding:10px 14px;
+  font-weight:800;
+  z-index:100;
+}
+
+.skip-link:focus{
+  left:0;
+}
+
 .topbar{
   height:6px;
-  background:#b00020;
+  background:var(--red);
 }
 
 header{
-  background:#fff;
-  border-bottom:1px solid #ddd;
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
 }
 
 .header-inner{
@@ -70,6 +171,11 @@ header{
   gap:20px;
 }
 
+.header-actions{
+  display:flex;
+  gap:8px;
+}
+
 .logo{
   font-size:34px;
   font-weight:900;
@@ -77,24 +183,29 @@ header{
 }
 
 .logo span{
-  color:#b00020;
+  color:var(--accent-text);
 }
 
-.search-link{
+.search-link,
+.theme-toggle{
   font-size:14px;
   font-weight:800;
   padding:9px 13px;
-  border:1px solid #ddd;
-  background:#fff;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  cursor:pointer;
+  font-family:inherit;
 }
 
-.search-link:hover{
-  background:#111;
-  color:#fff;
+.search-link:hover,
+.theme-toggle:hover{
+  background:var(--text);
+  color:var(--surface);
 }
 
 nav{
-  background:#111;
+  background:var(--nav);
   color:#fff;
 }
 
@@ -117,14 +228,15 @@ nav a{
   white-space:nowrap;
 }
 
-nav a:hover{
-  background:#b00020;
+nav a:hover,
+nav a[aria-current="page"]{
+  background:var(--red);
 }
 
 /* BREAKING */
 
 .breaking{
-  background:#b00020;
+  background:var(--red);
   color:#fff;
   display:none;
   overflow:hidden;
@@ -167,6 +279,11 @@ nav a:hover{
   animation:tickerMove 22s linear infinite;
 }
 
+.breaking:hover .ticker span,
+.breaking:focus-within .ticker span{
+  animation-play-state:paused;
+}
+
 @keyframes tickerMove{
   0%{
     transform:translateX(0);
@@ -175,6 +292,27 @@ nav a:hover{
   100%{
     transform:translateX(-100%);
   }
+}
+
+@media (prefers-reduced-motion: reduce){
+
+  .ticker{
+    overflow-x:auto;
+  }
+
+  .ticker span{
+    animation:none;
+    padding-left:0;
+  }
+
+  html{
+    scroll-behavior:auto;
+  }
+
+  *{
+    transition:none !important;
+  }
+
 }
 
 .container{
@@ -197,7 +335,7 @@ nav a:hover{
   overflow:hidden;
   background:#111;
   min-height:450px;
-  border:1px solid #ddd;
+  border:1px solid var(--line);
 }
 
 .hero-main img{
@@ -227,7 +365,7 @@ nav a:hover{
 
 .label{
   display:inline-block;
-  background:#b00020;
+  background:var(--red);
   color:#fff;
   padding:7px 10px;
   font-size:11px;
@@ -256,6 +394,7 @@ nav a:hover{
 .side{
   display:grid;
   gap:14px;
+  align-content:start;
 }
 
 .side-card{
@@ -263,14 +402,14 @@ nav a:hover{
   grid-template-columns:135px 1fr;
   min-height:140px;
   overflow:hidden;
-  background:#fff;
-  border:1px solid #ddd;
+  background:var(--surface);
+  border:1px solid var(--line);
   transition:transform .2s ease,box-shadow .2s ease;
 }
 
 .side-card:hover{
   transform:translateY(-2px);
-  box-shadow:0 5px 18px rgba(0,0,0,.08);
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
 }
 
 .side-card img{
@@ -284,7 +423,7 @@ nav a:hover{
 }
 
 .category{
-  color:#b00020;
+  color:var(--accent-text);
   font-size:11px;
   font-weight:900;
   text-transform:uppercase;
@@ -300,7 +439,7 @@ nav a:hover{
 
 .breaking-badge{
   display:inline-block;
-  background:#b00020;
+  background:var(--red);
   color:#fff;
   padding:5px 8px;
   font-size:10px;
@@ -319,7 +458,7 @@ nav a:hover{
   display:flex;
   justify-content:space-between;
   align-items:end;
-  border-bottom:4px solid #111;
+  border-bottom:4px solid var(--text);
   margin-bottom:17px;
 }
 
@@ -336,16 +475,16 @@ nav a:hover{
 }
 
 .viewall:hover{
-  color:#b00020;
+  color:var(--accent-text);
 }
 
 /* TRENDING */
 
 .trending-wrap{
-  background:#111;
+  background:var(--trend);
   color:#fff;
   padding:18px;
-  border-left:6px solid #b00020;
+  border-left:6px solid var(--red);
   margin-bottom:38px;
 }
 
@@ -364,15 +503,15 @@ nav a:hover{
 .trending-card{
   display:grid;
   grid-template-columns:95px 1fr;
-  background:#1b1b1b;
-  border:1px solid #333;
+  background:var(--trend-card);
+  border:1px solid var(--trend-line);
   overflow:hidden;
   transition:transform .2s ease,background .2s ease;
 }
 
 .trending-card:hover{
   transform:translateY(-2px);
-  background:#242424;
+  background:var(--trend-hover);
 }
 
 .trending-card img{
@@ -386,7 +525,7 @@ nav a:hover{
 }
 
 .trending-number{
-  color:#b00020;
+  color:#ff6b7d;
   font-size:11px;
   font-weight:900;
   margin-bottom:5px;
@@ -398,7 +537,7 @@ nav a:hover{
   font-weight:800;
 }
 
-/* FEATURED */
+/* MORE STORIES */
 
 .featured{
   display:grid;
@@ -407,15 +546,15 @@ nav a:hover{
 }
 
 .featured-card{
-  background:#fff;
-  border:1px solid #ddd;
+  background:var(--surface);
+  border:1px solid var(--line);
   overflow:hidden;
   transition:transform .2s ease,box-shadow .2s ease;
 }
 
 .featured-card:hover{
   transform:translateY(-3px);
-  box-shadow:0 7px 22px rgba(0,0,0,.1);
+  box-shadow:0 7px 22px rgba(0,0,0,.14);
 }
 
 .featured-card img{
@@ -444,15 +583,15 @@ nav a:hover{
 }
 
 .card{
-  background:#fff;
-  border:1px solid #ddd;
+  background:var(--surface);
+  border:1px solid var(--line);
   overflow:hidden;
   transition:transform .2s ease,box-shadow .2s ease;
 }
 
 .card:hover{
   transform:translateY(-3px);
-  box-shadow:0 7px 22px rgba(0,0,0,.1);
+  box-shadow:0 7px 22px rgba(0,0,0,.14);
 }
 
 .card img{
@@ -474,23 +613,23 @@ nav a:hover{
 }
 
 .excerpt{
-  color:#555;
+  color:var(--muted);
   line-height:1.45;
   font-size:14px;
 }
 
 .meta{
   font-size:11px;
-  color:#777;
+  color:var(--meta);
   margin-top:13px;
 }
 
 .empty{
-  background:#fff;
-  border:1px solid #ddd;
+  background:var(--surface);
+  border:1px solid var(--line);
   padding:35px 20px;
   text-align:center;
-  color:#666;
+  color:var(--muted);
 }
 
 /* FOOTER */
@@ -510,6 +649,55 @@ footer{
 
 .footer-inner strong{
   font-size:20px;
+}
+
+.newsletter{
+  max-width:460px;
+  margin:26px auto 0;
+}
+
+.newsletter-title{
+  font-size:15px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.newsletter-row{
+  display:flex;
+  gap:8px;
+}
+
+.newsletter input{
+  flex:1;
+  min-width:0;
+  padding:11px 12px;
+  font-size:15px;
+  border:1px solid #444;
+  background:#1b1b1b;
+  color:#fff;
+}
+
+.newsletter button{
+  padding:11px 16px;
+  font-size:14px;
+  font-weight:800;
+  border:0;
+  background:var(--red);
+  color:#fff;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+.newsletter button:disabled{
+  opacity:.6;
+  cursor:default;
+}
+
+.newsletter-msg{
+  margin-top:10px;
+  font-size:13px;
+  color:#ddd;
+  min-height:18px;
 }
 
 /* TABLET */
@@ -550,7 +738,8 @@ footer{
     font-size:27px;
   }
 
-  .search-link{
+  .search-link,
+  .theme-toggle{
     font-size:12px;
     padding:8px 10px;
   }
@@ -670,7 +859,8 @@ footer{
     font-size:23px;
   }
 
-  .search-link{
+  .search-link,
+  .theme-toggle{
     font-size:11px;
   }
 
@@ -690,6 +880,8 @@ footer{
 
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <div class="topbar"></div>
 
 <header>
@@ -700,33 +892,46 @@ footer{
       NEXORA <span>NEWS</span>
     </a>
 
-    <a href="search.html" class="search-link">
-      🔍 SEARCH
-    </a>
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Switch between light and dark mode"
+      >
+        <span aria-hidden="true">◐</span> THEME
+      </button>
+
+      <a href="search.html" class="search-link">
+        <span aria-hidden="true">🔍</span> SEARCH
+      </a>
+
+    </div>
 
   </div>
 
 </header>
 
-<nav>
+<nav aria-label="Main">
 
   <div class="nav-inner">
 
-    <a href="/">HOME</a>
+    <a href="/" data-cat="">HOME</a>
 
-    <a href="/?category=UK">UK</a>
+    <a href="/?category=UK" data-cat="uk">UK</a>
 
-    <a href="/?category=London">LONDON</a>
+    <a href="/?category=London" data-cat="london">LONDON</a>
 
-    <a href="/?category=World">WORLD</a>
+    <a href="/?category=World" data-cat="world">WORLD</a>
 
-    <a href="/?category=Business">BUSINESS</a>
+    <a href="/?category=Business" data-cat="business">BUSINESS</a>
 
-    <a href="/?category=Technology">TECHNOLOGY</a>
+    <a href="/?category=Technology" data-cat="technology">TECHNOLOGY</a>
 
-    <a href="/?category=Sports">SPORTS</a>
+    <a href="/?category=Sports" data-cat="sports">SPORTS</a>
 
-    <a href="/?category=Video">VIDEO</a>
+    <a href="/?category=Video" data-cat="video">VIDEO</a>
 
   </div>
 
@@ -734,7 +939,7 @@ footer{
 
 <!-- BREAKING NEWS -->
 
-<div id="breaking" class="breaking">
+<div id="breaking" class="breaking" role="region" aria-label="Breaking news">
 
   <div class="breaking-inner">
 
@@ -748,9 +953,11 @@ footer{
 
 </div>
 
-<main class="container">
+<main class="container" id="main">
 
-  <div id="app">
+  <h1 class="sr-only">Nexora News: UK, London and world news</h1>
+
+  <div id="app" aria-live="polite">
 
     <div class="empty">
       Loading latest news...
@@ -770,7 +977,36 @@ footer{
       UK, London & World News
     </p>
 
-    <p style="margin-top:15px;color:#888;font-size:12px">
+    <form id="newsletter" class="newsletter" novalidate>
+
+      <p class="newsletter-title">
+        Get the top stories by email
+      </p>
+
+      <div class="newsletter-row">
+
+        <label for="newsletterEmail" class="sr-only">Email address</label>
+
+        <input
+          id="newsletterEmail"
+          type="email"
+          name="email"
+          placeholder="Your email address"
+          autocomplete="email"
+          required
+        >
+
+        <button type="submit" id="newsletterBtn">
+          Subscribe
+        </button>
+
+      </div>
+
+      <p id="newsletterMsg" class="newsletter-msg" role="status"></p>
+
+    </form>
+
+    <p style="margin-top:15px;color:#999;font-size:12px">
       © 2026 Nexora News. All rights reserved.
     </p>
 
@@ -786,11 +1022,20 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
-const db =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+/* Shown when an article has no author */
+const DEFAULT_AUTHOR = "Marian";
+
+const HOME_LIMIT = 80;
+const CATEGORY_LIMIT = 60;
+
+const FALLBACK_IMG =
+"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80";
+
+/* Only the columns the homepage needs (no article body) */
+const COLUMNS =
+"id,title,slug,excerpt,category,author,image_url,published_at,created_at,is_breaking";
+
+let db = null;
 
 /* ESCAPE */
 
@@ -805,7 +1050,7 @@ function esc(value){
 
 }
 
-/* SLUG */
+/* SLUG (only a fallback when the database has no slug) */
 
 function makeSlug(title){
 
@@ -818,23 +1063,46 @@ function makeSlug(title){
 
 }
 
-/* ARTICLE URL */
+/* ARTICLE URL: uses the stored slug */
 
 function articleUrl(article){
 
+  const slug =
+    article.slug || makeSlug(article.title);
+
   return "article.html?slug=" +
-    encodeURIComponent(
-      makeSlug(article.title)
-    );
+    encodeURIComponent(slug);
 
 }
 
-/* IMAGE */
+/* IMAGES */
 
 function imageOrFallback(url){
+  return url || FALLBACK_IMG;
+}
 
-  return url ||
-  "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80";
+function img(a,w,h,extra){
+
+  return `<img
+    src="${esc(imageOrFallback(a.image_url))}"
+    alt="${esc(a.title)}"
+    width="${w}"
+    height="${h}"
+    decoding="async"
+    ${extra || 'loading="lazy"'}
+    onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
+  >`;
+
+}
+
+function fmtDate(a){
+
+  const d =
+    new Date(a.published_at || a.created_at);
+
+  return isNaN(d)
+    ? ""
+    : d.toLocaleDateString("en-GB");
 
 }
 
@@ -844,16 +1112,9 @@ function card(a){
 
   return `
 
-    <a
-      class="card"
-      href="${articleUrl(a)}"
-    >
+    <a class="card" href="${articleUrl(a)}">
 
-      <img
-        src="${esc(imageOrFallback(a.image_url))}"
-        alt="${esc(a.title)}"
-        loading="lazy"
-      >
+      ${img(a,600,200)}
 
       <div class="card-body">
 
@@ -863,28 +1124,19 @@ function card(a){
 
         ${
           a.is_breaking
-          ?
-          '<div class="breaking-badge">BREAKING NEWS</div>'
-          :
-          ''
+          ? '<div class="breaking-badge">BREAKING NEWS</div>'
+          : ''
         }
 
-        <h3>
-          ${esc(a.title)}
-        </h3>
+        <h3>${esc(a.title)}</h3>
 
         <p class="excerpt">
           ${esc(a.excerpt || "")}
         </p>
 
         <div class="meta">
-
-          By ${esc(a.author || "Marian")}
-          ·
-          ${new Date(
-            a.published_at || a.created_at
-          ).toLocaleDateString("en-GB")}
-
+          By ${esc(a.author || DEFAULT_AUTHOR)}
+          ${fmtDate(a) ? " · " + esc(fmtDate(a)) : ""}
         </div>
 
       </div>
@@ -901,16 +1153,9 @@ function sideCard(a){
 
   return `
 
-    <a
-      class="side-card"
-      href="${articleUrl(a)}"
-    >
+    <a class="side-card" href="${articleUrl(a)}">
 
-      <img
-        src="${esc(imageOrFallback(a.image_url))}"
-        alt="${esc(a.title)}"
-        loading="lazy"
-      >
+      ${img(a,135,140)}
 
       <div class="side-content">
 
@@ -920,10 +1165,8 @@ function sideCard(a){
 
         ${
           a.is_breaking
-          ?
-          '<div class="breaking-badge">BREAKING</div>'
-          :
-          ''
+          ? '<div class="breaking-badge">BREAKING</div>'
+          : ''
         }
 
         <div class="side-title">
@@ -944,16 +1187,9 @@ function trendingCard(a,index){
 
   return `
 
-    <a
-      class="trending-card"
-      href="${articleUrl(a)}"
-    >
+    <a class="trending-card" href="${articleUrl(a)}">
 
-      <img
-        src="${esc(imageOrFallback(a.image_url))}"
-        alt="${esc(a.title)}"
-        loading="lazy"
-      >
+      ${img(a,95,100)}
 
       <div class="trending-body">
 
@@ -961,9 +1197,7 @@ function trendingCard(a,index){
           #${index + 1} TRENDING
         </div>
 
-        <h3>
-          ${esc(a.title)}
-        </h3>
+        <h3>${esc(a.title)}</h3>
 
       </div>
 
@@ -973,7 +1207,33 @@ function trendingCard(a,index){
 
 }
 
-/* SECTION */
+/* MORE STORIES CARD */
+
+function featuredCard(a){
+
+  return `
+
+    <a class="featured-card" href="${articleUrl(a)}">
+
+      ${img(a,300,150)}
+
+      <div class="featured-body">
+
+        <div class="category">
+          ${esc(a.category)}
+        </div>
+
+        <h3>${esc(a.title)}</h3>
+
+      </div>
+
+    </a>
+
+  `;
+
+}
+
+/* SECTION (category link is optional) */
 
 function section(title,items,category){
 
@@ -981,29 +1241,24 @@ function section(title,items,category){
     return "";
   }
 
+  const link = category
+    ? `<a class="viewall" href="/?category=${encodeURIComponent(category)}">VIEW ALL →</a>`
+    : "";
+
   return `
 
     <section class="section">
 
       <div class="section-head">
 
-        <h2>
-          ${esc(title)}
-        </h2>
+        <h2>${esc(title)}</h2>
 
-        <a
-          class="viewall"
-          href="/?category=${encodeURIComponent(category)}"
-        >
-          VIEW ALL →
-        </a>
+        ${link}
 
       </div>
 
       <div class="grid">
-
         ${items.map(card).join("")}
-
       </div>
 
     </section>
@@ -1012,164 +1267,142 @@ function section(title,items,category){
 
 }
 
+/* HELPERS */
+
+function showMessage(html){
+  document.getElementById("app").innerHTML =
+    `<div class="empty">${html}</div>`;
+}
+
+function setActiveNav(category){
+
+  document
+    .querySelectorAll("nav a")
+    .forEach(a => {
+
+      const match =
+        (a.dataset.cat || "") ===
+        (category || "").toLowerCase();
+
+      if(match){
+        a.setAttribute("aria-current","page");
+      }else{
+        a.removeAttribute("aria-current");
+      }
+
+    });
+
+}
+
+function baseQuery(){
+
+  return db
+    .from("articles")
+    .select(COLUMNS)
+    .eq("status","published")
+    .order("published_at",{
+      ascending:false,
+      nullsFirst:false
+    });
+
+}
+
+/* BREAKING TICKER */
+
+async function loadBreaking(){
+
+  const { data, error } = await db
+    .from("articles")
+    .select("title")
+    .eq("status","published")
+    .eq("is_breaking",true)
+    .order("published_at",{
+      ascending:false,
+      nullsFirst:false
+    })
+    .limit(5);
+
+  if(error || !data || !data.length){
+    return;
+  }
+
+  document.getElementById("breaking").style.display = "block";
+
+  const text =
+    data.map(a => a.title).join("   •   ");
+
+  document.getElementById("ticker").innerHTML =
+    `<span>${esc(text)}</span>`;
+
+}
+
 /* LOAD NEWS */
 
 async function loadNews(){
 
-  const {
-    data,
-    error
-  } = await db
-    .from("articles")
-    .select(`
-      id,
-      title,
-      slug,
-      excerpt,
-      body,
-      category,
-      author,
-      image_url,
-      status,
-      published_at,
-      created_at,
-      is_breaking
-    `)
-    .eq("status","published")
-    .order("published_at",{
-      ascending:false
-    });
-
-  if(error){
-
-    document.getElementById(
-      "app"
-    ).innerHTML = `
-
-      <div class="empty">
-
-        Unable to load news.
-
-        <br>
-
-        <small>
-          ${esc(error.message)}
-        </small>
-
-      </div>
-
-    `;
-
+  if(!window.supabase){
+    showMessage(
+      "Unable to load news. Check your connection and refresh the page."
+    );
     return;
-
   }
 
-  const articles =
-    data || [];
-
-  if(!articles.length){
-
-    document.getElementById(
-      "app"
-    ).innerHTML = `
-
-      <div class="empty">
-        No published news yet.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-  /* CATEGORY */
+  db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
   const params =
-    new URLSearchParams(
-      window.location.search
-    );
+    new URLSearchParams(window.location.search);
 
+  /* letters and spaces only */
   const selectedCategory =
-    params.get("category");
+    (params.get("category") || "")
+      .replace(/[^a-zA-Z ]/g,"")
+      .trim();
 
-  /* BREAKING NEWS */
+  setActiveNav(selectedCategory);
 
-  const breaking =
-    articles
-      .filter(
-        a => a.is_breaking === true
-      )
-      .slice(0,5);
+  loadBreaking();
 
-  if(breaking.length){
-
-    document.getElementById(
-      "breaking"
-    ).style.display =
-      "block";
-
-    const ticker =
-      document.getElementById(
-        "ticker"
-      );
-
-    const text =
-      breaking
-        .map(a => a.title)
-        .join("   •   ");
-
-    ticker.innerHTML =
-      `<span>${esc(text)}</span>`;
-
-  }
-
-  /* CATEGORY PAGE */
+  /* CATEGORY PAGE: filtered in the database */
 
   if(selectedCategory){
 
-    const filtered =
-      articles.filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          selectedCategory.toLowerCase()
-      );
+    document.title =
+      selectedCategory + " News | Nexora News";
 
-    document.getElementById(
-      "app"
-    ).innerHTML = `
+    const { data, error } =
+      await baseQuery()
+        .ilike("category",selectedCategory)
+        .limit(CATEGORY_LIMIT);
+
+    if(error){
+      console.error(error);
+      showMessage(
+        "Unable to load news. Please refresh the page in a moment."
+      );
+      return;
+    }
+
+    const filtered = data || [];
+
+    document.getElementById("app").innerHTML = `
 
       <section class="section">
 
         <div class="section-head">
 
-          <h2>
-            ${esc(selectedCategory)}
-            NEWS
-          </h2>
+          <h2>${esc(selectedCategory.toUpperCase())} NEWS</h2>
 
-          <a
-            class="viewall"
-            href="/"
-          >
-            ← HOME
-          </a>
+          <a class="viewall" href="/">← HOME</a>
 
         </div>
 
         ${
           filtered.length
-          ?
-          `<div class="grid">
-            ${filtered.map(card).join("")}
-          </div>`
-          :
-          `<div class="empty">
-            No ${esc(selectedCategory)}
-            news found.
-          </div>`
+          ? `<div class="grid">${filtered.map(card).join("")}</div>`
+          : `<div class="empty">No ${esc(selectedCategory)} news found.</div>`
         }
 
       </section>
@@ -1180,141 +1413,63 @@ async function loadNews(){
 
   }
 
-  /* HOMEPAGE DATA */
+  /* HOMEPAGE */
 
-  const hero =
-    articles[0];
+  const { data, error } =
+    await baseQuery().limit(HOME_LIMIT);
 
-  const side =
-    articles.slice(1,4);
+  if(error){
+    console.error(error);
+    showMessage(
+      "Unable to load news. Please refresh the page in a moment."
+    );
+    return;
+  }
 
-  const trending =
-    articles.slice(0,6);
+  const articles = data || [];
 
-  const featured =
-    articles.slice(0,4);
+  if(!articles.length){
+    showMessage("No published news yet.");
+    return;
+  }
 
-  const latest =
-    articles.slice(0,6);
+  /* Each top block shows different stories */
 
-  const london =
+  const hero     = articles[0];
+  const side     = articles.slice(1,4);
+  const trending = articles.slice(4,10);
+  const more     = articles.slice(10,14);
+
+  const by = cat =>
     articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "london"
+      .filter(a =>
+        String(a.category || "").toLowerCase() === cat
       )
       .slice(0,6);
 
-  const uk =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "uk"
-      )
-      .slice(0,6);
-
-  const world =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "world"
-      )
-      .slice(0,6);
-
-  const business =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "business"
-      )
-      .slice(0,6);
-
-  const technology =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "technology"
-      )
-      .slice(0,6);
-
-  const sports =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "sports"
-      )
-      .slice(0,6);
-
-  const video =
-    articles
-      .filter(
-        a =>
-          String(a.category || "")
-            .toLowerCase()
-          ===
-          "video"
-      )
-      .slice(0,6);
-
-  /* RENDER */
-
-  document.getElementById(
-    "app"
-  ).innerHTML = `
+  document.getElementById("app").innerHTML = `
 
     <!-- TOP STORY -->
 
     <section class="hero">
 
-      <a
-        class="hero-main"
-        href="${articleUrl(hero)}"
-      >
+      <a class="hero-main" href="${articleUrl(hero)}">
 
-        <img
-          src="${esc(
-            imageOrFallback(
-              hero.image_url
-            )
-          )}"
-          alt="${esc(hero.title)}"
-        >
+        ${img(hero,1000,450,'fetchpriority="high"')}
 
         <div class="hero-overlay">
 
-          <div class="label">
-            TOP STORY
-          </div>
+          <div class="label">TOP STORY</div>
 
           ${
             hero.is_breaking
-            ?
-            '<div class="breaking-badge">BREAKING NEWS</div>'
-            :
-            ''
+            ? '<div class="breaking-badge">BREAKING NEWS</div>'
+            : ''
           }
 
-          <div class="hero-title">
+          <h2 class="hero-title">
             ${esc(hero.title)}
-          </div>
+          </h2>
 
           <p class="hero-excerpt">
             ${esc(hero.excerpt || "")}
@@ -1325,148 +1480,152 @@ async function loadNews(){
       </a>
 
       <div class="side">
-
-        ${side
-          .map(sideCard)
-          .join("")}
-
+        ${side.map(sideCard).join("")}
       </div>
 
     </section>
 
     <!-- TRENDING NEWS -->
 
-    <section class="trending-wrap">
+    ${
+      trending.length
+      ? `
+        <section class="trending-wrap">
 
-      <div class="trending-title">
-        🔥 TRENDING NEWS
-      </div>
+          <h2 class="trending-title">
+            <span aria-hidden="true">🔥</span> TRENDING NEWS
+          </h2>
 
-      <div class="trending-grid">
+          <div class="trending-grid">
+            ${trending.map((a,i) => trendingCard(a,i)).join("")}
+          </div>
 
-        ${trending
-          .map(
-            (a,index) =>
-              trendingCard(a,index)
-          )
-          .join("")}
+        </section>
+      `
+      : ""
+    }
 
-      </div>
+    <!-- MORE STORIES -->
 
-    </section>
+    ${
+      more.length
+      ? `
+        <section class="section">
 
-    <!-- FEATURED NEWS -->
+          <div class="section-head">
+            <h2>MORE STORIES</h2>
+          </div>
 
-    <section class="section">
+          <div class="featured">
+            ${more.map(featuredCard).join("")}
+          </div>
 
-      <div class="section-head">
+        </section>
+      `
+      : ""
+    }
 
-        <h2>
-          FEATURED NEWS
-        </h2>
-
-      </div>
-
-      <div class="featured">
-
-        ${
-          featured
-            .map(
-              a => `
-
-                <a
-                  class="featured-card"
-                  href="${articleUrl(a)}"
-                >
-
-                  <img
-                    src="${esc(
-                      imageOrFallback(
-                        a.image_url
-                      )
-                    )}"
-                    alt="${esc(a.title)}"
-                    loading="lazy"
-                  >
-
-                  <div class="featured-body">
-
-                    <div class="category">
-                      ${esc(a.category)}
-                    </div>
-
-                    <h3>
-                      ${esc(a.title)}
-                    </h3>
-
-                  </div>
-
-                </a>
-
-              `
-            )
-            .join("")
-        }
-
-      </div>
-
-    </section>
-
-    ${section(
-      "LATEST NEWS",
-      latest,
-      "Latest"
-    )}
-
-    ${section(
-      "LONDON",
-      london,
-      "London"
-    )}
-
-    ${section(
-      "UK",
-      uk,
-      "UK"
-    )}
-
-    ${section(
-      "WORLD",
-      world,
-      "World"
-    )}
-
-    ${section(
-      "BUSINESS",
-      business,
-      "Business"
-    )}
-
-    ${section(
-      "TECHNOLOGY",
-      technology,
-      "Technology"
-    )}
-
-    ${section(
-      "SPORTS",
-      sports,
-      "Sports"
-    )}
-
-    ${section(
-      "VIDEO",
-      video,
-      "Video"
-    )}
+    ${section("LONDON",     by("london"),     "London")}
+    ${section("UK",         by("uk"),         "UK")}
+    ${section("WORLD",      by("world"),      "World")}
+    ${section("BUSINESS",   by("business"),   "Business")}
+    ${section("TECHNOLOGY", by("technology"), "Technology")}
+    ${section("SPORTS",     by("sports"),     "Sports")}
+    ${section("VIDEO",      by("video"),      "Video")}
 
   `;
 
 }
 
-/* START */
+/* THEME TOGGLE */
 
-loadNews();
+function initTheme(){
+
+  const btn =
+    document.getElementById("themeToggle");
+
+  btn.addEventListener("click",() => {
+
+    const root = document.documentElement;
+
+    const current =
+      root.getAttribute("data-theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+
+    const next =
+      current === "dark" ? "light" : "dark";
+
+    root.setAttribute("data-theme",next);
+
+    try{
+      localStorage.setItem("theme",next);
+    }catch(e){}
+
+  });
+
+}
+
+/* NEWSLETTER (needs a "subscribers" table in Supabase) */
+
+function initNewsletter(){
+
+  const form  = document.getElementById("newsletter");
+  const input = document.getElementById("newsletterEmail");
+  const btn   = document.getElementById("newsletterBtn");
+  const msg   = document.getElementById("newsletterMsg");
+
+  form.addEventListener("submit", async e => {
+
+    e.preventDefault();
+
+    const email = input.value.trim();
+
+    if(!input.checkValidity() || !email){
+      msg.textContent = "Enter a valid email address.";
+      return;
+    }
+
+    if(!db){
+      msg.textContent = "Subscription is unavailable right now. Try again later.";
+      return;
+    }
+
+    btn.disabled = true;
+    msg.textContent = "Subscribing...";
+
+    const { error } =
+      await db.from("subscribers").insert({ email });
+
+    btn.disabled = false;
+
+    if(!error){
+      msg.textContent = "You're subscribed. Thank you!";
+      form.reset();
+      return;
+    }
+
+    if(error.code === "23505"){
+      msg.textContent = "This email is already subscribed.";
+      return;
+    }
+
+    console.error(error);
+    msg.textContent = "Could not subscribe. Please try again later.";
+
+  });
+
+}
+
+/* START (deferred scripts finish before DOMContentLoaded) */
+
+document.addEventListener("DOMContentLoaded",() => {
+
+  initTheme();
+  loadNews().then(initNewsletter);
+
+});
 
 </script>
 
