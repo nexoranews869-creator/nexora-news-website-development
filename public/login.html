@@ -3,11 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#d0102a">
   <title>Nexora News — Admin Login</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%23d0102a'/%3E%3Ctext x='50' y='73' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Apply saved theme before first paint -->
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem("theme");
+        if(t){ document.documentElement.setAttribute("data-theme", t); }
+      }catch(e){}
+    })();
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    :root{
+      --bg:#f2f4f8;
+      --surface:#ffffff;
+      --soft:#e8ecf3;
+      --field:#f7f8fb;
+      --text:#0d1220;
+      --muted:#586279;
+      --line:#dfe4ee;
+      --red:#d0102a;
+      --accent-text:#c60f28;
+      --shadow:0 1px 2px rgba(13,18,32,.05),0 12px 36px rgba(13,18,32,.09);
+      --display:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;
+      --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]){
+        --bg:#080b12;
+        --surface:#121724;
+        --soft:#1b2233;
+        --field:#0e1320;
+        --text:#eef1f8;
+        --muted:#a2acc3;
+        --line:#252e44;
+        --accent-text:#ff6f82;
+        --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 36px rgba(0,0,0,.4);
+      }
+    }
+
+    :root[data-theme="dark"]{
+      --bg:#080b12;
+      --surface:#121724;
+      --soft:#1b2233;
+      --field:#0e1320;
+      --text:#eef1f8;
+      --muted:#a2acc3;
+      --line:#252e44;
+      --accent-text:#ff6f82;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 36px rgba(0,0,0,.4);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -15,73 +74,139 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 18px;
       padding: 20px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
     .login-box {
       width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 35px;
-      border-radius: 12px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+      max-width: 430px;
+      background: var(--surface);
+      padding: 38px 34px;
+      border-radius: 28px;
+      box-shadow: var(--shadow);
     }
 
     .logo {
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      color: #d71920;
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--display);
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin-bottom: 6px;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--red);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      transform: rotate(-6deg);
+    }
+
+    .logo em {
+      font-style: normal;
+      color: var(--accent-text);
     }
 
     .subtitle {
       text-align: center;
-      color: #666;
+      color: var(--muted);
       margin-bottom: 30px;
+      font-size: 16px;
     }
 
     label {
       display: block;
       margin-bottom: 8px;
-      font-weight: bold;
+      font-weight: 700;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 18px;
-      font-size: 16px;
+      height: 50px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--field);
+      color: var(--text);
+      margin-bottom: 20px;
+      font: 500 16px var(--font);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 4px rgba(208,16,42,.14);
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      background: #d71920;
+      height: 52px;
+      background: var(--red);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: bold;
+      border-radius: 999px;
+      font: 700 16px var(--font);
       cursor: pointer;
+      transition: filter .15s ease, opacity .15s ease;
     }
 
     button:hover {
-      background: #b9151b;
+      filter: brightness(1.1);
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: default;
     }
 
     #message {
       margin-top: 18px;
       text-align: center;
-      font-weight: bold;
+      font-weight: 700;
+      min-height: 22px;
+    }
+
+    .back {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 30px 22px;
+        border-radius: 24px;
+      }
     }
   </style>
 </head>
@@ -90,7 +215,10 @@
 
   <div class="login-box">
 
-    <div class="logo">NEXORA NEWS</div>
+    <div class="logo">
+      <span class="logo-mark" aria-hidden="true">N</span>
+      <span>Nexora <em>News</em></span>
+    </div>
     <div class="subtitle">Admin Login</div>
 
     <form id="loginForm">
@@ -100,6 +228,7 @@
         type="email"
         id="email"
         placeholder="Enter your email"
+        autocomplete="username"
         required
       >
 
@@ -108,16 +237,19 @@
         type="password"
         id="password"
         placeholder="Enter your password"
+        autocomplete="current-password"
         required
       >
 
-      <button type="submit">Login</button>
+      <button type="submit" id="loginBtn">Login</button>
 
     </form>
 
-    <div id="message"></div>
+    <div id="message" role="status"></div>
 
   </div>
+
+  <a class="back" href="/">← Back to site</a>
 
 <script>
   const SUPABASE_URL = "https://qleoqpmxvmqcythacszw.supabase.co";
@@ -137,7 +269,11 @@
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const message = document.getElementById("message");
+    const button = document.getElementById("loginBtn");
 
+    button.disabled = true;
+
+    message.style.color = "";
     message.textContent = "Logging in...";
 
     const { data, error } = await db.auth.signInWithPassword({
@@ -146,16 +282,17 @@
     });
 
     if (error) {
-      message.style.color = "red";
+      button.disabled = false;
+      message.style.color = "#ef4444";
       message.textContent = error.message;
       return;
     }
 
-    message.style.color = "green";
+    message.style.color = "#16a34a";
     message.textContent = "Login successful!";
 
     setTimeout(() => {
-      window.location.href = "admin-1.html";
+      window.location.href = "admin.html";
     }, 1000);
 
   });
