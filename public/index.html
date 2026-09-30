@@ -1998,10 +1998,18 @@ async function loadNews(){
 
   /* Each top block shows different stories */
 
-  const hero     = articles[0];
-  const side     = articles.slice(1,4);
-  const trending = articles.slice(4,10);
-  const more     = articles.slice(10,14);
+  /* The top story is the newest BREAKING article.
+     If nothing is marked as breaking, the newest article is used
+     so the top of the page is never empty. */
+  const hero =
+    articles.find(a => a.is_breaking === true) || articles[0];
+
+  const others =
+    articles.filter(a => a !== hero);
+
+  const side     = others.slice(0,3);
+  const trending = others.slice(3,9);
+  const more     = others.slice(9,13);
 
   const by = cat =>
     articles
