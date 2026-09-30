@@ -514,6 +514,23 @@ a:hover.overlay-card img{
   background:linear-gradient(to top,rgba(4,6,12,.94) 0%,rgba(4,6,12,.7) 45%,transparent 100%);
 }
 
+.top-label{
+  display:inline-block;
+  background:var(--red);
+  color:#fff;
+  padding:7px 13px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.05em;
+  line-height:1;
+}
+
+.top-label.dark{
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.35);
+}
+
 .hero-tags{
   display:flex;
   flex-wrap:wrap;
@@ -1429,30 +1446,28 @@ footer{
     aspect-ratio:auto;
     display:flex;
     flex-direction:column;
+    justify-content:flex-end;
+    min-height:max(270px,74vw);
     border-radius:22px;
   }
 
-  .hero-main img{
-    position:static;
-    width:100%;
-    height:auto;
-    aspect-ratio:16/9;
-    flex-shrink:0;
-  }
-
   .hero-overlay{
-    position:static;
-    padding:18px 18px 22px;
-    background:none;
+    position:relative;
+    padding:100px 18px 20px;
   }
 
   .hero-title{
-    font-size:26px;
+    font-size:27px;
   }
 
   .hero-excerpt{
-    font-size:15px;
-    -webkit-line-clamp:3;
+    font-size:16px;
+    margin-top:10px;
+    -webkit-line-clamp:2;
+  }
+
+  .hero-meta{
+    margin-top:12px;
   }
 
   .skeleton-hero .skeleton:last-child{
@@ -2481,15 +2496,11 @@ async function loadNews(){
 
           <div class="hero-tags">
 
-            ${
-              hero.category
-              ? `<span class="chip">${esc(hero.category)}</span>`
-              : ""
-            }
+            <span class="top-label">TOP STORY</span>
 
             ${
               hero.is_breaking
-              ? '<span class="chip red">Breaking</span>'
+              ? '<span class="top-label dark">BREAKING</span>'
               : ''
             }
 
@@ -2513,6 +2524,12 @@ async function loadNews(){
             ${
               timeAgo(hero)
               ? `<span>${ICON_CLOCK} ${esc(timeAgo(hero))}</span>`
+              : ""
+            }
+
+            ${
+              hero.category
+              ? `<span>${esc(hero.category)}</span>`
               : ""
             }
 
