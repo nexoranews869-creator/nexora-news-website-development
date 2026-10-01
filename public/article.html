@@ -12,7 +12,7 @@
 <meta name="author" content="Nexora News">
 <meta name="robots" content="index, follow">
 
-<link rel="canonical" href="https://nexora-news-website-development-9ve.vercel.app/article.html">
+<link rel="canonical" href="https://www.nexoranews.uk/article.html">
 
 <!-- OPEN GRAPH (updated per article by JavaScript) -->
 
@@ -20,15 +20,15 @@
 <meta property="og:site_name" content="Nexora News">
 <meta property="og:title" content="Nexora News | Article">
 <meta property="og:description" content="Read the latest news and stories from Nexora News.">
-<meta property="og:url" content="https://nexora-news-website-development-9ve.vercel.app/article.html">
-<meta property="og:image" content="https://nexora-news-website-development-9ve.vercel.app/og-image.jpg">
+<meta property="og:url" content="https://www.nexoranews.uk/article.html">
+<meta property="og:image" content="https://www.nexoranews.uk/og-image.jpg">
 
 <!-- TWITTER -->
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nexora News | Article">
 <meta name="twitter:description" content="Read the latest news and stories from Nexora News.">
-<meta name="twitter:image" content="https://nexora-news-website-development-9ve.vercel.app/og-image.jpg">
+<meta name="twitter:image" content="https://www.nexoranews.uk/og-image.jpg">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%23d0102a'/%3E%3Ctext x='50' y='73' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
 
@@ -1120,8 +1120,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
+const SITE_URL = "https://www.nexoranews.uk";
+
 const DEFAULT_IMAGE =
-"https://nexora-news-website-development-9ve.vercel.app/og-image.jpg";
+"https://www.nexoranews.uk/og-image.jpg";
 
 let db = null;
 
@@ -1140,16 +1142,23 @@ function esc(value){
 }
 
 
-/* SLUG (used only for old links) */
+/* SLUG (fallback when the database has no slug). Same rules as index.html and sitemap.js */
 
 function makeSlug(title){
 
   return String(title || "")
     .toLowerCase()
+    .replace(/ɗ/g,"d")
+    .replace(/ƙ/g,"k")
+    .replace(/ɓ/g,"b")
+    .replace(/ƴ/g,"y")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
     .trim()
     .replace(/[^a-z0-9\s-]/g,"")
     .replace(/\s+/g,"-")
-    .replace(/-+/g,"-");
+    .replace(/-+/g,"-")
+    .replace(/^-|-$/g,"");
 
 }
 
@@ -1298,8 +1307,10 @@ function updateSEO(article){
     article.excerpt ||
     "Read the latest news and stories from Nexora News.";
 
+  /* Always the real domain, even if the page was opened from another address */
+
   const canonical =
-    window.location.origin +
+    SITE_URL +
     window.location.pathname +
     "?slug=" +
     encodeURIComponent(
