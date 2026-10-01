@@ -253,6 +253,12 @@ input[type=file]::file-selector-button{
   cursor:pointer;
 }
 
+.hint{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:8px;
+}
+
 .preview{
   display:none;
   width:100%;
@@ -655,6 +661,20 @@ class="preview"
 alt="Image preview">
 
 
+<label>Video (optional)</label>
+
+<input
+id="video_file"
+type="file"
+accept="video/mp4,video/webm">
+
+<p class="hint">
+MP4 or WebM, up to 50 MB. When the upload finishes, the video is added to
+"Article Body" automatically. You can also paste a YouTube, Vimeo, Facebook,
+TikTok or X link on its own line in the article body.
+</p>
+
+
 <label>Article Body</label>
 
 <textarea
@@ -774,6 +794,18 @@ accept="image/*">
 id="editImagePreview"
 class="preview"
 alt="Current image">
+
+
+<label>Add Video (optional)</label>
+
+<input
+id="editVideoFile"
+type="file"
+accept="video/mp4,video/webm">
+
+<p class="hint">
+MP4 or WebM, up to 50 MB. The video is added to the end of "Article Body".
+</p>
 
 
 <input
@@ -1131,6 +1163,220 @@ preview.style.display =
 "block";
 
 });
+
+
+
+/* VIDEO UPLOAD (adds a video player to the article body) */
+
+const MAX_VIDEO_MB = 50;
+
+
+async function uploadVideo(
+file
+){
+
+if(!file)
+return null;
+
+
+if(
+file.type !== "video/mp4" &&
+file.type !== "video/webm"
+){
+
+throw new Error(
+"Please select an MP4 or WebM video."
+);
+
+}
+
+
+if(
+file.size >
+MAX_VIDEO_MB * 1024 * 1024
+){
+
+throw new Error(
+"Video is too large. Use a video under " +
+MAX_VIDEO_MB +
+" MB, or upload it to YouTube and paste the link in the article body."
+);
+
+}
+
+
+const cleanName =
+file.name
+.toLowerCase()
+.replace(
+/[^a-z0-9.]+/g,
+"-"
+);
+
+
+const filePath =
+ADMIN_ID +
+"/" +
+Date.now() +
+"-" +
+cleanName;
+
+
+const {
+error
+} =
+await db.storage
+.from(BUCKET_NAME)
+.upload(
+filePath,
+file,
+{
+cacheControl:"3600",
+upsert:false,
+contentType:file.type
+}
+);
+
+
+if(error)
+throw error;
+
+
+const {
+data
+} =
+db.storage
+.from(BUCKET_NAME)
+.getPublicUrl(
+filePath
+);
+
+
+return data.publicUrl;
+
+}
+
+
+
+function addVideoToBody(
+textarea,
+url
+){
+
+const tag =
+'<video controls playsinline preload="metadata" src="' +
+url +
+'"></video>';
+
+
+const current =
+textarea.value.replace(
+/\s+$/,
+""
+);
+
+
+textarea.value =
+(
+current
+?
+current + "\n\n"
+:
+""
+) +
+tag +
+"\n\n";
+
+}
+
+
+
+function wireVideoInput(
+inputId,
+textareaId
+){
+
+const input =
+document.getElementById(
+inputId
+);
+
+
+input.addEventListener(
+"change",
+async function(){
+
+const file =
+this.files[0];
+
+
+if(!file)
+return;
+
+
+input.disabled =
+true;
+
+
+showMessage(
+"Uploading video... please wait, this can take a minute.",
+"info"
+);
+
+
+try{
+
+const url =
+await uploadVideo(
+file
+);
+
+
+addVideoToBody(
+document.getElementById(
+textareaId
+),
+url
+);
+
+
+showMessage(
+"Video uploaded and added to the article body.",
+"success"
+);
+
+}catch(error){
+
+showMessage(
+"ERROR: " +
+error.message,
+"error"
+);
+
+}finally{
+
+input.value = "";
+
+input.disabled =
+false;
+
+}
+
+});
+
+}
+
+
+wireVideoInput(
+"video_file",
+"body"
+);
+
+
+wireVideoInput(
+"editVideoFile",
+"editBody"
+);
 
 
 
