@@ -1,4 +1,14 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "nexora-news-website-development-9ve.vercel.app" }
+      ],
+      "destination": "https://www.nexoranews.uk/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ]
