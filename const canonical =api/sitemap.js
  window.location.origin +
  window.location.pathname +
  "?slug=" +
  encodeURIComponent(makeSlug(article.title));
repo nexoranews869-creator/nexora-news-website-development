@@ -4,6 +4,34 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
+const BASE = "https://www.nexoranews.uk";
+
+/* Same slug rules as index.html (used only when an article has no stored slug) */
+function makeSlug(title) {
+  return String(title || "")
+    .toLowerCase()
+    .replace(/ɗ/g, "d")
+    .replace(/ƙ/g, "k")
+    .replace(/ɓ/g, "b")
+    .replace(/ƴ/g, "y")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function xmlEscape(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export default async function handler(req, res) {
 
   try {
@@ -11,9 +39,9 @@ export default async function handler(req, res) {
     const response = await fetch(
       SUPABASE_URL +
       "/rest/v1/articles" +
-      "?select=title,published_at,created_at,status" +
+      "?select=title,slug,published_at,created_at,status" +
       "&status=eq.published" +
-      "&order=published_at.desc",
+      "&order=published_at.desc.nullslast",
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -28,70 +56,54 @@ export default async function handler(req, res) {
 
     const articles = await response.json();
 
-    function makeSlug(title) {
-      return String(title || "")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
-    }
-
-    const base =
-      "https://nexora-news-website-development-9ve.vercel.app";
-
     const urls = [];
 
-    urls.push(`
-      <url>
-        <loc>${base}/</loc>
-      </url>
-    `);
+    urls.push(`  <url>
+    <loc>${BASE}/</loc>
+  </url>`);
 
-    urls.push(`
-      <url>
-        <loc>${base}/search.html</loc>
-      </url>
-    `);
+    urls.push(`  <url>
+    <loc>${BASE}/search.html</loc>
+  </url>`);
+
+    ["UK", "London", "World", "Business", "Technology", "Sports", "Video"].forEach(cat => {
+      urls.push(`  <url>
+    <loc>${BASE}/?category=${encodeURIComponent(cat)}</loc>
+  </url>`);
+    });
 
     articles.forEach(article => {
 
-      const slug = makeSlug(article.title);
+      const slug = article.slug || makeSlug(article.title);
 
-      const lastmod =
-        article.published_at ||
-        article.created_at;
+      if (!slug) { return; }
 
-      urls.push(`
-        <url>
-          <loc>${base}/article.html?slug=${encodeURIComponent(slug)}</loc>
-          <lastmod>${new Date(lastmod).toISOString()}</lastmod>
-        </url>
-      `);
+      const d = new Date(article.published_at || article.created_at);
+
+      const lastmod = isNaN(d)
+        ? ""
+        : `
+    <lastmod>${d.toISOString()}</lastmod>`;
+
+      urls.push(`  <url>
+    <loc>${xmlEscape(BASE + "/article.html?slug=" + encodeURIComponent(slug))}</loc>${lastmod}
+  </url>`);
 
     });
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}
-
 </urlset>`;
 
-    res.setHeader(
-      "Content-Type",
-      "application/xml; charset=utf-8"
-    );
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
+    res.setHeader("Cache-Control", "public, s-maxage=900, stale-while-revalidate=3600");
 
     res.status(200).send(xml);
 
   } catch (error) {
 
-    res.setHeader(
-      "Content-Type",
-      "application/xml; charset=utf-8"
-    );
+    res.setHeader("Content-Type", "application/xml; charset=utf-8");
 
     res.status(500).send(
       `<?xml version="1.0" encoding="UTF-8"?>
