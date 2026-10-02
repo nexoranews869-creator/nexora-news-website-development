@@ -10,6 +10,18 @@
     }
   ],
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    {
+      "source": "/article.html",
+      "has": [
+        { "type": "query", "key": "slug", "value": "(?<slug>.+)" },
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|whatsapp|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest).*"
+        }
+      ],
+      "destination": "/api/share?slug=:slug"
+    }
   ]
 }
