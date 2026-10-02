@@ -3,32 +3,19 @@
     {
       "source": "/(.*)",
       "has": [
-        {
-          "type": "host",
-          "value": "nexora-news-website-development-9ve.vercel.app"
-        }
+        { "type": "host", "value": "nexora-news-website-development-9ve.vercel.app" }
       ],
       "destination": "https://www.nexoranews.uk/$1",
       "permanent": true
     }
   ],
   "rewrites": [
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
-    },
-    {
-      "source": "/rss.xml",
-      "destination": "/api/rss"
-    },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/rss.xml", "destination": "/api/rss" },
     {
       "source": "/article.html",
       "has": [
-        {
-          "type": "query",
-          "key": "slug",
-          "value": "(?<slug>.+)"
-        },
+        { "type": "query", "key": "slug", "value": "(?<slug>.+)" },
         {
           "type": "header",
           "key": "user-agent",
