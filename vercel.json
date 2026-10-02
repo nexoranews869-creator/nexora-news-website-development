@@ -32,7 +32,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|whatsapp|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest).*"
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|whatsapp|TelegramBot|LinkedInBot|Slackbot|Discordbot|Pinterest|Googlebot|Google-InspectionTool|AdsBot-Google|bingbot|BingPreview|Applebot|DuckDuckBot).*"
         }
       ],
       "destination": "/api/share?slug=:slug"
