@@ -912,6 +912,66 @@ document.getElementById("message");
 
 
 
+/* SLUG: short and clean; a number is added only if the slug already exists */
+
+function slugify(title){
+
+return String(title || "")
+.toLowerCase()
+.replace(/ɗ/g,"d")
+.replace(/ƙ/g,"k")
+.replace(/ɓ/g,"b")
+.replace(/ƴ/g,"y")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-z0-9]+/g,"-")
+.replace(/^-+|-+$/g,"")
+.slice(0,90)
+.replace(/-+$/g,"");
+
+}
+
+
+async function uniqueSlug(title){
+
+const base =
+slugify(title) || "article";
+
+let slug = base;
+
+for(let n = 2; n <= 50; n++){
+
+const {
+data,
+error
+} =
+await db
+.from("articles")
+.select("id")
+.eq("slug",slug)
+.limit(1);
+
+
+if(error){
+throw error;
+}
+
+
+if(!data || !data.length){
+return slug;
+}
+
+
+slug = base + "-" + n;
+
+}
+
+return base + "-" + Date.now();
+
+}
+
+
+
 /* MESSAGE */
 
 function showMessage(
@@ -2074,20 +2134,7 @@ imageFile
 
 
 const slug =
-title
-.toLowerCase()
-.replace(
-/[^a-z0-9]+/g,
-"-"
-)
-.replace(
-/^-+|-+$/g,
-""
-)
-+
-"-"
-+
-Date.now();
+await uniqueSlug(title);
 
 
 const {
@@ -2295,20 +2342,7 @@ imageFile
 
 
 const slug =
-title
-.toLowerCase()
-.replace(
-/[^a-z0-9]+/g,
-"-"
-)
-.replace(
-/^-+|-+$/g,
-""
-)
-+
-"-"
-+
-Date.now();
+await uniqueSlug(title);
 
 
 const {
