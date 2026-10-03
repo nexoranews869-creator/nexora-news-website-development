@@ -22,14 +22,7 @@
       "destination": "/api/rss"
     },
     {
-      "source": "/article.html",
-      "has": [
-        {
-          "type": "query",
-          "key": "slug",
-          "value": "(?<slug>.+)"
-        }
-      ],
+      "source": "/news/:slug",
       "destination": "/api/share?slug=:slug"
     }
   ]
