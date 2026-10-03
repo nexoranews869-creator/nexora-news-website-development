@@ -1018,7 +1018,7 @@ footer{
           <span class="btn-text">Theme</span>
         </button>
 
-        <a href="search.html" class="icon-btn" aria-label="Search">
+        <a href="/search.html" class="icon-btn" aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           <span class="btn-text">Search</span>
         </a>
@@ -1104,7 +1104,7 @@ footer{
       <a href="/?category=Business">Business</a>
       <a href="/?category=Technology">Technology</a>
       <a href="/?category=Sports">Sports</a>
-      <a href="search.html">Search</a>
+      <a href="/search.html">Search</a>
 
     </div>
 
@@ -1113,9 +1113,9 @@ footer{
   <div class="copyright">
 
     <div class="legal-links">
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="privacy.html">Privacy Policy</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
     </div>
 
     <p>© 2026 Nexora News. All rights reserved.</p>
@@ -1184,7 +1184,7 @@ function makeSlug(title){
 
 function articleUrl(article){
 
-  return "article.html?slug=" +
+  return "/news/" +
     encodeURIComponent(
       article.slug || makeSlug(article.title)
     );
@@ -1328,8 +1328,7 @@ function updateSEO(article){
 
   const canonical =
     SITE_URL +
-    window.location.pathname +
-    "?slug=" +
+    "/news/" +
     encodeURIComponent(
       article.slug || makeSlug(article.title)
     );
@@ -1840,6 +1839,25 @@ function showError(title,text){
 }
 
 
+/* SLUG: from /news/<slug>, or from an old ?slug= link */
+
+function getSlug(){
+
+  const m = window.location.pathname.match(/^\/news\/([^\/]+)/);
+
+  if(m){
+    try{
+      return decodeURIComponent(m[1]);
+    }catch(e){
+      return m[1];
+    }
+  }
+
+  return new URLSearchParams(window.location.search).get("slug");
+
+}
+
+
 /* LOAD ARTICLE */
 
 async function loadArticle(){
@@ -1847,9 +1865,13 @@ async function loadArticle(){
   const container =
     document.getElementById("articleContainer");
 
-  const slug =
-    new URLSearchParams(window.location.search)
-      .get("slug");
+  const slug = getSlug();
+
+  /* Old links (article.html?slug=...) move to the clean address */
+  if(slug && !/^\/news\//.test(window.location.pathname)){
+    window.location.replace("/news/" + encodeURIComponent(slug));
+    return;
+  }
 
   if(!slug){
     showError(
