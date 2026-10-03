@@ -88,7 +88,7 @@ export default async function handler(req, res) {
     <lastmod>${d.toISOString()}</lastmod>`;
 
       urls.push(`  <url>
-    <loc>${xmlEscape(BASE + "/article.html?slug=" + encodeURIComponent(slug))}</loc>${lastmod}
+    <loc>${xmlEscape(BASE + "/news/" + encodeURIComponent(slug))}</loc>${lastmod}
   </url>`);
 
     });
