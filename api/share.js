@@ -88,6 +88,28 @@ async function findArticle(slug) {
 
 }
 
+/* The normal article page (no slug in the address, so it is the plain file) */
+
+async function getTemplate() {
+
+  try {
+
+    const response = await fetch(BASE + "/article.html");
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const html = await response.text();
+
+    return html.includes('id="articleContainer"') ? html : null;
+
+  } catch (error) {
+    return null;
+  }
+
+}
+
 /* Article body: same content the page shows, as clean HTML */
 
 function cleanHtml(html) {
@@ -159,9 +181,75 @@ function jsonLd(data) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
-const NAV = ["UK", "London", "World", "Business", "Technology", "Sports", "Video"]
-  .map(c => `<a href="${BASE}/?category=${encodeURIComponent(c)}">${c}</a>`)
-  .join(" · ");
+/* Replace the first match only, and never treat "$" in the text specially */
+
+function swap(html, pattern, text) {
+  return pattern.test(html) ? html.replace(pattern, () => text) : html;
+}
+
+function articleMarkup(article, published, author) {
+
+  const dateText = formatDate(published);
+
+  const heroImage = article.image_url
+    ? `<img class="hero-image" src="${esc(article.image_url)}" alt="${esc(article.title)}" width="1080" height="600">`
+    : "";
+
+  return `
+    <article class="article-card">
+      <div class="article-head">
+        <div class="tags">
+          <span class="cat-chip">${esc(article.category || "News")}</span>
+          ${article.is_breaking === true ? '<span class="breaking-badge">Breaking news</span>' : ""}
+        </div>
+        <h1 class="article-title">${esc(article.title)}</h1>
+        ${article.excerpt ? `<div class="article-excerpt">${esc(article.excerpt)}</div>` : ""}
+        <div class="article-meta">
+          <div class="avatar" aria-hidden="true">${esc(author.trim().charAt(0).toUpperCase())}</div>
+          <div>
+            <strong>${esc(author)}</strong>
+            ${dateText ? `<time datetime="${esc(published)}">${esc(dateText)}</time>` : ""}
+          </div>
+        </div>
+      </div>
+      ${heroImage}
+      <div class="article-body">
+${renderBody(article.body)}
+      </div>
+    </article>`;
+
+}
+
+/* Used only if the normal page cannot be loaded */
+
+function minimalPage(title, description, image, url, content) {
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}">
+<link rel="canonical" href="${esc(url)}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Nexora News">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${esc(url)}">
+<meta property="og:image" content="${esc(image)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${esc(image)}">
+</head>
+<body>
+<p><a href="${BASE}/">Nexora News</a></p>
+${content}
+</body>
+</html>`;
+
+}
 
 export default async function handler(req, res) {
 
@@ -184,7 +272,7 @@ export default async function handler(req, res) {
 
   const title = article
     ? article.title + " | Nexora News"
-    : "Nexora News | UK, London & World News";
+    : "Nexora News | Article";
 
   const description = article && article.excerpt
     ? article.excerpt
@@ -214,40 +302,31 @@ export default async function handler(req, res) {
     ? String(article.language || article.lang || "").toLowerCase()
     : "";
 
-  const htmlLang = /^[a-z]{2,3}$/.test(lang) ? lang : "en";
+  const template = await getTemplate();
 
-  let content = "";
+  let html;
 
-  if (article) {
+  if (template && article) {
 
-    const heroImage = article.image_url
-      ? `<img src="${esc(article.image_url)}" alt="${esc(article.title)}" width="1080" height="600">`
-      : "";
+    html = template;
 
-    const dateText = formatDate(published);
+    html = swap(html, /<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);
+    html = swap(html, /<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(description)}">`);
+    html = swap(html, /<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${esc(url)}">`);
 
-    content = `
-<article>
-  <p>${esc(article.category || "News")}</p>
-  <h1>${esc(article.title)}</h1>
-  ${article.excerpt ? `<p><strong>${esc(article.excerpt)}</strong></p>` : ""}
-  <p>By ${esc(author)}${dateText ? ` · <time datetime="${esc(published)}">${esc(dateText)}</time>` : ""}</p>
-  ${heroImage}
-  <div>
-${renderBody(article.body)}
-  </div>
-</article>`;
+    html = swap(html, /<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${esc(title)}">`);
+    html = swap(html, /<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${esc(description)}">`);
+    html = swap(html, /<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${esc(url)}">`);
+    html = swap(html, /<meta property="og:image" content="[^"]*">/, `<meta property="og:image" content="${esc(image)}">`);
 
-  } else {
+    html = swap(html, /<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${esc(title)}">`);
+    html = swap(html, /<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${esc(description)}">`);
+    html = swap(html, /<meta name="twitter:image" content="[^"]*">/, `<meta name="twitter:image" content="${esc(image)}">`);
 
-    content = `
-<h1>${esc(title)}</h1>
-<p>${esc(description)}</p>`;
-
-  }
-
-  const schema = article
-    ? `<script type="application/ld+json">${jsonLd({
+    html = swap(
+      html,
+      /<script type="application\/ld\+json" id="articleSchema">[\s\S]*?<\/script>/,
+      `<script type="application/ld+json" id="articleSchema">${jsonLd({
         "@context": "https://schema.org",
         "@type": "NewsArticle",
         "headline": article.title,
@@ -259,46 +338,40 @@ ${renderBody(article.body)}
         "publisher": { "@type": "Organization", "name": "Nexora News" },
         "mainEntityOfPage": { "@type": "WebPage", "@id": url }
       })}</script>`
-    : "";
+    );
 
-  const html = `<!DOCTYPE html>
-<html lang="${esc(htmlLang)}">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(title)}</title>
-<meta name="description" content="${esc(description)}">
-<meta name="author" content="${esc(author)}">
-${notFound ? '<meta name="robots" content="noindex">\n' : ""}<link rel="canonical" href="${esc(url)}">
+    if (/^[a-z]{2,3}$/.test(lang)) {
+      html = swap(html, /<html lang="[^"]*">/, `<html lang="${esc(lang)}">`);
+    }
 
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Nexora News">
-<meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(description)}">
-<meta property="og:url" content="${esc(url)}">
-<meta property="og:image" content="${esc(image)}">
-${published ? `<meta property="article:published_time" content="${esc(published)}">` : ""}
+    /* The article itself, ready in the HTML (the page script then refreshes it) */
+    html = html.replace(
+      /(<main class="article-container" id="articleContainer"[^>]*>)[\s\S]*?(<\/main>)/,
+      (all, open, close) => open + articleMarkup(article, published, author) + "\n" + close
+    );
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(description)}">
-<meta name="twitter:image" content="${esc(image)}">
-${schema}
-</head>
-<body>
-<header>
-<p><a href="${BASE}/">Nexora News</a></p>
-<nav>${NAV}</nav>
-</header>
-<main>
-${content}
-</main>
-<footer>
-<p><a href="${BASE}/">Home</a> · <a href="${BASE}/about.html">About</a> · <a href="${BASE}/editorial.html">Editorial Policy</a> · <a href="${BASE}/contact.html">Contact</a> · <a href="${BASE}/privacy.html">Privacy Policy</a></p>
-<p>© 2026 Nexora News</p>
-</footer>
-</body>
-</html>`;
+  } else if (template) {
+
+    /* no such article, or the database could not be reached: plain page, script decides */
+    html = template;
+
+    if (notFound) {
+      html = swap(html, /<meta name="robots" content="[^"]*">/, '<meta name="robots" content="noindex">');
+    }
+
+  } else {
+
+    html = minimalPage(
+      title,
+      description,
+      image,
+      url,
+      article
+        ? articleMarkup(article, published, author)
+        : `<h1>${esc(title)}</h1><p>${esc(description)}</p>`
+    );
+
+  }
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
