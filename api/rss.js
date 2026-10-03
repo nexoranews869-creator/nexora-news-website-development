@@ -71,7 +71,7 @@ export default async function handler(req, res) {
 
       if (!slug) { return ""; }
 
-      const link = BASE + "/article.html?slug=" + encodeURIComponent(slug);
+      const link = BASE + "/news/" + encodeURIComponent(slug);
 
       const d = new Date(article.published_at || article.created_at);
 
