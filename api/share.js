@@ -253,7 +253,9 @@ ${content}
 
 export default async function handler(req, res) {
 
-  const slug = String(req.query.slug || "");
+  let slugParam = req.query.slug;
+  if (Array.isArray(slugParam)) { slugParam = slugParam[0]; }
+  const slug = String(slugParam || "");
 
   let article = null;
   let lookupFailed = false;
@@ -286,7 +288,7 @@ export default async function handler(req, res) {
     ? (article.slug || makeSlug(article.title))
     : slug;
 
-  const url = BASE + "/article.html?slug=" + encodeURIComponent(realSlug);
+  const url = BASE + "/news/" + encodeURIComponent(realSlug);
 
   const published = article
     ? (article.published_at || article.created_at || "")
