@@ -961,10 +961,10 @@ function setActiveNav(category){
 
 }
 
-function baseQuery(){
+function baseQuery(cols){
   return db
     .from("articles")
-    .select(COLUMNS)
+    .select(cols || COLUMNS)
     .eq("status","published")
     .order("published_at",{ ascending:false, nullsFirst:false });
 }
@@ -1049,7 +1049,12 @@ async function loadNews(){
 
   /* HOMEPAGE */
 
-  const { data, error } = await baseQuery().limit(HOME_LIMIT);
+  /* "is_featured" marks the pinned Top Story; if the column is missing, carry on without it */
+  let { data, error } = await baseQuery(COLUMNS + ",is_featured").limit(HOME_LIMIT);
+
+  if(error){
+    ({ data, error } = await baseQuery().limit(HOME_LIMIT));
+  }
 
   if(error){
     console.error(error);
@@ -1064,8 +1069,11 @@ async function loadNews(){
     return;
   }
 
-  /* Top story: the newest BREAKING article, or the newest article if none is breaking */
-  const hero = articles.find(a => a.is_breaking === true) || articles[0];
+  /* Top story: the pinned article, else the newest BREAKING article, else the newest article */
+  const hero =
+    articles.find(a => a.is_featured === true) ||
+    articles.find(a => a.is_breaking === true) ||
+    articles[0];
 
   const others = articles.filter(a => a !== hero);
 
