@@ -640,6 +640,27 @@ Breaking News
 </div>
 
 
+<!-- PIN AS TOP STORY -->
+
+<div class="breaking-box" style="background:rgba(37,99,235,.07);border-color:rgba(37,99,235,.3);">
+
+<label
+class="breaking-label"
+style="color:var(--text);">
+
+<input
+type="checkbox"
+id="isFeatured">
+
+<span>
+Pin as Top Story (stays at the top of the homepage)
+</span>
+
+</label>
+
+</div>
+
+
 <label>Short Description</label>
 
 <textarea
@@ -769,6 +790,27 @@ id="editIsBreaking">
 
 <span>
 Breaking News
+</span>
+
+</label>
+
+</div>
+
+
+<!-- PIN AS TOP STORY -->
+
+<div class="breaking-box" style="background:rgba(37,99,235,.07);border-color:rgba(37,99,235,.3);">
+
+<label
+class="breaking-label"
+style="color:var(--text);">
+
+<input
+type="checkbox"
+id="editIsFeatured">
+
+<span>
+Pin as Top Story (stays at the top of the homepage)
 </span>
 
 </label>
@@ -967,6 +1009,30 @@ slug = base + "-" + n;
 }
 
 return base + "-" + Date.now();
+
+}
+
+
+
+/* TOP STORY: only one article can be pinned at a time */
+
+async function unpinOthers(exceptId){
+
+let query =
+db
+.from("articles")
+.update({ is_featured:false })
+.eq("is_featured",true);
+
+if(exceptId){
+query = query.neq("id",exceptId);
+}
+
+const { error } = await query;
+
+if(error){
+throw error;
+}
 
 }
 
@@ -1580,6 +1646,18 @@ alt="Article image">
 "";
 
 
+const pinned =
+article.is_featured
+?
+`
+<div class="breaking-badge" style="background:#2563eb;">
+TOP STORY (PINNED)
+</div>
+`
+:
+"";
+
+
 const breaking =
 article.is_breaking
 ?
@@ -1613,6 +1691,8 @@ div.innerHTML = `
 <div class="status ${statusClass}">
 ${statusText}
 </div>
+
+${pinned}
 
 ${breaking}
 
@@ -1731,6 +1811,12 @@ document.getElementById(
 "editIsBreaking"
 ).checked =
 data.is_breaking === true;
+
+
+document.getElementById(
+"editIsFeatured"
+).checked =
+data.is_featured === true;
 
 
 document.getElementById(
@@ -1855,6 +1941,17 @@ newImage
 }
 
 
+const featured =
+document.getElementById(
+"editIsFeatured"
+).checked;
+
+
+if(featured){
+await unpinOthers(id);
+}
+
+
 const updates = {
 
 title:
@@ -1888,7 +1985,10 @@ document.getElementById(
 is_breaking:
 document.getElementById(
 "editIsBreaking"
-).checked
+).checked,
+
+is_featured:
+featured
 
 };
 
@@ -2137,6 +2237,17 @@ const slug =
 await uniqueSlug(title);
 
 
+const featured =
+document.getElementById(
+"isFeatured"
+).checked;
+
+
+if(featured){
+await unpinOthers(null);
+}
+
+
 const {
 error
 } =
@@ -2159,6 +2270,8 @@ author:author,
 image_url:imageUrl,
 
 is_breaking:isBreaking,
+
+is_featured:featured,
 
 status:"published",
 
