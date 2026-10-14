@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     const response = await fetch(
       SUPABASE_URL +
       "/rest/v1/articles" +
-      "?select=title,slug,published_at,created_at,status" +
+      "?select=title,slug,image_url,published_at,created_at,status" +
       "&status=eq.published" +
       "&order=published_at.desc.nullslast",
       {
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
 
     ["UK", "London", "World", "Business", "Technology", "Sports", "Video"].forEach(cat => {
       urls.push(`  <url>
-    <loc>${BASE}/?category=${encodeURIComponent(cat)}</loc>
+    <loc>${BASE}/section/${cat.toLowerCase()}</loc>
   </url>`);
     });
 
@@ -82,19 +82,26 @@ export default async function handler(req, res) {
 
       const d = new Date(article.published_at || article.created_at);
 
+      const imageTag = article.image_url
+        ? `
+    <image:image>
+      <image:loc>${xmlEscape(article.image_url)}</image:loc>
+    </image:image>`
+        : "";
+
       const lastmod = isNaN(d)
         ? ""
         : `
     <lastmod>${d.toISOString()}</lastmod>`;
 
       urls.push(`  <url>
-    <loc>${xmlEscape(BASE + "/news/" + encodeURIComponent(slug))}</loc>${lastmod}
+    <loc>${xmlEscape(BASE + "/news/" + encodeURIComponent(slug))}</loc>${lastmod}${imageTag}
   </url>`);
 
     });
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.join("\n")}
 </urlset>`;
 
