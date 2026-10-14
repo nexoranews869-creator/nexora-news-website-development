@@ -170,6 +170,17 @@ function renderBody(raw) {
 
 }
 
+function readingMinutes(body) {
+  const text = String(body || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&[a-z]+;/gi, " ")
+    .trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  return Math.max(1, Math.round(words / 200));
+}
+
+const SECTION_KEYS = ["uk", "london", "world", "business", "technology", "sports", "video"];
+
 function formatDate(value) {
   const d = new Date(value);
   return isNaN(d)
@@ -209,6 +220,7 @@ function articleMarkup(article, published, author) {
           <div>
             <strong>${esc(author)}</strong>
             ${dateText ? `<time datetime="${esc(published)}">${esc(dateText)}</time>` : ""}
+            <span> · ${readingMinutes(article.body)} min read</span>
           </div>
         </div>
       </div>
@@ -248,6 +260,60 @@ function minimalPage(title, description, image, url, content) {
 ${content}
 </body>
 </html>`;
+
+}
+
+function articleSchema(article, d) {
+
+  const sectionKey = String(article.category || "").toLowerCase();
+
+  const crumbs = [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE + "/" }
+  ];
+
+  if (SECTION_KEYS.includes(sectionKey)) {
+    crumbs.push({
+      "@type": "ListItem",
+      "position": 2,
+      "name": article.category,
+      "item": BASE + "/section/" + sectionKey
+    });
+  }
+
+  crumbs.push({
+    "@type": "ListItem",
+    "position": crumbs.length + 1,
+    "name": d.title,
+    "item": d.url
+  });
+
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": d.title,
+      "description": d.description,
+      "image": [d.image],
+      "datePublished": d.published,
+      "dateModified": d.modified,
+      "author": { "@type": "Person", "name": d.author },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nexora News",
+        "logo": { "@type": "ImageObject", "url": BASE + "/icon-512.png" }
+      },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": d.url },
+      "url": d.url,
+      "articleSection": article.category || "News",
+      "inLanguage": /^[a-z]{2,3}$/.test(d.lang) ? d.lang : "en",
+      "isAccessibleForFree": true
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": crumbs
+    }
+  ];
 
 }
 
@@ -328,18 +394,16 @@ export default async function handler(req, res) {
     html = swap(
       html,
       /<script type="application\/ld\+json" id="articleSchema">[\s\S]*?<\/script>/,
-      `<script type="application/ld+json" id="articleSchema">${jsonLd({
-        "@context": "https://schema.org",
-        "@type": "NewsArticle",
-        "headline": article.title,
-        "description": description,
-        "image": [image],
-        "datePublished": published,
-        "dateModified": modified,
-        "author": { "@type": "Person", "name": author },
-        "publisher": { "@type": "Organization", "name": "Nexora News" },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": url }
-      })}</script>`
+      `<script type="application/ld+json" id="articleSchema">${jsonLd(articleSchema(article, {
+        title: article.title,
+        description,
+        image,
+        published,
+        modified,
+        author,
+        url,
+        lang
+      }))}</script>`
     );
 
     if (/^[a-z]{2,3}$/.test(lang)) {
