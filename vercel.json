@@ -3,27 +3,40 @@
     {
       "source": "/(.*)",
       "has": [
-        {
-          "type": "host",
-          "value": "nexora-news-website-development-9ve.vercel.app"
-        }
+        { "type": "host", "value": "nexora-news-website-development-9ve.vercel.app" }
       ],
       "destination": "https://www.nexoranews.uk/$1",
       "permanent": true
     }
   ],
   "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/rss.xml", "destination": "/api/rss" },
+    { "source": "/news/:slug", "destination": "/api/share?slug=:slug" },
+    { "source": "/section/:name", "destination": "/api/section?name=:name" }
+  ],
+  "headers": [
     {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" }
+      ]
     },
     {
-      "source": "/rss.xml",
-      "destination": "/api/rss"
+      "source": "/(favicon\\.ico|icon-192\\.png|icon-512\\.png|icon-maskable-512\\.png|apple-touch-icon\\.png|og-image\\.jpg)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=604800" }
+      ]
     },
     {
-      "source": "/news/:slug",
-      "destination": "/api/share?slug=:slug"
+      "source": "/(admin\\.html|login\\.html)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
     }
   ]
 }
