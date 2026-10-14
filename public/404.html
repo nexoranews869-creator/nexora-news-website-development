@@ -9,7 +9,10 @@
 <meta name="description" content="The page you were looking for could not be found.">
 <meta name="robots" content="noindex, follow">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%23d0102a'/%3E%3Ctext x='50' y='73' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,15 +118,22 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
 .cta a.primary{background:var(--red);border-color:var(--red);color:#fff}
 .cta a.primary:hover{filter:brightness(1.1)}
 </style>
-<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js): analytics cookies stay OFF until the visitor allows them -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF65B1MV84"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
   gtag('js', new Date());
-
   gtag('config', 'G-PF65B1MV84');
 </script>
+<script src="/consent.js" defer></script>
 
 </head>
 
@@ -153,13 +163,13 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
   <nav aria-label="Main">
     <div class="nav-inner">
       <a href="/">Home</a>
-      <a href="/?category=UK">UK</a>
-      <a href="/?category=London">London</a>
-      <a href="/?category=World">World</a>
-      <a href="/?category=Business">Business</a>
-      <a href="/?category=Technology">Technology</a>
-      <a href="/?category=Sports">Sports</a>
-      <a href="/?category=Video">Video</a>
+      <a href="/section/uk">UK</a>
+      <a href="/section/london">London</a>
+      <a href="/section/world">World</a>
+      <a href="/section/business">Business</a>
+      <a href="/section/technology">Technology</a>
+      <a href="/section/sports">Sports</a>
+      <a href="/section/video">Video</a>
     </div>
   </nav>
 </div>
@@ -182,13 +192,13 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
 <h2>Browse sections</h2>
 
 <div class="cta">
-  <a href="/?category=UK">UK</a>
-  <a href="/?category=London">London</a>
-  <a href="/?category=World">World</a>
-  <a href="/?category=Business">Business</a>
-  <a href="/?category=Technology">Technology</a>
-  <a href="/?category=Sports">Sports</a>
-  <a href="/?category=Video">Video</a>
+  <a href="/section/uk">UK</a>
+  <a href="/section/london">London</a>
+  <a href="/section/world">World</a>
+  <a href="/section/business">Business</a>
+  <a href="/section/technology">Technology</a>
+  <a href="/section/sports">Sports</a>
+  <a href="/section/video">Video</a>
 </div>
 
 </div>
@@ -210,12 +220,12 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
     </div>
     <div class="footer-links">
       <a href="/">Home</a>
-      <a href="/?category=UK">UK</a>
-      <a href="/?category=London">London</a>
-      <a href="/?category=World">World</a>
-      <a href="/?category=Business">Business</a>
-      <a href="/?category=Technology">Technology</a>
-      <a href="/?category=Sports">Sports</a>
+      <a href="/section/uk">UK</a>
+      <a href="/section/london">London</a>
+      <a href="/section/world">World</a>
+      <a href="/section/business">Business</a>
+      <a href="/section/technology">Technology</a>
+      <a href="/section/sports">Sports</a>
       <a href="/about.html">About</a>
       <a href="/editorial.html">Editorial Policy</a>
       <a href="/contact.html">Contact</a>
