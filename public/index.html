@@ -34,7 +34,9 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 
+<link rel="preconnect" href="https://qleoqpmxvmqcythacszw.supabase.co" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,10 +47,36 @@
   "@type": "NewsMediaOrganization",
   "name": "Nexora News",
   "url": "https://www.nexoranews.uk/",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://www.nexoranews.uk/icon-512.png",
+    "width": 512,
+    "height": 512
+  },
+  "description": "Nexora News brings you the latest UK, London, world, business, technology and sports news.",
+  "publishingPrinciples": "https://www.nexoranews.uk/editorial.html",
+  "ethicsPolicy": "https://www.nexoranews.uk/editorial.html",
+  "correctionsPolicy": "https://www.nexoranews.uk/editorial.html",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "editorial",
+    "email": "contact@nexoranews.uk",
+    "url": "https://www.nexoranews.uk/contact.html"
+  },
   "sameAs": [
     "https://www.facebook.com/share/19tYxPfWvb/",
     "https://whatsapp.com/channel/0029Vb8nPLgJZg3zlCz9yL3X"
   ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Nexora News",
+  "alternateName": "Nexora",
+  "url": "https://www.nexoranews.uk/"
 }
 </script>
 
@@ -432,15 +460,22 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:40px;border-radius:3
 .social-links a:hover{background:#fff;color:#0b1020}
 </style>
 
-<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js): analytics cookies stay OFF until the visitor allows them -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF65B1MV84"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
   gtag('js', new Date());
-
   gtag('config', 'G-PF65B1MV84');
 </script>
+<script src="/consent.js" defer></script>
 
 </head>
 
@@ -471,7 +506,7 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:40px;border-radius:3
           <span class="btn-text">Theme</span>
         </button>
 
-        <a href="search.html" class="icon-btn" aria-label="Search">
+        <a href="/search.html" class="icon-btn" aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           <span class="btn-text">Search</span>
         </a>
@@ -486,13 +521,13 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:40px;border-radius:3
 
     <div class="nav-inner">
       <a href="/" data-cat="">Home</a>
-      <a href="/?category=UK" data-cat="uk">UK</a>
-      <a href="/?category=London" data-cat="london">London</a>
-      <a href="/?category=World" data-cat="world">World</a>
-      <a href="/?category=Business" data-cat="business">Business</a>
-      <a href="/?category=Technology" data-cat="technology">Technology</a>
-      <a href="/?category=Sports" data-cat="sports">Sports</a>
-      <a href="/?category=Video" data-cat="video">Video</a>
+      <a href="/section/uk" data-cat="uk">UK</a>
+      <a href="/section/london" data-cat="london">London</a>
+      <a href="/section/world" data-cat="world">World</a>
+      <a href="/section/business" data-cat="business">Business</a>
+      <a href="/section/technology" data-cat="technology">Technology</a>
+      <a href="/section/sports" data-cat="sports">Sports</a>
+      <a href="/section/video" data-cat="video">Video</a>
     </div>
 
   </nav>
@@ -557,14 +592,14 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:40px;border-radius:3
       <h2>Sections</h2>
 
       <ul>
-        <li><a href="/?category=UK">UK</a></li>
-        <li><a href="/?category=London">London</a></li>
-        <li><a href="/?category=World">World</a></li>
-        <li><a href="/?category=Business">Business</a></li>
-        <li><a href="/?category=Technology">Technology</a></li>
-        <li><a href="/?category=Sports">Sports</a></li>
-        <li><a href="/?category=Video">Video</a></li>
-        <li><a href="search.html">Search</a></li>
+        <li><a href="/section/uk">UK</a></li>
+        <li><a href="/section/london">London</a></li>
+        <li><a href="/section/world">World</a></li>
+        <li><a href="/section/business">Business</a></li>
+        <li><a href="/section/technology">Technology</a></li>
+        <li><a href="/section/sports">Sports</a></li>
+        <li><a href="/section/video">Video</a></li>
+        <li><a href="/search.html">Search</a></li>
       </ul>
 
     </div>
@@ -597,10 +632,10 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:40px;border-radius:3
     <div class="copyright">
 
       <div class="legal-links">
-        <a href="about.html">About</a>
-        <a href="editorial.html">Editorial Policy</a>
-        <a href="contact.html">Contact</a>
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="/about.html">About</a>
+        <a href="/editorial.html">Editorial Policy</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy Policy</a>
       </div>
 
       <p>© 2026 Nexora News. All rights reserved.</p>
@@ -628,6 +663,17 @@ const FALLBACK_IMG =
 /* Only the columns the homepage needs (no article body) */
 const COLUMNS =
 "id,title,slug,excerpt,category,author,image_url,published_at,created_at,is_breaking";
+
+/* The seven sections, addressed as /section/<name> */
+const CATEGORY_NAMES = {
+  uk:"UK",
+  london:"London",
+  world:"World",
+  business:"Business",
+  technology:"Technology",
+  sports:"Sports",
+  video:"Video"
+};
 
 let db = null;
 
@@ -834,7 +880,7 @@ function section(title,items,category){
   if(!items.length){ return ""; }
 
   const link = category
-    ? `<a class="viewall" href="/?category=${encodeURIComponent(category)}">See all</a>`
+    ? `<a class="viewall" href="/section/${encodeURIComponent(category.toLowerCase())}">See all</a>`
     : "";
 
   const lead = items[0];
@@ -1002,11 +1048,29 @@ async function loadNews(){
 
   db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-  const params = new URLSearchParams(window.location.search);
+  const pathMatch =
+    window.location.pathname.match(/^\/section\/([A-Za-z]+)\/?$/);
 
   /* letters and spaces only */
-  const selectedCategory =
-    (params.get("category") || "").replace(/[^a-zA-Z ]/g,"").trim();
+  const queryCategory =
+    (new URLSearchParams(window.location.search).get("category") || "")
+      .replace(/[^a-zA-Z ]/g,"").trim();
+
+  /* Old links (/?category=UK) move to the clean address */
+  if(!pathMatch && queryCategory && CATEGORY_NAMES[queryCategory.toLowerCase()]){
+    window.location.replace("/section/" + queryCategory.toLowerCase());
+    return;
+  }
+
+  const sectionKey = pathMatch ? pathMatch[1].toLowerCase() : "";
+
+  const selectedCategory = sectionKey ? (CATEGORY_NAMES[sectionKey] || "") : "";
+
+  if(sectionKey && !selectedCategory){
+    setActiveNav("");
+    showMessage("Section not found.");
+    return;
+  }
 
   setActiveNav(selectedCategory);
 
@@ -1017,6 +1081,21 @@ async function loadNews(){
   if(selectedCategory){
 
     document.title = selectedCategory + " News | Nexora News";
+
+    const canonicalTag = document.querySelector('link[rel="canonical"]');
+
+    if(canonicalTag){
+      canonicalTag.setAttribute("href","https://www.nexoranews.uk/section/" + sectionKey);
+    }
+
+    const descriptionTag = document.querySelector('meta[name="description"]');
+
+    if(descriptionTag){
+      descriptionTag.setAttribute(
+        "content",
+        "Latest " + selectedCategory + " news, analysis and updates from Nexora News."
+      );
+    }
 
     const { data, error } =
       await baseQuery().ilike("category",selectedCategory).limit(CATEGORY_LIMIT);
@@ -1262,7 +1341,7 @@ function initNewsletter(){
     btn.disabled = false;
 
     if(!error && data === "ok"){
-      msg.textContent = "You're subscribed. Thank you!";
+      msg.textContent = "Thanks, you're on the list. Our weekly digest is coming soon.";
       form.reset();
       return;
     }
