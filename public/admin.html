@@ -598,6 +598,8 @@ Logout
 id="title"
 required>
 
+<p class="hint" id="titleCount"></p>
+
 
 <label>Category</label>
 
@@ -666,6 +668,8 @@ Pin as Top Story (stays at the top of the homepage)
 <textarea
 id="excerpt"
 required></textarea>
+
+<p class="hint" id="excerptCount"></p>
 
 
 <label>Article Image</label>
@@ -1133,6 +1137,123 @@ return true;
 
 /* IMAGE UPLOAD */
 
+const MAX_IMAGE_WIDTH = 1600;
+
+let imageNote = "";
+
+
+function takeNote(){
+
+const note = imageNote;
+
+imageNote = "";
+
+return note;
+
+}
+
+
+/* shrink big photos before upload: faster pages, less storage */
+
+async function compressImage(
+file
+){
+
+const info = {
+blob:file,
+converted:false,
+originalWidth:0
+};
+
+
+if(!/^image\/(jpeg|png|webp)$/i.test(file.type)){
+return info;
+}
+
+
+let bitmap = null;
+
+try{
+
+bitmap =
+await createImageBitmap(
+file,
+{ imageOrientation:"from-image" }
+);
+
+}catch(e){
+
+try{
+bitmap = await createImageBitmap(file);
+}catch(e2){
+return info;
+}
+
+}
+
+
+info.originalWidth = bitmap.width;
+
+
+const scale =
+Math.min(1,MAX_IMAGE_WIDTH / bitmap.width);
+
+const w =
+Math.max(1,Math.round(bitmap.width * scale));
+
+const h =
+Math.max(1,Math.round(bitmap.height * scale));
+
+
+const canvas =
+document.createElement("canvas");
+
+canvas.width = w;
+canvas.height = h;
+
+
+const ctx =
+canvas.getContext("2d");
+
+ctx.fillStyle = "#ffffff";
+ctx.fillRect(0,0,w,h);
+ctx.drawImage(bitmap,0,0,w,h);
+
+if(bitmap.close){
+bitmap.close();
+}
+
+
+const blob =
+await new Promise(function(resolve){
+canvas.toBlob(resolve,"image/jpeg",0.85);
+});
+
+
+if(!blob){
+return info;
+}
+
+
+/* keep the original JPEG when it is already small */
+
+if(
+file.type === "image/jpeg" &&
+scale === 1 &&
+blob.size >= file.size
+){
+return info;
+}
+
+
+info.blob = blob;
+info.converted = true;
+
+return info;
+
+}
+
+
 async function uploadImage(
 file
 ){
@@ -1166,13 +1287,47 @@ throw new Error(
 }
 
 
-const cleanName =
+imageNote = "";
+
+
+const prepared =
+await compressImage(file);
+
+
+if(
+prepared.originalWidth &&
+prepared.originalWidth < 1200
+){
+
+imageNote =
+" Note: this image is only " +
+prepared.originalWidth +
+" px wide. Use 1200 px or wider for Google Discover.";
+
+}
+
+
+let cleanName =
 file.name
 .toLowerCase()
 .replace(
 /[^a-z0-9.]+/g,
 "-"
 );
+
+
+let contentType = file.type;
+
+
+if(prepared.converted){
+
+cleanName =
+cleanName.replace(/\.[a-z0-9]+$/,"") +
+".jpg";
+
+contentType = "image/jpeg";
+
+}
 
 
 const filePath =
@@ -1190,10 +1345,11 @@ await db.storage
 .from(BUCKET_NAME)
 .upload(
 filePath,
-file,
+prepared.blob,
 {
-cacheControl:"3600",
-upsert:false
+cacheControl:"31536000",
+upsert:false,
+contentType:contentType
 }
 );
 
@@ -1215,6 +1371,78 @@ filePath
 return data.publicUrl;
 
 }
+
+
+
+/* CHARACTER COUNTERS (best sizes for Google) */
+
+function attachCounter(
+inputId,
+hintId,
+limit,
+label
+){
+
+const input =
+document.getElementById(inputId);
+
+const hint =
+document.getElementById(hintId);
+
+
+function update(){
+
+const n =
+input.value.trim().length;
+
+hint.textContent =
+n + " / " + limit + " " + label;
+
+hint.style.color =
+n > limit ? "#b91c1c" : "";
+
+}
+
+
+input.addEventListener("input",update);
+
+update();
+
+return update;
+
+}
+
+
+const updateTitleCount =
+attachCounter(
+"title",
+"titleCount",
+70,
+"characters (best under 70)"
+);
+
+
+const updateExcerptCount =
+attachCounter(
+"excerpt",
+"excerptCount",
+160,
+"characters (best under 160)"
+);
+
+
+document
+.getElementById("articleForm")
+.addEventListener(
+"reset",
+function(){
+
+setTimeout(function(){
+updateTitleCount();
+updateExcerptCount();
+},0);
+
+});
 
 
 
@@ -2012,7 +2240,7 @@ throw error;
 
 
 showMessage(
-"Article updated successfully!",
+"Article updated successfully!" + takeNote(),
 "success"
 );
 
@@ -2286,7 +2514,7 @@ throw error;
 
 
 showMessage(
-"Article published successfully!",
+"Article published successfully!" + takeNote(),
 "success"
 );
 
@@ -2497,7 +2725,7 @@ throw error;
 
 
 showMessage(
-"Draft saved successfully!",
+"Draft saved successfully!" + takeNote(),
 "success"
 );
 
