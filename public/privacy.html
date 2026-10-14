@@ -17,7 +17,10 @@
 <meta property="og:url" content="https://www.nexoranews.uk/privacy.html">
 <meta property="og:image" content="https://www.nexoranews.uk/og-image.jpg">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%23d0102a'/%3E%3Ctext x='50' y='73' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,15 +130,22 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
 .social-links a{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;border:1px solid #2b3550;color:#c9d0e0;font-size:14px;font-weight:600;transition:background .15s ease,color .15s ease}
 .social-links a:hover{background:#fff;color:#0b1020}
 </style>
-<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js): analytics cookies stay OFF until the visitor allows them -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PF65B1MV84"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
   gtag('js', new Date());
-
   gtag('config', 'G-PF65B1MV84');
 </script>
+<script src="/consent.js" defer></script>
 
 </head>
 
@@ -155,7 +165,7 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <span class="btn-text">Theme</span>
         </button>
-        <a href="search.html" class="icon-btn" aria-label="Search">
+        <a href="/search.html" class="icon-btn" aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           <span class="btn-text">Search</span>
         </a>
@@ -165,13 +175,13 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
   <nav aria-label="Main">
     <div class="nav-inner">
       <a href="/">Home</a>
-      <a href="/?category=UK">UK</a>
-      <a href="/?category=London">London</a>
-      <a href="/?category=World">World</a>
-      <a href="/?category=Business">Business</a>
-      <a href="/?category=Technology">Technology</a>
-      <a href="/?category=Sports">Sports</a>
-      <a href="/?category=Video">Video</a>
+      <a href="/section/uk">UK</a>
+      <a href="/section/london">London</a>
+      <a href="/section/world">World</a>
+      <a href="/section/business">Business</a>
+      <a href="/section/technology">Technology</a>
+      <a href="/section/sports">Sports</a>
+      <a href="/section/video">Video</a>
     </div>
   </nav>
 </div>
@@ -213,7 +223,9 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
 
 <p>Nexora News may use cookies or similar technologies to improve website functionality, remember preferences and understand website usage.</p>
 
-<p>You can control or disable cookies through your browser settings. Disabling certain cookies may affect some website features.</p>
+<p>We use Google Analytics to understand how the website is used. Analytics cookies are only set if you choose "Allow" on our cookie notice. You can change your choice at any time with "Cookie settings" in the footer.</p>
+
+<p>You can also control or disable cookies through your browser settings. Disabling certain cookies may affect some website features.</p>
 
 
 <h2>5. Third-Party Services</h2>
@@ -273,15 +285,15 @@ footer{background:var(--ink);color:var(--on-ink);margin-top:70px;border-radius:3
     </div>
     <div class="footer-links">
       <a href="/">Home</a>
-      <a href="/?category=UK">UK</a>
-      <a href="/?category=London">London</a>
-      <a href="/?category=World">World</a>
-      <a href="/?category=Business">Business</a>
-      <a href="/?category=Technology">Technology</a>
-      <a href="/?category=Sports">Sports</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="privacy.html">Privacy Policy</a>
+      <a href="/section/uk">UK</a>
+      <a href="/section/london">London</a>
+      <a href="/section/world">World</a>
+      <a href="/section/business">Business</a>
+      <a href="/section/technology">Technology</a>
+      <a href="/section/sports">Sports</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
     </div>
   </div>
   <div class="copyright">© 2026 Nexora News. All rights reserved.</div>
