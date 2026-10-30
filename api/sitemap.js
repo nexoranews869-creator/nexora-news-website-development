@@ -5,8 +5,8 @@ const SUPABASE_KEY =
   "sb_publishable_-rvHVSnw6yw0_Zb-jxozVw_Fma9NccJ";
 
 const BASE = "https://www.nexoranews.uk";
+const BATCH_SIZE = 1000;
 
-/* Same slug rules as index.html (used only when an article has no stored slug) */
 function makeSlug(title) {
   return String(title || "")
     .toLowerCase()
@@ -24,7 +24,7 @@ function makeSlug(title) {
 }
 
 function xmlEscape(value) {
-  return String(value)
+  return String(value || "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -32,95 +32,183 @@ function xmlEscape(value) {
     .replace(/'/g, "&apos;");
 }
 
-export default async function handler(req, res) {
+function articleUrl(slug) {
+  return BASE + "/news/" + encodeURIComponent(slug);
+}
 
-  try {
+async function getPublishedArticles() {
+  const articles = [];
 
-    const response = await fetch(
-      SUPABASE_URL +
-      "/rest/v1/articles" +
-      "?select=title,slug,image_url,published_at,created_at,status" +
-      "&status=eq.published" +
-      "&order=published_at.desc.nullslast",
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY
-        }
-      }
+  for (let offset = 0; ; offset += BATCH_SIZE) {
+    const url = new URL(
+      SUPABASE_URL + "/rest/v1/articles"
     );
 
+    url.searchParams.set(
+      "select",
+      "title,slug,image_url,published_at,created_at"
+    );
+
+    url.searchParams.set("status", "eq.published");
+    url.searchParams.set(
+      "order",
+      "published_at.desc.nullslast,created_at.desc"
+    );
+
+    const response = await fetch(url.toString(), {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        Range: `${offset}-${offset + BATCH_SIZE - 1}`,
+        "Range-Unit": "items"
+      }
+    });
+
     if (!response.ok) {
-      throw new Error("Supabase request failed");
+      throw new Error(
+        "Supabase request failed: " + response.status
+      );
     }
 
-    const articles = await response.json();
+    const batch = await response.json();
+
+    articles.push(...batch);
+
+    if (batch.length < BATCH_SIZE) {
+      break;
+    }
+  }
+
+  return articles;
+}
+
+export default async function handler(req, res) {
+  try {
+    if (req.method !== "GET" && req.method !== "HEAD") {
+      res.setHeader("Allow", "GET, HEAD");
+      return res.status(405).send("Method Not Allowed");
+    }
+
+    const articles = await getPublishedArticles();
 
     const urls = [];
+    const addedUrls = new Set();
 
-    urls.push(`  <url>
-    <loc>${BASE}/</loc>
-  </url>`);
+    function addUrl(path, lastmod = "", imageUrl = "") {
+      const fullUrl = BASE + path;
 
-    ["about.html", "editorial.html", "contact.html", "privacy.html"].forEach(page => {
-      urls.push(`  <url>
-    <loc>${BASE}/${page}</loc>
-  </url>`);
-    });
+      if (addedUrls.has(fullUrl)) {
+        return;
+      }
 
-    ["UK", "London", "World", "Business", "Technology", "Sports", "Video"].forEach(cat => {
-      urls.push(`  <url>
-    <loc>${BASE}/section/${cat.toLowerCase()}</loc>
-  </url>`);
-    });
+      addedUrls.add(fullUrl);
 
-    articles.forEach(article => {
+      const lastmodTag = lastmod
+        ? `\n    <lastmod>${xmlEscape(lastmod)}</lastmod>`
+        : "";
 
-      const slug = article.slug || makeSlug(article.title);
-
-      if (!slug) { return; }
-
-      const d = new Date(article.published_at || article.created_at);
-
-      const imageTag = article.image_url
+      const imageTag = imageUrl
         ? `
     <image:image>
-      <image:loc>${xmlEscape(article.image_url)}</image:loc>
+      <image:loc>${xmlEscape(imageUrl)}</image:loc>
     </image:image>`
         : "";
 
-      const lastmod = isNaN(d)
-        ? ""
-        : `
-    <lastmod>${d.toISOString()}</lastmod>`;
-
       urls.push(`  <url>
-    <loc>${xmlEscape(BASE + "/news/" + encodeURIComponent(slug))}</loc>${lastmod}${imageTag}
+    <loc>${xmlEscape(fullUrl)}</loc>${lastmodTag}${imageTag}
   </url>`);
+    }
 
+    // Homepage
+    addUrl("/");
+
+    // Main website pages
+    [
+      "about.html",
+      "editorial.html",
+      "contact.html",
+      "privacy.html"
+    ].forEach(page => {
+      addUrl("/" + page);
+    });
+
+    // News categories
+    [
+      "uk",
+      "london",
+      "world",
+      "business",
+      "technology",
+      "sports",
+      "video"
+    ].forEach(category => {
+      addUrl("/section/" + category);
+    });
+
+    // Published articles
+    articles.forEach(article => {
+      const slug =
+        String(article.slug || "").trim() ||
+        makeSlug(article.title);
+
+      if (!slug) {
+        return;
+      }
+
+      const dateValue =
+        article.published_at || article.created_at;
+
+      const date = dateValue
+        ? new Date(dateValue)
+        : null;
+
+      const lastmod =
+        date && !isNaN(date.getTime())
+          ? date.toISOString()
+          : "";
+
+      addUrl(
+        "/news/" + encodeURIComponent(slug),
+        lastmod,
+        article.image_url || ""
+      );
     });
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.join("\n")}
 </urlset>`;
 
-    res.setHeader("Content-Type", "application/xml; charset=utf-8");
-    res.setHeader("Cache-Control", "public, s-maxage=900, stale-while-revalidate=3600");
-
-    res.status(200).send(xml);
-
-  } catch (error) {
-
-    res.setHeader("Content-Type", "application/xml; charset=utf-8");
-
-    res.status(500).send(
-      `<?xml version="1.0" encoding="UTF-8"?>
-<error>
-  <message>Sitemap generation failed</message>
-</error>`
+    res.setHeader(
+      "Content-Type",
+      "application/xml; charset=utf-8"
     );
 
-  }
+    res.setHeader(
+      "Cache-Control",
+      "public, s-maxage=900, stale-while-revalidate=3600"
+    );
 
+    res.setHeader("X-Robots-Tag", "noindex");
+
+    if (req.method === "HEAD") {
+      return res.status(200).end();
+    }
+
+    return res.status(200).send(xml);
+
+  } catch (error) {
+    console.error("Sitemap error:", error);
+
+    res.setHeader(
+      "Content-Type",
+      "text/plain; charset=utf-8"
+    );
+
+    return res.status(500).send(
+      "Unable to generate sitemap."
+    );
+  }
 }
